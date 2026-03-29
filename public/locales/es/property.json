@@ -1,0 +1,46 @@
+{
+  "backAriaLabel": "Volver a la página anterior",
+  "notFound": {
+    "icon":    "🏚️",
+    "title":   "Propiedad no encontrada",
+    "cta":     "Ver todas las propiedades"
+  },
+  "features": {
+    "bedrooms_one":   "{{count}} habitación",
+    "bedrooms_other": "{{count}} habitaciones",
+    "bathrooms_one":  "{{count}} baño",
+    "bathrooms_other":"{{count}} baños",
+    "size":           "{{size}} m²"
+  },
+  "description": {
+    "title": "Descripción"
+  },
+  "header": {
+    "forSale":  "En Venta",
+    "forRent":  "En Alquiler",
+    "mapsAriaLabel": "Ver en Google Maps",
+    "status": {
+      "reserved": "Reservado",
+      "sold":     "Vendido"
+    }
+  },
+  "contact": {
+    "title":           "¿Te interesa esta propiedad?",
+    "subtitle":        "Déjanos tus datos y te contactamos en menos de 24 horas.",
+    "namePlaceholder": "Tu nombre completo",
+    "nameLabel":       "Nombre",
+    "phonePlaceholder":"Tu teléfono",
+    "phoneLabel":      "Teléfono",
+    "emailPlaceholder":"Tu email",
+    "emailLabel":      "Email",
+    "messagePlaceholder": "Cuéntanos en qué podemos ayudarte…",
+    "messageLabel":    "Mensaje",
+    "messageDefault":  "Hola, me gustaría recibir más información sobre la propiedad {{title}}.",
+    "sendBtn":         "Enviar consulta",
+    "sending":         "Enviando…",
+    "successTitle":    "¡Mensaje enviado!",
+    "successMsg":      "Nos pondremos en contacto contigo pronto.",
+    "errorMsg":        "Ha ocurrido un error. Inténtalo de nuevo.",
+    "required":        "Este campo es obligatorio"
+  }
+}

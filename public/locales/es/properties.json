@@ -1,0 +1,40 @@
+{
+  "page": {
+    "title":    "Propiedades",
+    "subtitle": "{{count}} {{label}}"
+  },
+  "filters": {
+    "title":        "Filtros",
+    "location":     "Ubicación",
+    "bedrooms":     "Habitaciones",
+    "maxPrice":     "Precio máximo",
+    "maxPriceVal":  "— {{price}}",
+    "maxPriceNone": "— Sin límite",
+    "noLimit":      "Sin límite",
+    "priceMin":     "50.000 €",
+    "moreFilters":  "Más filtros",
+    "moreFiltersCount":  "Más filtros ({{count}})",
+    "dragToAdjust": "Arrastra para ajustar",
+    "dragSubtitle": "Arrastra para ajustar el presupuesto",
+    "bedrooms": {
+      "any":    "Cualquiera",
+      "studio": "Estudio",
+      "1":      "1",
+      "2":      "2",
+      "3":      "3",
+      "4plus":  "4+"
+    }
+  },
+  "chips": {
+    "type":     "Tipo: {{value}}",
+    "bedrooms": "{{value}}+ hab.",
+    "location": "{{value}}",
+    "maxPrice": "Hasta {{value}}",
+    "clearAll": "Limpiar todo"
+  },
+  "empty": {
+    "icon":    "🏠",
+    "title":   "Sin resultados",
+    "message": "Prueba a modificar los filtros"
+  }
+}

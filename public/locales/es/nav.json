@@ -1,0 +1,28 @@
+{
+  "navbar": {
+    "home":       "Inicio",
+    "properties": "Propiedades",
+    "contact":    "Contacto",
+    "admin":      "Admin",
+    "ariaLabel":  "Navegación principal",
+    "openMenu":   "Abrir menú",
+    "closeMenu":  "Cerrar menú",
+    "logoAriaLabel": "{{name}} – Inicio"
+  },
+  "footer": {
+    "description":   "Gestión inmobiliaria en {{zone}} ({{province}}).",
+    "nav":           "Navegación",
+    "contact":       "Contacto",
+    "copyright":     "© {{year}} {{name}}. Todos los derechos reservados.",
+    "privacy":       "Privacidad",
+    "cookies":       "Cookies",
+    "terms":         "Términos",
+    "links": {
+      "home":       "Inicio",
+      "properties": "Propiedades",
+      "sale":       "En venta",
+      "rent":       "En alquiler",
+      "contact":    "Contacto"
+    }
+  }
+}

@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════
+   DESIGN SYSTEM — ParqueSierra
+   Edita solo esta sección para cambiar colores y fuentes globalmente.
+   Los tokens se convierten automáticamente en clases Tailwind:
+     --color-primary-700 → bg-primary-700, text-primary-700, …
+     --color-surface-950 → bg-surface-950, …
+   ═══════════════════════════════════════════════════════════════ */
+@theme {
+  /* ── Color de marca principal ──────────────────────────────── */
+  /* Cambia estos valores para rediseñar toda la web de una vez  */
+  --color-primary-50:  #f0fdf4;
+  --color-primary-100: #dcfce7;
+  --color-primary-200: #bbf7d0;
+  --color-primary-300: #86efac;
+  --color-primary-400: #4ade80;
+  --color-primary-500: #22c55e;
+  --color-primary-600: #16a34a;   /* links, labels, iconos */
+  --color-primary-700: #15803d;   /* botones, accents principales */
+  --color-primary-800: #166534;   /* hover de botones */
+  --color-primary-900: #14532d;   /* hover de links */
+
+  /* ── Superficies neutras (fondo, bordes, fondos oscuros) ───── */
+  --color-surface-50:  #f8fafc;
+  --color-surface-100: #f1f5f9;
+  --color-surface-200: #e2e8f0;
+  --color-surface-950: #020617;   /* hero, footer oscuro */
+
+  /* ── Tipografía ─────────────────────────────────────────────── */
+  /* Cambia las fuentes aquí. Recuerda importarlas en index.html  */
+  --font-sans:    "Inter", system-ui, sans-serif;
+  --font-heading: "Inter", system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+}
+
+@layer utilities {
+  .glass {
+    backdrop-filter: blur(12px);
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+
+  .skeleton {
+    @apply animate-pulse bg-slate-200 rounded-lg;
+  }
+}
+
+/* ── Animaciones formulario de éxito ─────────────────────────── */
+@keyframes pop-in {
+  0%   { opacity: 0; transform: scale(0.7); }
+  70%  { transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes draw-check {
+  from { stroke-dashoffset: 60; }
+  to   { stroke-dashoffset: 0; }
+}
+
+.animate-pop-in {
+  animation: pop-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.animate-fade-up {
+  animation: fade-up 0.4s ease both;
+}
+
+.animate-draw-check {
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+  animation: draw-check 0.5s ease 0.3s both;
+}
+
+/* ── Animaciones del modal de filtros ──────────────────────────── */
+@keyframes modal-fade-scale {
+  from { opacity: 0; transform: scale(0.96) translateY(4px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+@keyframes sheet-slide-up {
+  from { opacity: 0; transform: translateY(100%); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes overlay-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-modal-in {
+  animation: modal-fade-scale 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-sheet-up {
+  animation: sheet-slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-overlay-in {
+  animation: overlay-fade 0.2s ease both;
+}
+
+/* Slide-in desde la derecha (pantalla fullscreen móvil) */
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+
+.animate-slide-right {
+  animation: slide-in-right 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+

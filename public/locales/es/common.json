@@ -1,0 +1,55 @@
+{
+  "btn": {
+    "search":       "Buscar",
+    "viewAll":      "Ver todas",
+    "back":         "Volver",
+    "contact":      "Hablar con un asesor",
+    "send":         "Enviar mensaje",
+    "sending":      "Enviando…",
+    "clearFilters": "Limpiar filtros",
+    "applyFilters": "Aplicar filtros",
+    "newProperty":  "+ Nueva propiedad",
+    "edit":         "Editar",
+    "delete":       "Eliminar",
+    "save":         "Guardar",
+    "cancel":       "Cancelar"
+  },
+  "status": {
+    "available": "Disponible",
+    "reserved":  "Reservado",
+    "sold":      "Vendido"
+  },
+  "listing": {
+    "sale": "Comprar",
+    "rent": "Alquilar",
+    "all":  "Todos"
+  },
+  "type": {
+    "sale": "Venta",
+    "rent": "Alquiler"
+  },
+  "location": {
+    "any":       "Cualquier ubicación",
+    "unknown":   "Ubicación no disponible"
+  },
+  "ui": {
+    "loading":          "Cargando…",
+    "noResults":        "Sin resultados",
+    "tryOtherFilters":  "Prueba a modificar los filtros",
+    "previous":         "← Anterior",
+    "next":             "Siguiente →",
+    "page":             "Página {{n}} de {{total}}",
+    "resultsCount_one": "{{count}} resultado",
+    "resultsCount_other": "{{count}} resultados",
+    "searching":        "Buscando…",
+    "featured":         "Destacada",
+    "published":        "Publicada",
+    "notPublished":     "No publicada",
+    "bedrooms_one":     "{{count}} hab.",
+    "bedrooms_other":   "{{count}} hab.",
+    "bathrooms_one":    "{{count}} baño",
+    "bathrooms_other":  "{{count}} baños",
+    "sizeM2":           "{{size}} m²",
+    "priceOnRequest":   "Precio a consultar"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "hero": {
+    "eyebrow":   "{{zone}} ({{province}})",
+    "title":     "Encuentra tu hogar",
+    "titleSpan": "en {{zone}}",
+    "subtitle":  "Descubre propiedades exclusivas. Compra, alquila o invierte con la asesoría de los expertos.",
+    "logoAlt":   "{{name}} Inmobiliaria",
+    "searchAriaLabel": "Buscar propiedades"
+  },
+  "featured": {
+    "eyebrow":  "Selección especial",
+    "title":    "Propiedades Destacadas"
+  },
+  "cta": {
+    "title":    "¿Quieres vender o alquilar tu propiedad?",
+    "subtitle": "Nuestro equipo de asesores expertos te acompañará en todo el proceso, sin complicaciones.",
+    "btn":      "Hablar con un asesor",
+    "btnAriaLabel": "Contactar con un asesor inmobiliario"
+  }
+}
