@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { SITE } from '../../config/siteConfig'
+import { LanguageSwitcher } from '../shared/LanguageSwitcher'
 
 /**
  * Navbar — sticky glassmorphism navigation bar.
@@ -62,6 +63,7 @@ export function Navbar() {
 
         {/* Desktop CTA */}
         <div className="hidden md:flex items-center gap-3">
+          <LanguageSwitcher />
           <Link
             to="/properties"
             className="px-5 py-2 rounded-xl bg-primary-700 text-white text-sm font-semibold hover:bg-primary-800 transition-colors shadow-sm"

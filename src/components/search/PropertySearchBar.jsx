@@ -1,4 +1,5 @@
 import { HierarchicalLocationSelect } from './HierarchicalLocationSelect'
+import { SITE } from '../../config/siteConfig'
 
 const PRICE_FORMAT = new Intl.NumberFormat('es-ES', {
   style: 'currency', currency: 'EUR', maximumFractionDigits: 0,
@@ -78,22 +79,24 @@ export function PropertySearchBar({
         </div>
 
         {/* Botón Más filtros */}
-        <button
-          type="button"
-          onClick={onOpenModal}
-          className="relative flex items-center gap-2 px-4 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors whitespace-nowrap"
-          aria-label="Abrir más filtros"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-          </svg>
-          Más filtros
-          {activeAdvancedCount > 0 && (
-            <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary-700 text-white text-[10px] font-bold leading-none">
-              {activeAdvancedCount}
-            </span>
-          )}
-        </button>
+        {SITE.features.advancedFilters && (
+          <button
+            type="button"
+            onClick={onOpenModal}
+            className="relative flex items-center gap-2 px-4 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors whitespace-nowrap"
+            aria-label="Abrir más filtros"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            </svg>
+            Más filtros
+            {activeAdvancedCount > 0 && (
+              <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary-700 text-white text-[10px] font-bold leading-none">
+                {activeAdvancedCount}
+              </span>
+            )}
+          </button>
+        )}
       </div>
 
       {/* ── MOBILE ── */}
@@ -113,22 +116,24 @@ export function PropertySearchBar({
         </div>
 
         {/* Botón Filtros mobile */}
-        <button
-          type="button"
-          onClick={onOpenModal}
-          className="relative flex items-center gap-1.5 px-4 py-3 rounded-xl border border-slate-200 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors whitespace-nowrap shadow-sm"
-          aria-label="Abrir filtros"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-          </svg>
-          Filtros
-          {activeAdvancedCount + (filters.type !== 'all' ? 1 : 0) + (filters.maxPrice !== Infinity ? 1 : 0) > 0 && (
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary-700 text-white text-[10px] font-bold">
-              {activeAdvancedCount + (filters.type !== 'all' ? 1 : 0) + (filters.maxPrice !== Infinity ? 1 : 0)}
-            </span>
-          )}
-        </button>
+        {SITE.features.advancedFilters && (
+          <button
+            type="button"
+            onClick={onOpenModal}
+            className="relative flex items-center gap-1.5 px-4 py-3 rounded-xl border border-slate-200 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors whitespace-nowrap shadow-sm"
+            aria-label="Abrir filtros"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+            </svg>
+            Filtros
+            {activeAdvancedCount + (filters.type !== 'all' ? 1 : 0) + (filters.maxPrice !== Infinity ? 1 : 0) > 0 && (
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary-700 text-white text-[10px] font-bold">
+                {activeAdvancedCount + (filters.type !== 'all' ? 1 : 0) + (filters.maxPrice !== Infinity ? 1 : 0)}
+              </span>
+            )}
+          </button>
+        )}
       </div>
     </>
   )

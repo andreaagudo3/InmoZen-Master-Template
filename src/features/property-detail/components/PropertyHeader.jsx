@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { Badge } from '../../../components/shared/Badge'
+import { SITE } from '../../../config/siteConfig'
 
 function formatPrice(price) {
   return new Intl.NumberFormat('es-ES', {
@@ -28,7 +29,7 @@ export function PropertyHeader({ title, listing_type, price, status, locationStr
       )}
       <h1 className="text-3xl md:text-4xl font-bold text-slate-950 mb-2">{title}</h1>
 
-      {locationString && (
+      {locationString && SITE.features.googleMaps && (
         <a
           href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationString)}`}
           target="_blank"

@@ -27,7 +27,7 @@ export const MOCK_PROPERTIES = [
   },
   {
     id: '2',
-    title: 'Villa Parque Sierra',
+    title: 'Villa InmoZen',
     type: 'sale',
     price: 875_000,
     currency: 'EUR',

@@ -6,35 +6,58 @@
  */
 
 export const SITE = {
-  /** Nombre comercial que aparece en títulos y textos */
-  name: 'Parque Sierra',
-  /** Subtítulo / actividad */
-  tagline: 'Inmobiliaria',
-  /** Nombre completo para SEO y cabeceras formales */
-  fullName: 'Parque Sierra Inmobiliaria',
-
-  /** Zona de actuación (aparece en hero, footer, contacto…) */
-  zone: 'Sierra de Aracena y Picos de Aroche',
-  /** Nombre corto de la zona para el hero (más conciso) */
-  heroZone: 'Sierra de Aracena',
-  province: 'Huelva',
-  country: 'España',
-
-  /** Teléfonos de contacto */
-  phones: [
-    { number: '680 68 64 55', href: 'tel:+34680686455' }
-  ],
-
-  /** Email de contacto */
-  email: {
-    address: 'auroraparquesierra@gmail.com',
-    href: 'mailto:auroraparquesierra@gmail.com',
+  /** 
+   * Configuración Principal del Negocio
+   * Cambia estos datos para generar una web diferente.
+   */
+  name: 'InmoZen',
+  tagline: 'Real Estate Minimalist',
+  fullName: 'InmoZen Real Estate Group',
+  
+  description: 'Encuentra la casa de tus sueños con la experiencia InmoZen. Lujo, minimalismo y eficiencia.',
+  seo: {
+    titleTemplate: '%s | InmoZen',
+    defaultTitle: 'InmoZen - Real Estate',
   },
 
-  /** Redes sociales (href: '#' = sin enlace todavía) */
+  zone: 'Costa del Sol',
+  heroZone: 'Marbella & Málaga',
+  province: 'Málaga',
+  country: 'España',
+  address: 'Av. Ricardo Soriano, 12, 29601 Marbella, Málaga',
+
+  phones: [
+    { number: '+34 600 00 00 00', href: 'tel:+34600000000' }
+  ],
+
+  email: {
+    address: 'hello@inmozen.com',
+    href: 'mailto:hello@inmozen.com',
+  },
+
   socials: [
-    { name: 'Instagram', href: '#' },
-    { name: 'LinkedIn', href: '#' },
+    { name: 'Instagram', href: 'https://instagram.com/inmozen' },
+    { name: 'LinkedIn', href: 'https://linkedin.com/company/inmozen' },
     { name: 'Twitter', href: '#' },
   ],
+
+  /**
+   * Identidad Visual
+   * Cambia el color primario (ej. #0f172a, #b91c1c, #0d9488) para 
+   * rediseñar toda la gama de colores base automáticamente.
+   */
+  branding: {
+    primaryColor: '#0ea5e9', // e.g. un tono azul moderno
+  },
+
+  /**
+   * Feature Flags (Opciones de la plantilla)
+   * Activa (true) o desactiva (false) módulos de la web.
+   */
+  features: {
+    i18n: true,             // Soporte multi-idioma
+    googleMaps: true,       // Integración con mapas
+    advancedFilters: true,  // Filtros de habitaciones, m2, etc. en búsqueda
+    whatsappButton: true,   // Botón flotante de WhatsApp
+  }
 }

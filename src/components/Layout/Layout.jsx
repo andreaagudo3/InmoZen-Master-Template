@@ -1,5 +1,6 @@
 import { Navbar } from './Navbar'
 import { Footer } from './Footer'
+import { WhatsAppButton } from '../shared/WhatsAppButton'
 
 /**
  * Layout — wraps every page with the sticky Navbar and Footer.
@@ -13,6 +14,7 @@ export function Layout({ children }) {
         {children}
       </main>
       <Footer />
+      <WhatsAppButton />
     </div>
   )
 }

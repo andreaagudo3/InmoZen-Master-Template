@@ -1,5 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { signOut } from '../../services/adminService'
+import { SITE } from '../../config/siteConfig'
 
 const NAV_ITEMS = [
   { to: '/admin', label: 'Propiedades', icon: '🏠' },
@@ -24,7 +25,7 @@ export default function AdminLayout({ children }) {
       {/* Header */}
       <header className="bg-slate-950 border-b border-slate-800 px-4 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-y-4">
         <div className="flex items-center gap-4">
-          <img src="/logo.png" alt="Parque Sierra" className="h-8 brightness-0 invert" />
+          <img src="/logo.png" alt={SITE.name} className="h-8 brightness-0 invert" />
           <span className="text-slate-400 text-sm font-medium hidden sm:block">Panel Admin</span>
         </div>
 

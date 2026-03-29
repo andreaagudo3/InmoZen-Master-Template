@@ -6,6 +6,10 @@ import './i18n'
 import App from './App.jsx'
 import { ScrollToTop } from './components/ScrollToTop.jsx'
 
+import { injectTheme } from './utils/themeInjector.js'
+
+injectTheme();
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>

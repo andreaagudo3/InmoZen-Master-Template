@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { signIn } from '../../services/adminService'
+import { SITE } from '../../config/siteConfig'
 
 /**
  * LoginPage — Acceso al panel de administración via Supabase Auth.
@@ -31,7 +32,7 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="text-center mb-8">
-          <img src="/logo.png" alt="Parque Sierra" className="h-14 mx-auto brightness-0 invert" />
+          <img src="/logo.png" alt={SITE.name} className="h-14 mx-auto brightness-0 invert" />
           <p className="text-slate-400 text-sm mt-3">Panel de Administración</p>
         </div>
 
