@@ -9,17 +9,14 @@ export function PropertyFeatures({ bedrooms, bathrooms, size_m2 }) {
       label: bedrooms === 0
         ? t('features.bedrooms_other', { count: 0 })
         : t('features.bedrooms_one', { count: bedrooms, defaultValue_other: t('features.bedrooms_other', { count: bedrooms }) }),
-      title: t('features.bedrooms_other', { count: bedrooms }),
     },
     bathrooms != null && {
       icon: '🚿',
       label: t('features.bathrooms_one', { count: bathrooms, defaultValue_other: t('features.bathrooms_other', { count: bathrooms }) }),
-      title: t('features.bathrooms_other', { count: bathrooms }),
     },
     size_m2 != null && {
       icon: '📐',
       label: t('features.size', { size: size_m2 }),
-      title: t('features.size', { size: size_m2 }),
     },
   ].filter(Boolean)
 
@@ -28,15 +25,14 @@ export function PropertyFeatures({ bedrooms, bathrooms, size_m2 }) {
   return (
     <section aria-label="Características del inmueble">
       <h2 className="text-lg font-semibold text-secondary-900 mb-4">{t('features.title', 'Características')}</h2>
-      <dl className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        {SPECS.map(({ icon, label, title: specTitle }) => (
-          <div key={specTitle} className="bg-white border border-secondary-100 rounded-2xl p-4 text-center shadow-sm">
-            <span className="text-2xl" aria-hidden="true">{icon}</span>
-            <dt className="text-xs text-secondary-400 uppercase tracking-wide mt-1">{specTitle}</dt>
-            <dd className="text-sm font-semibold text-secondary-800 mt-0.5">{label}</dd>
-          </div>
+      <ul className="grid grid-cols-2 sm:grid-cols-4 gap-4" role="list">
+        {SPECS.map(({ icon, label }) => (
+          <li key={label} className="bg-white border border-secondary-100 rounded-2xl p-4 flex flex-col items-center justify-center shadow-sm">
+            <span className="text-2xl mb-2" aria-hidden="true">{icon}</span>
+            <span className="text-sm font-semibold text-secondary-800 text-center leading-tight">{label}</span>
+          </li>
         ))}
-      </dl>
+      </ul>
     </section>
   )
 }

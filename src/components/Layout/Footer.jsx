@@ -9,12 +9,13 @@ export function Footer() {
   const { t } = useTranslation('nav')
 
   const QUICK_LINKS = [
-    { to: '/',                       label: t('footer.links.home') },
-    { to: '/properties',             label: t('footer.links.properties') },
-    { to: '/properties?type=sale',   label: t('footer.links.sale') },
-    { to: '/properties?type=rent',   label: t('footer.links.rent') },
-    { to: '/contact',                label: t('footer.links.contact') },
+    { to: '/', label: t('footer.links.home') },
+    { to: '/properties', label: t('footer.links.properties') },
+    { to: '/properties?type=sale', label: t('footer.links.sale') },
+    { to: '/properties?type=rent', label: t('footer.links.rent') },
+    { to: '/contact', label: t('footer.links.contact') },
   ]
+  const SERVICES = t('footer.services', { returnObjects: true }) || []
 
   return (
     <footer className="bg-secondary-950 text-secondary-300 pt-16 pb-8" role="contentinfo">
@@ -68,7 +69,21 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Column 3 — Contact */}
+          {/* Column 3 — Services */}
+          <div>
+            <h3 className="text-white font-semibold text-sm uppercase tracking-wider mb-4">
+              {t('footer.servicesTitle', 'Servicios')}
+            </h3>
+            <ul className="space-y-2.5">
+              {SERVICES.map((s) => (
+                <li key={s} className="text-sm text-secondary-400">
+                  {s}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 4 — Contact */}
           <div>
             <h3 className="text-white font-semibold text-sm uppercase tracking-wider mb-4">
               {t('footer.contact')}

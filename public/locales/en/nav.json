@@ -23,6 +23,13 @@
       "sale":       "For sale",
       "rent":       "For rent",
       "contact":    "Contact"
-    }
+    },
+    "servicesTitle": "Services",
+    "services": [
+      "Property Sales",
+      "Long-term Rentals",
+      "Wealth Management",
+      "Legal Advisory"
+    ]
   }
 }

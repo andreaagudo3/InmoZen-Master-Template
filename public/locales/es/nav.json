@@ -23,6 +23,13 @@
       "sale":       "En venta",
       "rent":       "En alquiler",
       "contact":    "Contacto"
-    }
+    },
+    "servicesTitle": "Servicios",
+    "services": [
+      "Compraventa de inmuebles",
+      "Alquileres de larga temporada",
+      "Gestión de patrimonio",
+      "Asesoramiento legal"
+    ]
   }
 }
