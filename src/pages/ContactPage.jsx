@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useTenant }      from '../context/TenantContext'
+import { useTenant } from '../context/TenantContext'
 import { sendContactEmail } from '../services/contactService'
 import { useThemeStore } from '../store/themeStore'
 
@@ -18,7 +18,7 @@ const INITIAL_FORM = {
  * ContactPage — full contact form with validation and visual feedback.
  */
 export default function ContactPage() {
-  const { t }  = useTranslation('contact')
+  const { t } = useTranslation('contact')
   const tenant = useTenant()
   const [form, setForm] = useState(INITIAL_FORM)
   const [errors, setErrors] = useState({})
@@ -47,7 +47,11 @@ export default function ContactPage() {
     {
       icon: '📞',
       title: t('info.phone'),
-      lines: phones.map((p) => ({ text: p.number, href: p.href })),
+      // Usamos el string directamente (p) y generamos el href dinámicamente
+      lines: (phones || []).map((p) => ({
+        text: p,
+        href: `tel:${p.replace(/\s+/g, '')}`
+      })),
     },
     {
       icon: '✉️',
