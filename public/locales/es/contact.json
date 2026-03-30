@@ -1,38 +1,38 @@
 {
   "hero": {
-    "eyebrow":  "Contacto",
-    "title":    "Hablemos",
+    "eyebrow": "Contacto",
+    "title": "Hablemos",
     "subtitle": "Estamos aquí para ayudarte a encontrar la propiedad perfecta o a gestionar la tuya."
   },
   "info": {
-    "phone":   "Teléfono",
-    "email":   "Email",
+    "phone": "Teléfono",
+    "email": "Email",
     "address": "Dirección",
-    "hours":   "Horario",
-    "hoursVal":"Lunes a Viernes · 9:00 – 18:00"
+    "hours": "Horario",
+    "hoursVal": "Lunes a Viernes · 9:00 – 18:00"
   },
   "form": {
-    "title":            "Envíanos un mensaje",
-    "namePlaceholder":  "Tu nombre",
-    "nameLabel":        "Nombre *",
+    "title": "Envíanos un mensaje",
+    "namePlaceholder": "Tu nombre",
+    "nameLabel": "Nombre",
     "phonePlaceholder": "Tu teléfono (opcional)",
-    "phoneLabel":       "Teléfono",
+    "phoneLabel": "Teléfono",
     "emailPlaceholder": "tu@email.com",
-    "emailLabel":       "Email *",
-    "messagePlaceholder":"¿En qué podemos ayudarte?",
-    "messageLabel":     "Mensaje *",
-    "sendBtn":          "Enviar mensaje",
-    "sending":          "Enviando…",
-    "privacy":          "Al enviar aceptas nuestra",
-    "privacyLink":      "política de privacidad"
+    "emailLabel": "Email",
+    "messagePlaceholder": "¿En qué podemos ayudarte?",
+    "messageLabel": "Mensaje",
+    "sendBtn": "Enviar mensaje",
+    "sending": "Enviando…",
+    "privacy": "Al enviar aceptas nuestra",
+    "privacyLink": "política de privacidad"
   },
   "success": {
-    "title":   "¡Mensaje recibido!",
+    "title": "¡Mensaje recibido!",
     "message": "Un asesor se pondrá en contacto contigo en menos de 24 horas.",
-    "again":   "Enviar otro mensaje"
+    "again": "Enviar otro mensaje"
   },
   "error": {
     "message": "El mensaje no pudo enviarse. Por favor, inténtalo de nuevo o llámanos directamente.",
-    "retry":   "Intentar de nuevo"
+    "retry": "Intentar de nuevo"
   }
 }
