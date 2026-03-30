@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 import { Badge } from './Badge'
 import { PropertyDescription } from './PropertyDescription'
-import { SITE } from '../../config/siteConfig'
+import { useTranslation } from 'react-i18next'
+import { useThemeStore } from '../../store/themeStore'
 
 /**
  * Formats a price number to a locale string.
@@ -32,11 +33,14 @@ export function PropertyCard({ property }) {
     status,
   } = property
 
+  const { t } = useTranslation('common')
+  const theme = useThemeStore((s) => s.theme)
+
   const href = `/properties/${slug}`
   
-  const isMinimal = SITE.theme === 'MINIMAL'
-  const isCorporate = SITE.theme === 'CORPORATE'
-  const isPortal = SITE.theme === 'PORTAL'
+  const isMinimal = theme === 'MINIMAL'
+  const isCorporate = theme === 'CORPORATE'
+  const isPortal = theme === 'PORTAL'
 
   const containerClass = [
     'group relative overflow-hidden flex flex-col transition-all duration-500 rounded-2xl bg-white border shadow-card hover:shadow-hover',

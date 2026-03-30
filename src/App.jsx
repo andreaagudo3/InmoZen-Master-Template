@@ -1,5 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { Layout } from './components/Layout/Layout'
+import { SITE } from './config/siteConfig'
+import { DemoPanel } from './components/shared/DemoPanel'
 
 // Public pages
 import HomePage           from './pages/HomePage'
@@ -31,7 +33,9 @@ import ProtectedRoute         from './components/admin/ProtectedRoute'
  */
 export default function App() {
   return (
-    <Routes>
+    <>
+      {SITE.features?.isDemo && <DemoPanel />}
+      <Routes>
       {/* ── Rutas públicas ── */}
       <Route
         path="/*"
@@ -97,5 +101,6 @@ export default function App() {
         }
       />
     </Routes>
+    </>
   )
 }

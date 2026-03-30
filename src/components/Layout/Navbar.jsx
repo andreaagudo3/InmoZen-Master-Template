@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { SITE } from '../../config/siteConfig'
 import { LanguageSwitcher } from '../shared/LanguageSwitcher'
+import { useThemeStore } from '../../store/themeStore'
 
 /**
  * Navbar — sticky glassmorphism navigation bar.
@@ -10,10 +11,11 @@ import { LanguageSwitcher } from '../shared/LanguageSwitcher'
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const { t } = useTranslation('nav')
+  const theme = useThemeStore((s) => s.theme)
 
-  const isMinimal = SITE.theme === 'MINIMAL'
-  const isCorporate = SITE.theme === 'CORPORATE'
-  const isPortal = SITE.theme === 'PORTAL'
+  const isMinimal = theme === 'MINIMAL'
+  const isCorporate = theme === 'CORPORATE'
+  const isPortal = theme === 'PORTAL'
 
   const NAV_LINKS = [
     { to: '/',           label: t('navbar.home') },

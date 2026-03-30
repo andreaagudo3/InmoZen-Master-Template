@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { SITE } from '../config/siteConfig'
 import { sendContactEmail } from '../services/contactService'
+import { useThemeStore } from '../store/themeStore'
 
 const INITIAL_FORM = {
   name: '',
@@ -113,7 +114,8 @@ export default function ContactPage() {
       : 'border-secondary-200 focus:ring-primary-600'
     }`
 
-  const isMinimal = SITE.theme === 'MINIMAL'
+  const theme = useThemeStore((s) => s.theme)
+  const isMinimal = theme === 'MINIMAL'
 
   return (
     <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 ${isMinimal ? 'pt-32 md:pt-40' : 'pt-16'}`}>

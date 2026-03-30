@@ -98,6 +98,7 @@ export const SITE = {
    * Activa (true) o desactiva (false) módulos de la web.
    */
   features: {
+    isDemo: true,           // Panel flotante para cambiar temas y colores en vivo
     i18n: true,             // Soporte multi-idioma
     googleMaps: true,       // Integración con mapas
     advancedFilters: true,  // Filtros de habitaciones, m2, etc. en búsqueda

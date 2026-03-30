@@ -50,13 +50,11 @@ function generateShades(baseHex, name) {
 /**
  * Genera y aplica variables CSS dinámicas basadas en el sistema de temas.
  */
-export function injectTheme() {
-  const themeName = SITE.theme || 'MINIMAL';
+export function injectTheme(themeName = SITE.theme || 'MINIMAL', primaryHex = SITE.branding?.primaryColor || '#0ea5e9') {
   const tokens = SITE.themeTokens[themeName];
   if (!tokens) return;
   
   // 1. Colores globales independientes del layout
-  const primaryHex = SITE.branding?.primaryColor || '#0ea5e9';
   const secondaryHex = SITE.branding?.secondaryColor || '#64748b';
 
   generateShades(primaryHex, 'primary');

@@ -8,6 +8,7 @@ import { PropertyCard } from '../components/shared/PropertyCard'
 import { SkeletonCard } from '../components/shared/SkeletonCard'
 import { HierarchicalLocationSelect } from '../components/search/HierarchicalLocationSelect'
 import { SITE } from '../config/siteConfig'
+import { useThemeStore } from '../store/themeStore'
 
 /**
  * HomePage — Hero + Search + Featured Properties
@@ -42,9 +43,10 @@ export default function HomePage() {
     { value: 'rent', label: t('common:listing.rent') },
   ]
 
-  const isMinimal = SITE.theme === 'MINIMAL'
-  const isCorporate = SITE.theme === 'CORPORATE'
-  const isPortal = SITE.theme === 'PORTAL'
+  const theme = useThemeStore((s) => s.theme)
+  const isMinimal = theme === 'MINIMAL'
+  const isCorporate = theme === 'CORPORATE'
+  const isPortal = theme === 'PORTAL'
 
   const renderSearchForm = (layoutType) => {
     const isCorp = layoutType === 'CORPORATE'

@@ -52,7 +52,8 @@ export default function PropertiesPage() {
   const [provinces, setProvinces] = useState([])  // jerarquía provincia → localidades
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const isMinimal = SITE.theme === 'MINIMAL'
+  const theme = useThemeStore((s) => s.theme)
+  const isMinimal = theme === 'MINIMAL'
   const totalPages = Math.ceil(totalCount / PAGE_SIZE)
 
   // Filtros avanzados activos para el badge del botón "Más filtros"
