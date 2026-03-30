@@ -36,7 +36,7 @@ export function Navbar() {
           <img
             src="/logo.png"
             alt={SITE.fullName}
-            className="h-10 w-auto object-contain"
+            className="h-8 md:h-9 max-h-[36px] w-auto object-contain"
           />
         </Link>
 

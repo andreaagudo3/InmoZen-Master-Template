@@ -18,8 +18,8 @@ export default function HomePage() {
   const { t } = useTranslation(['home', 'common'])
 
   const [locationFilter, setLocationFilter] = useState('all')
-  const [activeType, setActiveType]         = useState('all')
-  const [provinces, setProvinces]           = useState([])
+  const [activeType, setActiveType] = useState('all')
+  const [provinces, setProvinces] = useState([])
   const navigate = useNavigate()
 
   const featuredProperties = store.properties.filter((p) => p.featured)
@@ -31,13 +31,13 @@ export default function HomePage() {
   function handleSearch(e) {
     e.preventDefault()
     const params = new URLSearchParams()
-    if (activeType !== 'all')      params.set('type', activeType)
+    if (activeType !== 'all') params.set('type', activeType)
     if (locationFilter !== 'all') params.set('loc', locationFilter)
     navigate(`/properties?${params.toString()}`)
   }
 
   const TYPE_OPTIONS = [
-    { value: 'all',  label: t('common:listing.all') },
+    { value: 'all', label: t('common:listing.all') },
     { value: 'sale', label: t('common:listing.sale') },
     { value: 'rent', label: t('common:listing.rent') },
   ]
@@ -62,19 +62,17 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/60 to-slate-950" aria-hidden="true" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28 md:py-40 text-center space-y-8">
-          {/* Logo hero */}
-          <div className="flex justify-center">
+          {/* Logo hero & Eyebrow Group */}
+          <div className="flex flex-col items-center justify-center gap-8 mb-10 md:mb-16">
             <img
               src="/logo.png"
               alt={t('home:hero.logoAlt', { name: SITE.name })}
-              className="h-28 md:h-36 w-auto object-contain brightness-0 invert"
+              className="h-16 md:h-20 max-h-[80px] w-auto object-contain brightness-0 invert"
             />
+            <p className="inline-block px-4 py-1.5 rounded-full bg-primary-700/20 text-primary-300 text-sm font-medium tracking-wide border border-primary-600/30">
+              {t('home:hero.eyebrow', { zone: SITE.zone, province: SITE.province })}
+            </p>
           </div>
-
-          {/* Eyebrow */}
-          <p className="inline-block px-4 py-1.5 rounded-full bg-primary-700/20 text-primary-300 text-sm font-medium tracking-wide border border-primary-600/30">
-            {t('home:hero.eyebrow', { zone: SITE.zone, province: SITE.province })}
-          </p>
 
           <h1
             id="hero-heading"
@@ -103,11 +101,10 @@ export default function HomePage() {
                   type="button"
                   onClick={() => setActiveType(value)}
                   aria-pressed={activeType === value}
-                  className={`px-5 py-2 rounded-full text-sm font-semibold transition-colors ${
-                    activeType === value
-                      ? 'bg-primary-700 text-white'
-                      : 'bg-white/10 text-slate-300 hover:bg-white/20'
-                  }`}
+                  className={`px-5 py-2 rounded-full text-sm font-semibold transition-colors ${activeType === value
+                    ? 'bg-primary-700 text-white'
+                    : 'bg-white/10 text-slate-300 hover:bg-white/20'
+                    }`}
                 >
                   {label}
                 </button>
