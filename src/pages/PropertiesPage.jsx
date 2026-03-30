@@ -135,7 +135,7 @@ export default function PropertiesPage() {
         <p className="text-secondary-500 text-sm">
           {loading
             ? t('common:ui.searching')
-            : `${totalCount} ${totalCount === 1 ? t('common:ui.resultsCount_one', { count: 1 }) : t('common:ui.resultsCount_other', { count: totalCount })}`}
+            : t('common:ui.resultsCount', { count: totalCount })}
         </p>
       </header>
 
