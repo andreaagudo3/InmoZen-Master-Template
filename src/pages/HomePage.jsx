@@ -148,24 +148,44 @@ export default function HomePage() {
 
       {/* ── CORPORATE Hero ────────────────────────────────────────────── */}
       {isCorporate && (
-        <section className="relative bg-secondary-50 overflow-hidden" aria-labelledby="hero-heading">
-          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row min-h-[85vh]">
-            <div className="w-full lg:w-1/2 px-4 sm:px-6 lg:px-8 py-20 lg:py-32 flex flex-col justify-center z-10 relative">
-              <p className="text-primary-600 font-bold tracking-widest uppercase text-xs md:text-sm mb-4 md:mb-6">
-                {t('home:hero.eyebrow', { zone: SITE.zone, province: SITE.province })}
-              </p>
-              <h1 id="hero-heading" className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-secondary-950 leading-tight mb-6 md:mb-8">
-                {t('home:hero.title')}
-                <span className="block text-primary-700 mt-1 md:mt-2">{t('home:hero.titleSpan', { zone: SITE.heroZone })}</span>
-              </h1>
-              <p className="text-lg md:text-xl text-secondary-600 mb-10 md:mb-12 max-w-lg leading-relaxed">
-                {t('home:hero.subtitle')}
-              </p>
-              {renderSearchForm('CORPORATE')}
-            </div>
-            <div className="w-full lg:w-1/2 h-96 lg:h-auto relative lg:absolute lg:inset-y-0 lg:right-0">
-               <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600&q=80" alt="Corporate Real Estate" className="absolute inset-0 w-full h-full object-cover" />
-               <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-secondary-50 via-secondary-50/80 to-transparent lg:w-1/3" />
+        <section className="bg-white border-b border-secondary-200" aria-labelledby="hero-heading">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+              
+              {/* Left: Text & Search (Order 2 on mobile, 1 on desktop) */}
+              <div className="flex flex-col justify-center order-2 lg:order-1">
+                <p className="text-primary-700 font-bold tracking-widest uppercase text-xs sm:text-sm mb-4">
+                  {t('home:hero.eyebrow', { zone: SITE.zone, province: SITE.province })}
+                </p>
+                <h1 id="hero-heading" className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-secondary-950 leading-tight mb-6">
+                  {t('home:hero.title')}
+                  <span className="block text-primary-700 mt-2">{t('home:hero.titleSpan', { zone: SITE.heroZone })}</span>
+                </h1>
+                <p className="text-lg text-secondary-600 mb-10 max-w-lg leading-relaxed">
+                  {t('home:hero.subtitle')}
+                </p>
+                {renderSearchForm('CORPORATE')}
+              </div>
+
+              {/* Right: Architectural Image Block (Order 1 on mobile, 2 on desktop) */}
+              <div className="order-1 lg:order-2">
+                <div className="relative aspect-[4/3] w-full max-w-lg mx-auto lg:max-w-none">
+                  {/* Decorative offset block */}
+                  <div className="absolute inset-0 bg-secondary-100 translate-x-4 translate-y-4 sm:translate-x-6 sm:translate-y-6" aria-hidden="true" />
+                  <img 
+                    src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80" 
+                    alt={t('home:hero.logoAlt', { name: SITE.name })} 
+                    className="absolute inset-0 w-full h-full object-cover border border-secondary-200 z-10"
+                  />
+                  {/* Small architectural badge */}
+                  <div className="absolute -left-4 -top-4 sm:-left-6 sm:-top-6 z-20 bg-primary-700 text-white p-4 hidden sm:block">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </section>
