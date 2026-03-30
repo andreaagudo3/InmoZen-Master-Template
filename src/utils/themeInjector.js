@@ -66,6 +66,9 @@ export function injectTheme() {
   const root = document.documentElement;
   root.style.setProperty('--theme-radius-md', tokens.radiusMd);
   root.style.setProperty('--theme-radius-lg', tokens.radiusLg);
+  root.style.setProperty('--theme-radius-xl', tokens.radiusXl);
+  root.style.setProperty('--theme-radius-2xl', tokens.radius2xl);
+  root.style.setProperty('--theme-radius-3xl', tokens.radius3xl);
   root.style.setProperty('--theme-font-heading', tokens.fontHeading);
   root.style.setProperty('--theme-font-body', tokens.fontBody);
 }

@@ -59,20 +59,29 @@ export const SITE = {
   theme: 'MINIMAL',
   themeTokens: {
     MINIMAL: {
-      radiusMd: '0.375rem',
-      radiusLg: '0.5rem',
-      fontHeading: '"Inter", sans-serif',
-      fontBody: '"Inter", sans-serif',
+      radiusMd: '0.375rem', // Afecta a botones pequeños, badges, inputs
+      radiusLg: '0.5rem',   // Afecta a botones principales flotantes
+      radiusXl: '0.75rem',  // Afecta a dropdowns, menús, fotos secundarias
+      radius2xl: '1rem',    // Afecta a Tarjetas de Propiedades (PropertyCard) y Hero
+      radius3xl: '1.5rem',  // Afecta a fondos grandes, ventanas modales
+      fontHeading: '"Inter", sans-serif', // Títulos grandes (H1, H2, H3...)
+      fontBody: '"Inter", sans-serif',    // Párrafos, menús, textos normales
     },
     CORPORATE: {
       radiusMd: '0px',
       radiusLg: '0px',
+      radiusXl: '0px',
+      radius2xl: '0px',
+      radius3xl: '0px',
       fontHeading: '"Roboto", sans-serif',
       fontBody: '"Roboto", sans-serif',
     },
     PORTAL: {
-      radiusMd: '1rem',
-      radiusLg: '1.5rem',
+      radiusMd: '0.375rem',
+      radiusLg: '0.5rem',
+      radiusXl: '0.75rem',
+      radius2xl: '1rem',
+      radius3xl: '1.5rem',
       fontHeading: '"Outfit", sans-serif',
       fontBody: '"Outfit", sans-serif',
     }
