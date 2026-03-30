@@ -6,10 +6,10 @@
     "cta":     "View all properties"
   },
   "features": {
-    "bedrooms_one":   "{{count}} bedroom",
-    "bedrooms_other": "{{count}} bedrooms",
-    "bathrooms_one":  "{{count}} bathroom",
-    "bathrooms_other":"{{count}} bathrooms",
+    "bedrooms_one":   "{{count}} bed",
+    "bedrooms_other": "{{count}} beds",
+    "bathrooms_one":  "{{count}} bath",
+    "bathrooms_other":"{{count}} baths",
     "size":           "{{size}} m²"
   },
   "description": {

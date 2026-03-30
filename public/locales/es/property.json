@@ -6,8 +6,8 @@
     "cta":     "Ver todas las propiedades"
   },
   "features": {
-    "bedrooms_one":   "{{count}} habitación",
-    "bedrooms_other": "{{count}} habitaciones",
+    "bedrooms_one":   "{{count}} hab.",
+    "bedrooms_other": "{{count}} habs.",
     "bathrooms_one":  "{{count}} baño",
     "bathrooms_other":"{{count}} baños",
     "size":           "{{size}} m²"

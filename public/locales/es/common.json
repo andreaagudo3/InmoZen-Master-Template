@@ -46,7 +46,7 @@
     "published":        "Publicada",
     "notPublished":     "No publicada",
     "bedrooms_one":     "{{count}} hab.",
-    "bedrooms_other":   "{{count}} hab.",
+    "bedrooms_other":   "{{count}} habs.",
     "bathrooms_one":    "{{count}} baño",
     "bathrooms_other":  "{{count}} baños",
     "sizeM2":           "{{size}} m²",
