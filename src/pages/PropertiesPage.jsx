@@ -9,6 +9,7 @@ import { PropertySearchBar } from '../components/search/PropertySearchBar'
 import { PropertyFiltersModal } from '../components/search/PropertyFiltersModal'
 import { FilterChips } from '../components/search/FilterChips'
 import { SITE } from '../config/siteConfig'
+import { useThemeStore } from '../store/themeStore'
 
 const INITIAL_FILTERS = {
   type: 'all',

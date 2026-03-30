@@ -18,6 +18,10 @@ export default function PropertyDetailPage() {
   const navigate = useNavigate()
   const { t } = useTranslation('property')
   
+  // Theme State
+  const theme = useThemeStore((s) => s.theme)
+  const isMinimal = theme === 'MINIMAL'
+  
   // Data Fetching & State
   const store = usePropertiesStore()
   useProperties(store)
@@ -66,9 +70,6 @@ export default function PropertyDetailPage() {
   const locationString = property.locations?.name
     ? `${property.locations.name}${property.locations.provinces?.name ? `, ${property.locations.provinces.name}` : ''}`
     : locationName
-
-  const theme = useThemeStore((s) => s.theme)
-  const isMinimal = theme === 'MINIMAL'
 
   return (
     <article className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 ${isMinimal ? 'pt-32 md:pt-40' : 'pt-10'}`}>
