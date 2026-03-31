@@ -591,4 +591,42 @@ Edita los ficheros JSON de traducción en `public/locales/es/`. No es necesario 
 
 ---
 
+## 🔐 Seguridad y Aislamiento de Datos (Multi-tenant)
+
+La plataforma implementa un modelo de seguridad **SaaS de aislamiento lógico**, donde la integridad de los datos no depende del código Frontend, sino que está blindada directamente en el motor de la base de datos mediante **Row Level Security (RLS)**.
+
+### 1\. Identidad: La función `get_my_tenant()`
+
+Para identificar en tiempo real a qué inmobiliaria pertenece el usuario logueado, utilizamos una función personalizada en PostgreSQL que actúa como puente entre la autenticación y los datos de negocio:
+
+SQL
+
+    CREATE FUNCTION get_my_tenant() RETURNS uuid AS $$
+      -- Busca el tenant_id vinculado al usuario autenticado en la tabla members
+      SELECT tenant_id FROM public.members WHERE id = auth.uid();
+    $$ LANGUAGE sql STABLE SECURITY DEFINER;
+    
+
+### 2\. Políticas de Acceso (RLS)
+
+La tabla `properties` cuenta con políticas estrictas que separan el tráfico público del administrativo de forma infalible:
+
+-   **Lectura Pública (SELECT)**: Permite que cualquier visitante vea las propiedades. El motor filtra los resultados basándose en el dominio desde el que se accede (`app.current_domain`).
+    
+-   **Gestión Administrativa (ALL)**: Los usuarios autenticados tienen permisos totales (Insert, Update, Delete) **únicamente** si el `tenant_id` de la propiedad coincide con el resultado de `get_my_tenant()`.
+    
+
+### 3\. Mecanismos de Blindaje Anti-Fraude
+
+Para evitar inyecciones de datos, publicidad no deseada o errores manuales, el sistema cuenta con dos protecciones críticas a nivel de esquema:
+
+-   **Auto-Inyección (DEFAULT)**: La columna `tenant_id` tiene configurado el valor por defecto `get_my_tenant()`. Al crear una propiedad desde el panel, el sistema asigna el ID del dueño automáticamente sin intervención del usuario.
+    
+-   **Restricción de Escritura (WITH CHECK)**: Aunque un usuario intente enviar manualmente un `tenant_id` de otra inmobiliaria mediante la consola del navegador, la política `WITH CHECK` validará el ID contra su identidad real y abortará la operación con un error `403 Forbidden`.
+    
+
+### 4\. Estructura de Miembros
+
+El acceso al panel de administración está regulado por la tabla `members`, que vincula los `UID` únicos de **Supabase Auth** con los IDs de la tabla `tenants`. Esto permite un entorno multi-agente donde varios usuarios pueden gestionar la misma inmobiliaria manteniendo el aislamiento total respecto al resto de clientes de la plataforma.
+
 *Última actualización: Marzo 2026*
