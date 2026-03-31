@@ -129,7 +129,12 @@ export function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className={`md:hidden border-t px-4 pb-4 space-y-1 ${isMinimal ? 'border-white/30 glass' : 'bg-white border-secondary-200'}`}>
+        <div
+          className={`md:hidden border-t pt-3 px-3 pb-6 space-y-1 transition-all duration-300 ${isMinimal
+              ? 'border-white/20 glass'
+              : 'bg-white border-secondary-200 shadow-xl'
+            }`}
+        >
           {NAV_LINKS.map(({ to, label }) => (
             <NavLink
               key={to}
@@ -137,22 +142,26 @@ export function Navbar() {
               end={to === '/'}
               onClick={() => setMenuOpen(false)}
               className={({ isActive }) =>
-                `block px-4 py-2.5 rounded-xl text-sm font-medium transition-colors ${isActive
-                  ? 'bg-primary-100 text-primary-700'
-                  : 'text-secondary-600 hover:bg-secondary-100 hover:text-secondary-950'
+                `block px-4 py-3 rounded-xl text-base font-medium transition-all ${isActive
+                  ? 'bg-primary-50 text-primary-700' // Un tono más suave para que no sature
+                  : 'text-secondary-600 hover:bg-secondary-50 hover:text-secondary-950'
                 }`
               }
             >
               {label}
             </NavLink>
           ))}
-          <Link
-            to="/properties"
-            onClick={() => setMenuOpen(false)}
-            className="block mt-2 px-4 py-2.5 rounded-xl bg-primary-700 text-white text-sm font-semibold text-center hover:bg-primary-800 transition-colors"
-          >
-            {t('navbar.properties')}
-          </Link>
+
+          {/* Botón de Propiedades en móvil con un margen superior para separar */}
+          <div className="pt-2">
+            <Link
+              to="/properties"
+              onClick={() => setMenuOpen(false)}
+              className="block w-full py-3.5 rounded-xl bg-primary-700 text-white text-base font-semibold text-center hover:bg-primary-800 active:scale-[0.98] transition-all shadow-md"
+            >
+              {t('navbar.properties')}
+            </Link>
+          </div>
         </div>
       )}
     </header>
