@@ -30,7 +30,13 @@ export function TenantProvider({ children }) {
       const isLocal = hostname === 'localhost' || hostname === '127.0.0.1'
 
       let query = supabase.from('tenants').select('*')
-      query = query.eq('custom_domain', hostname)
+      
+      if (isLocal) {
+        // Default to 'inmozen' on localhost as requested
+        query = query.eq('slug', 'inmozen')
+      } else {
+        query = query.eq('custom_domain', hostname)
+      }
 
       const { data, error } = await query.single()
 
@@ -59,7 +65,11 @@ export function TenantProvider({ children }) {
         metaDesc.setAttribute('content', data.description)
       }
 
-      setTenant(data)
+      // Add isMaster convenience flag
+      setTenant({
+        ...data,
+        isMaster: !!data.is_master
+      })
       setLoading(false)
     }
 
@@ -109,6 +119,7 @@ export function TenantProvider({ children }) {
  *   email: string, phones: Array<{number: string, href: string}>,
  *   socials: Array<{name: string, href: string}>,
  *   features: object,
+ *   isMaster: boolean,
  * }}
  */
 export function useTenant() {

@@ -3,6 +3,8 @@ import { Layout }    from './components/Layout/Layout'
 import { useTenant } from './context/TenantContext'
 import { DemoPanel } from './components/shared/DemoPanel'
 
+import SaaSLandingPage from './pages/marketing/SaaSLandingPage'
+
 // Public pages
 import HomePage           from './pages/HomePage'
 import PropertiesPage     from './pages/PropertiesPage'
@@ -18,44 +20,45 @@ import ProtectedRoute      from './components/admin/ProtectedRoute'
 
 /**
  * App — Routing completo de la aplicación.
- *
- * Rutas públicas (con Layout):
- *   /                    → HomePage
- *   /properties          → PropertiesPage
- *   /properties/:slug    → PropertyDetailPage
- *   /contact             → ContactPage
- *
- * Rutas admin (sin Layout público):
- *   /login               → LoginPage
- *   /admin               → AdminPropertiesPage  [ProtectedRoute]
- *   /admin/new           → PropertyFormPage     [ProtectedRoute]
- *   /admin/edit/:id      → PropertyFormPage     [ProtectedRoute]
+ * Separado en dos mundos: isMaster (Marketing B2B) y Tenant (Real Estate B2C).
  */
 export default function App() {
   const tenant = useTenant()
+  const isMaster = tenant?.isMaster
 
   return (
     <>
       {tenant?.features?.isDemo && <DemoPanel />}
       <Routes>
-        {/* ── Rutas públicas ── */}
+        {/* ── Rutas principales con Layout dinámico ── */}
         <Route
           path="/*"
           element={
-            <Layout>
+            <Layout isMarketing={isMaster}>
               <Routes>
-                <Route path="/"                 element={<HomePage />} />
-                <Route path="/properties"       element={<PropertiesPage />} />
-                <Route path="/properties/:slug" element={<PropertyDetailPage />} />
-                <Route path="/contact"          element={<ContactPage />} />
-                {/* 404 */}
+                {isMaster ? (
+                  // --- MUNDO MARKETING (B2B) ---
+                  <Route path="/" element={<SaaSLandingPage />} />
+                ) : (
+                  // --- MUNDO REAL ESTATE (B2C) ---
+                  <>
+                    <Route path="/"                 element={<HomePage />} />
+                    <Route path="/properties"       element={<PropertiesPage />} />
+                    <Route path="/properties/:slug" element={<PropertyDetailPage />} />
+                    <Route path="/contact"          element={<ContactPage />} />
+                  </>
+                )}
+
+                {/* 404 Genérico adaptado */}
                 <Route
                   path="*"
                   element={
                     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4 space-y-4">
-                      <p className="text-8xl font-extrabold text-secondary-200">404</p>
-                      <h1 className="text-2xl font-bold text-secondary-700">Página no encontrada</h1>
-                      <a href="/" className="px-6 py-3 bg-primary-700 text-white rounded-xl font-semibold hover:bg-primary-800 transition-colors">
+                      <p className={`text-8xl font-extrabold ${isMaster ? 'text-slate-200' : 'text-secondary-200'}`}>404</p>
+                      <h1 className={`text-2xl font-bold ${isMaster ? 'text-slate-700' : 'text-secondary-700'}`}>Página no encontrada</h1>
+                      <a href="/" className={`px-6 py-3 rounded-xl font-semibold transition-colors ${
+                        isMaster ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-primary-700 text-white hover:bg-primary-800'
+                      }`}>
                         Volver al inicio
                       </a>
                     </div>
