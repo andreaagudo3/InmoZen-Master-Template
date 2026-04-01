@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { supabase } from '../../services/supabaseClient';
 
 /**
  * SaaSLandingPage — The B2B marketing landing for InmoZen.
@@ -7,6 +8,31 @@ import { useTranslation } from 'react-i18next';
  */
 export default function SaaSLandingPage() {
   const { t } = useTranslation();
+
+  const [demoUrl, setDemoUrl] = React.useState('https://parquesierra.inmozen.com'); // Fallback
+
+  React.useEffect(() => {
+    async function fetchDemoTenant() {
+      try {
+        const { data, error } = await supabase
+          .from('tenants')
+          .select('custom_domain, slug')
+          .eq('is_demo', true)
+          .limit(1)
+          .maybeSingle();
+
+        if (data) {
+          const url = data.custom_domain 
+            ? `https://${data.custom_domain}` 
+            : `${window.location.origin}?tenant=${data.slug}`; // Local compatibility
+          setDemoUrl(url);
+        }
+      } catch (err) {
+        console.error('Error fetching demo tenant:', err);
+      }
+    }
+    fetchDemoTenant();
+  }, []);
 
   return (
     <div className="bg-slate-50 text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900">
@@ -44,28 +70,67 @@ export default function SaaSLandingPage() {
             </button>
           </div>
           
-          <div className="mt-24 relative max-w-6xl mx-auto group">
-            <div className="mb-6 text-slate-500 font-bold text-lg italic tracking-tight">Así de fácil es gestionar tu agencia 👇</div>
-            <div className="relative rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_20px_50px_rgba(8,112,184,0.12)] overflow-hidden">
-               <div className="bg-slate-900 rounded-2xl aspect-video flex items-center justify-center border border-slate-100 overflow-hidden relative">
-                 {/* Loom Embed */}
-                 <iframe 
-                    src="https://www.loom.com/embed/4d02c71a99dd46aab04c920ef3c8426c?autoplay=1&hide_owner=true&hide_share=true&hide_title=true&hide_embed_overlay=true" 
-                    frameBorder="0" 
-                    webkitallowfullscreen="true" 
-                    mozallowfullscreen="true" 
-                    allowFullScreen 
-                    allow="autoplay; fullscreen"
-                    className="absolute top-0 left-0 w-full h-full"
-                 ></iframe>
-               </div>
+          {/* ── Live Demo Section (Moved Up) ── */}
+          <div className="mt-20">
+            <div className="bg-slate-900 rounded-[3rem] p-8 md:p-16 relative overflow-hidden shadow-2xl text-left">
+              <div className="absolute inset-0 opacity-10">
+                <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:20px_20px]" />
+              </div>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-sm font-bold mb-6 border border-blue-500/20">
+                    Prueba el producto final
+                  </div>
+                  <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 italic tracking-tight leading-tight">
+                    No te lo imagines. <br /> 
+                    <span className="text-blue-500 text-glow">Pruébalo ahora.</span>
+                  </h2>
+                  <p className="text-lg text-slate-400 mb-8 leading-relaxed max-w-md">
+                    Entra en nuestra inmobiliaria de pruebas. Navega, filtra y experimenta la velocidad real que tendrán tus clientes. 
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <a 
+                      href={demoUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white rounded-2xl font-extrabold text-lg hover:bg-blue-500 transition-all shadow-xl shadow-blue-900/40 hover:scale-105"
+                    >
+                      🚀 Abrir Demo en Vivo
+                      <svg className="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                    </a>
+                    <a 
+                      href="https://www.loom.com/share/4d02c71a99dd46aab04c920ef3c8426c" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center px-8 py-4 bg-slate-800 text-white rounded-2xl font-bold text-lg hover:bg-slate-700 transition-all shadow-lg"
+                    >
+                      📺 Ver Tutorial
+                    </a>
+                  </div>
+                </div>
+                
+                <div className="relative group flex justify-center lg:justify-end">
+                  <div className="absolute -inset-4 bg-blue-500/20 rounded-[2rem] blur-2xl group-hover:bg-blue-500/30 transition-all duration-700" />
+                  <div className="relative rounded-[2rem] border border-white/10 bg-slate-800 p-2 shadow-2xl overflow-hidden transform md:rotate-2 hover:rotate-0 transition-transform duration-500 max-w-md lg:max-w-none">
+                    <img 
+                      src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800" 
+                      alt="Demo Preview" 
+                      className="w-full rounded-2xl opacity-90 group-hover:opacity-100 transition-opacity"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="w-16 h-16 bg-white text-slate-900 rounded-full flex items-center justify-center shadow-2xl font-bold animate-pulse text-sm">LIVE</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Por qué InmoZen ── */}
-      <section id="features" className="py-32 bg-slate-50">
+      {/* ── Por qué InmoZen (Features) ── */}
+      <section id="features" className="py-24 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
             {[
@@ -107,6 +172,27 @@ export default function SaaSLandingPage() {
           </div>
         </div>
       </section>
+
+      {/* ── Loom Video Section (Temporarily Commented) ──
+      <section className="py-24 bg-white">
+        <div className="max-w-5xl mx-auto px-4 text-center">
+          <div className="mb-8 text-slate-500 font-bold text-xl italic tracking-tight">Así de fácil es gestionar tu agencia desde dentro 👇</div>
+          <div className="relative rounded-[2.5rem] border border-slate-200 bg-white p-3 shadow-2xl overflow-hidden">
+             <div className="bg-slate-900 rounded-[2rem] aspect-video flex items-center justify-center border border-slate-100 overflow-hidden relative">
+               <iframe 
+                  src="https://www.loom.com/embed/4d02c71a99dd46aab04c920ef3c8426c?autoplay=1&hide_owner=true&hide_share=true&hide_title=true&hide_embed_overlay=true" 
+                  frameBorder="0" 
+                  webkitallowfullscreen="true" 
+                  mozallowfullscreen="true" 
+                  allowFullScreen 
+                  allow="autoplay; fullscreen"
+                  className="absolute top-0 left-0 w-full h-full"
+               ></iframe>
+             </div>
+          </div>
+        </div>
+      </section>
+      */}
 
       {/* ── Pricing ── */}
       <section id="pricing" className="py-32 bg-white relative">
