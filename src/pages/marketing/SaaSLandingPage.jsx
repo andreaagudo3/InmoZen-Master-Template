@@ -96,7 +96,7 @@ export default function SaaSLandingPage() {
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center px-10 py-5 bg-blue-600 text-white rounded-2xl font-extrabold text-xl hover:bg-blue-500 transition-all shadow-xl shadow-blue-900/40 hover:scale-105"
                     >
-                      🚀 Abrir Demo en Vivo
+                      🚀 Probar la web ahora
                       <svg className="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
                     </a>
                   </div>
@@ -352,16 +352,16 @@ export default function SaaSLandingPage() {
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-600 rounded-full blur-[160px] opacity-20 translate-y-1/2 -translate-x-1/2" />
         
         <div className="max-w-4xl mx-auto px-4 relative z-10">
-          <h2 className="text-5xl md:text-7xl font-bold mb-10 italic tracking-tight">¿Listo para transformar <br /> tu inmobiliaria?</h2>
+          <h2 className="text-5xl md:text-7xl font-bold mb-10 italic tracking-tight">¿Hablamos sobre <br /> tu nueva web?</h2>
           <p className="text-xl md:text-2xl text-slate-400 mb-16 leading-relaxed max-w-3xl mx-auto italic">
-            Únete a la nueva era digital con InmoZen. Tu web estará volando en menos de una semana con el diseño que elijas (Minimal, Corporate o Portal).
+            Únete a la nueva era digital. Tendrás tu inmobiliaria volando en menos de una semana, con el diseño que más te guste y un panel de control tan fácil que no necesitarás manuales.
           </p>
           <div className="flex flex-col items-center justify-center gap-6">
             <button className="w-full sm:w-auto px-16 py-7 bg-white text-slate-950 rounded-[2rem] font-black text-2xl hover:bg-blue-50 transition-all shadow-[0_20px_50px_rgba(59,130,246,0.3)] hover:scale-105 active:scale-95">
-              Hablar con un experto
+              Quiero informarme gratis
             </button>
             <p className="text-slate-400 font-medium italic text-lg">
-              Te enseñamos cómo migrar de tu viejo WordPress a la tecnología del futuro en 15 minutos.
+              Te enseñamos cómo pasar tus casas de tu viejo WordPress a InmoZen en una llamada de 15 minutos.
             </p>
           </div>
         </div>

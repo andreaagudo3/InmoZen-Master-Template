@@ -17,7 +17,7 @@ function MarketingNavbar() {
         <a href="#features" className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Características</a>
         <a href="#pricing" className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Precios</a>
         <button className="px-5 py-2 bg-slate-900 text-white rounded-lg text-sm font-bold hover:bg-slate-800 transition-all shadow-sm active:scale-95">
-          Agendar Demo
+          Ver cómo funciona
         </button>
       </div>
     </nav>
