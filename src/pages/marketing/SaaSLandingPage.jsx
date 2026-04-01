@@ -211,10 +211,15 @@ export default function SaaSLandingPage() {
             </div>
           </div>
 
-          <div className="text-center bg-blue-50 py-4 px-6 rounded-2xl border border-blue-100 max-w-2xl mx-auto mb-24">
-            <p className="text-blue-900 text-sm font-medium italic">
-              "Todos los planes incluyen actualizaciones de seguridad y mejoras de la plataforma de por vida."
+          <div className="text-center bg-blue-50 py-6 px-8 rounded-3xl border border-blue-100 max-w-4xl mx-auto mb-12 shadow-sm">
+            <p className="text-blue-900 text-base font-semibold italic">
+              <span className="font-extrabold uppercase mr-2 tracking-wider">Escalabilidad garantizada:</span>
+              Empieza hoy con el plan que necesites y sube de nivel cuando tu agencia crezca pagando solo la diferencia de setup. <span className="text-blue-600">Protegemos tu inversión inicial.</span>
             </p>
+          </div>
+
+          <div className="text-center bg-slate-900 text-slate-400 py-3 px-6 rounded-2xl max-w-2xl mx-auto mb-24 text-sm font-medium">
+            "Todos los planes incluyen actualizaciones de seguridad y mejoras de la plataforma de por vida."
           </div>
 
           {/* ── Comparativa InmoZen vs WordPress ── */}
@@ -253,23 +258,47 @@ export default function SaaSLandingPage() {
         </div>
       </section>
 
-      {/* ── Upselling ── */}
+      {/* ── Módulos A la Carta (Add-ons) ── */}
       <section className="py-24 bg-slate-50 border-t border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-slate-900 mb-4">Aumenta tu impacto con servicios de valor</h2>
-          <p className="text-slate-600 mb-12 max-w-2xl mx-auto">Soluciones personalizadas para que tú solo te preocupes de vender.</p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+          <h2 className="text-3xl font-bold text-slate-900 mb-4 italic">💎 Módulos "A la Carta" (Add-ons)</h2>
+          <p className="text-slate-600 mb-12 max-w-3xl mx-auto">¿Necesitas algo específico del plan superior pero quieres mantener tu cuota actual? <br className="hidden md:block" /> Puedes contratar funcionalidades sueltas:</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
             {[
-              { name: 'Migración de Catálogo', price: '350€', desc: 'Pasamos tus inmuebles de tu vieja web a InmoZen sin que muevas un dedo.' },
-              { name: 'Formación Admin Pro', price: '150€', desc: '1h por Zoom enseñándote a optimizar fotos y textos para convertir visitas en leads.' },
-              { name: 'Pack Dominio Blindado', price: '60€/año', desc: 'Gestión total de dominios y correos prof. bajo nuestra infraestructura segura.' }
+              { name: 'WhatsApp Pro', price: '120€', desc: 'Botón con mensaje de referencia automática.', icon: 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z' },
+              { name: 'Google Maps', price: '60€', desc: 'Link externo directo en todas tus fichas.', icon: 'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z' },
+              { name: 'Localidades', price: '200€', desc: 'Gestión avanzada del árbol de ubicaciones.', icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4' },
+              { name: 'Idioma i18n', price: '250€', desc: 'Configuración manual de lengua extra.', icon: 'M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 11.337 8.07 16.51 3 18.129' },
+              { name: 'Catálogo', price: '350€', desc: 'Migración de tus 30 primeras propiedades.', icon: 'M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12' }
             ].map((s, i) => (
-              <div key={i} className="bg-white p-8 rounded-3xl border border-slate-200 hover:shadow-lg transition-all group">
-                <h4 className="font-bold text-xl text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">{s.name}</h4>
-                <p className="text-blue-600 font-extrabold text-2xl mb-4">Desde {s.price}</p>
-                <p className="text-sm text-slate-500 leading-relaxed">{s.desc}</p>
+              <div key={i} className="bg-white p-6 rounded-2xl border border-slate-200 hover:shadow-lg transition-all group flex flex-col items-center">
+                <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-4 border border-blue-100 group-hover:scale-110 transition-transform">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={s.icon} /></svg>
+                </div>
+                <h4 className="font-bold text-base text-slate-900 mb-1 tracking-tight">{s.name}</h4>
+                <p className="text-blue-600 font-extrabold text-xl mb-3">{s.price}</p>
+                <p className="text-xs text-slate-500 leading-snug">{s.desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Closing Section (Lead Magnet) ── */}
+      <section className="py-32 bg-white text-center border-t border-slate-100">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-600 text-sm font-bold mb-10 border border-blue-100 italic">
+            ¿Dudas? Resolvemos todo en 15 minutos
+          </div>
+          <h2 className="text-4xl md:text-6xl font-bold text-slate-950 mb-8 italic tracking-tight">Ve InmoZen en acción <br /> con una demo personalizada</h2>
+          <p className="text-xl text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed">
+            Reserva una videollamada de 15 min. Te enseñaremos los 3 estilos de diseño (Minimal, Corporate, Portal), nuestro CRM y cómo InmoZen puede hacerte vender más hoy mismo.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+            <button className="w-full sm:w-auto px-12 py-5 bg-blue-600 text-white rounded-2xl font-extrabold text-xl hover:bg-blue-500 transition-all shadow-xl hover:shadow-blue-200/50 hover:scale-105 active:scale-95">
+              Reservar Demo de 15 min
+            </button>
+            <div className="text-slate-400 font-medium">Llamada sin compromiso</div>
           </div>
         </div>
       </section>
