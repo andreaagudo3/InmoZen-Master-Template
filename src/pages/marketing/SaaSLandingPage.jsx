@@ -94,18 +94,10 @@ export default function SaaSLandingPage() {
                       href={demoUrl} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white rounded-2xl font-extrabold text-lg hover:bg-blue-500 transition-all shadow-xl shadow-blue-900/40 hover:scale-105"
+                      className="inline-flex items-center justify-center px-10 py-5 bg-blue-600 text-white rounded-2xl font-extrabold text-xl hover:bg-blue-500 transition-all shadow-xl shadow-blue-900/40 hover:scale-105"
                     >
                       🚀 Abrir Demo en Vivo
                       <svg className="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-                    </a>
-                    <a 
-                      href="https://www.loom.com/share/4d02c71a99dd46aab04c920ef3c8426c" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center px-8 py-4 bg-slate-800 text-white rounded-2xl font-bold text-lg hover:bg-slate-700 transition-all shadow-lg"
-                    >
-                      📺 Ver Tutorial
                     </a>
                   </div>
                 </div>
@@ -173,36 +165,21 @@ export default function SaaSLandingPage() {
         </div>
       </section>
 
-      {/* ── Loom Video Section (Temporarily Commented) ──
-      <section className="py-24 bg-white">
-        <div className="max-w-5xl mx-auto px-4 text-center">
-          <div className="mb-8 text-slate-500 font-bold text-xl italic tracking-tight">Así de fácil es gestionar tu agencia desde dentro 👇</div>
-          <div className="relative rounded-[2.5rem] border border-slate-200 bg-white p-3 shadow-2xl overflow-hidden">
-             <div className="bg-slate-900 rounded-[2rem] aspect-video flex items-center justify-center border border-slate-100 overflow-hidden relative">
-               <iframe 
-                  src="https://www.loom.com/embed/4d02c71a99dd46aab04c920ef3c8426c?autoplay=1&hide_owner=true&hide_share=true&hide_title=true&hide_embed_overlay=true" 
-                  frameBorder="0" 
-                  webkitallowfullscreen="true" 
-                  mozallowfullscreen="true" 
-                  allowFullScreen 
-                  allow="autoplay; fullscreen"
-                  className="absolute top-0 left-0 w-full h-full"
-               ></iframe>
-             </div>
-          </div>
-        </div>
-      </section>
-      */}
-
       {/* ── Pricing ── */}
       <section id="pricing" className="py-32 bg-white relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
+          <div className="text-center mb-24">
             <h2 className="text-4xl md:text-5xl font-bold text-slate-950 mb-6 italic">Tarifas InmoZen 2026</h2>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto italic">"No es solo una web, es tu propia casa digital sin intermediarios."</p>
+            <p className="text-xl text-slate-600 max-w-2xl mx-auto italic mb-8">"No es solo una web, es tu propia casa digital sin intermediarios."</p>
+            
+            {/* Escalabilidad Sticker (Visible near title) */}
+            <div className="inline-flex items-center gap-3 bg-blue-50 text-blue-700 px-6 py-3 rounded-2xl border border-blue-100 font-bold text-sm shadow-sm animate-soft-float cursor-default group transition-shadow hover:shadow-md">
+              <span className="text-xl group-hover:rotate-12 transition-transform">📈</span>
+              Paga solo la diferencia si subes de plan en el futuro. Protegemos tu inversión.
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start mb-16 relative">
             {/* PLAN PRO */}
             <div className="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm hover:shadow-xl transition-all duration-300">
               <div className="text-slate-500 text-xs font-bold uppercase tracking-widest mb-4">Agente Independiente</div>
@@ -298,14 +275,7 @@ export default function SaaSLandingPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto mb-24">
-            <div className="bg-blue-50 py-6 px-8 rounded-3xl border border-blue-100 shadow-sm relative overflow-hidden group">
-              <p className="text-blue-900 text-sm md:text-base font-semibold italic leading-relaxed relative z-10 transition-transform group-hover:-translate-y-0.5 duration-300">
-                <span className="font-extrabold uppercase mr-2 tracking-wider block mb-1">📈 Escalabilidad garantizada:</span>
-                Empieza hoy con el plan que necesites y sube de nivel cuando tu agencia crezca pagando solo la diferencia de setup. <span className="text-blue-600 font-bold underline decoration-blue-200">Protegemos tu inversión inicial.</span>
-              </p>
-            </div>
-
+          <div className="max-w-4xl mx-auto mb-24">
             <div className="bg-blue-50 py-6 px-8 rounded-3xl border border-blue-100 shadow-sm relative overflow-hidden group">
               <p className="text-blue-900 text-sm md:text-base font-semibold italic leading-relaxed relative z-10 transition-transform group-hover:-translate-y-0.5 duration-300">
                 <span className="font-extrabold uppercase mr-2 tracking-wider block mb-1">🛡️ Actualizaciones de por vida:</span>
@@ -376,41 +346,23 @@ export default function SaaSLandingPage() {
         </div>
       </section>
 
-      {/* ── Closing Section (Lead Magnet) ── */}
-      <section className="py-32 bg-white text-center border-t border-slate-100">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-600 text-sm font-bold mb-10 border border-blue-100 italic">
-            ¿Dudas? Resolvemos todo en 15 minutos
-          </div>
-          <h2 className="text-4xl md:text-6xl font-bold text-slate-950 mb-8 italic tracking-tight">Ve InmoZen en acción <br /> con una demo personalizada</h2>
-          <p className="text-xl text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed">
-            Reserva una videollamada de 15 min. Te enseñaremos los 3 estilos de diseño (Minimal, Corporate, Portal), nuestro CRM y cómo InmoZen puede hacerte vender más hoy mismo.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-            <button className="w-full sm:w-auto px-12 py-5 bg-blue-600 text-white rounded-2xl font-extrabold text-xl hover:bg-blue-500 transition-all shadow-xl hover:shadow-blue-200/50 hover:scale-105 active:scale-95">
-              Reservar Demo de 15 min
-            </button>
-            <div className="text-slate-400 font-medium">Llamada sin compromiso</div>
-          </div>
-        </div>
-      </section>
-
       {/* ── CTA Final ── */}
-      <section className="py-32 bg-slate-950 text-white text-center relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600 rounded-full blur-[120px] opacity-20 -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-600 rounded-full blur-[120px] opacity-20 translate-y-1/2 -translate-x-1/2" />
+      <section className="py-40 bg-slate-950 text-white text-center relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600 rounded-full blur-[160px] opacity-20 -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-600 rounded-full blur-[160px] opacity-20 translate-y-1/2 -translate-x-1/2" />
         
         <div className="max-w-4xl mx-auto px-4 relative z-10">
-          <h2 className="text-4xl md:text-6xl font-bold mb-8 italic">¿Listo para transformar tu inmobiliaria?</h2>
-          <p className="text-xl md:text-2xl text-slate-400 mb-12 leading-relaxed">Únete a la nueva era digital con InmoZen. Tu web estará volando en menos de una semana.</p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-            <button className="w-full sm:w-auto px-12 py-6 bg-white text-slate-950 rounded-2xl font-bold text-2xl hover:bg-slate-100 transition-all shadow-2xl hover:scale-105">
-              Crear mi cuenta ahora
-            </button>
-            <a href="tel:+34900000000" className="text-white font-medium hover:text-blue-400 transition-colors flex items-center gap-2">
-              <svg className="w-5 h-5 font-bold" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+          <h2 className="text-5xl md:text-7xl font-bold mb-10 italic tracking-tight">¿Listo para transformar <br /> tu inmobiliaria?</h2>
+          <p className="text-xl md:text-2xl text-slate-400 mb-16 leading-relaxed max-w-3xl mx-auto italic">
+            Únete a la nueva era digital con InmoZen. Tu web estará volando en menos de una semana con el diseño que elijas (Minimal, Corporate o Portal).
+          </p>
+          <div className="flex flex-col items-center justify-center gap-6">
+            <button className="w-full sm:w-auto px-16 py-7 bg-white text-slate-950 rounded-[2rem] font-black text-2xl hover:bg-blue-50 transition-all shadow-[0_20px_50px_rgba(59,130,246,0.3)] hover:scale-105 active:scale-95">
               Hablar con un experto
-            </a>
+            </button>
+            <p className="text-slate-400 font-medium italic text-lg">
+              Te enseñamos cómo migrar de tu viejo WordPress a la tecnología del futuro en 15 minutos.
+            </p>
           </div>
         </div>
       </section>

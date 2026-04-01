@@ -174,3 +174,12 @@
 }
 
 
+/* ── Animación Soft Float (Efecto premium sutil) ───────────────── */
+@keyframes soft-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-5.5px); }
+}
+
+.animate-soft-float {
+  animation: soft-float 3.4s ease-in-out infinite;
+}
