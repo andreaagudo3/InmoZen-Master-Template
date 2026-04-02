@@ -1,22 +1,17 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { supabase } from '../services/supabaseClient'
 import { useThemeStore } from '../store/themeStore'
+import TenantNotFound from '../pages/error/TenantNotFound'
+import { resolveTenantConfig } from '../services/tenantResolver'
 
 const TenantContext = createContext(null)
 
-// 1. CONFIGURACIÓN MAESTRA (Hardcoded para evitar pantallas en blanco)
-const MASTER_DOMAINS = [
-  'zendoapp.es',
-  'www.zendoapp.es',
-  'zendo-saa-s.vercel.app' // Tu URL de Vercel
-];
-
+// Identidad de respaldo para Zendo Maestra
 const MASTER_IDENTITY = {
   id: 'master-zendo',
   slug: 'zendo',
   name: 'Zendo',
   isMaster: true,
-  primary_color: '#2563eb', // Tu azul corporativo
+  primary_color: '#2563eb',
   secondary_color: '#64748b',
   description: 'La plataforma definitiva para la gestión inmobiliaria moderna.',
   meta_title: 'Zendo - SaaS Inmobiliario y CRM para inmobiliarias',
@@ -31,106 +26,62 @@ export function TenantProvider({ children }) {
   // Actualizador de metadatos reactivo
   useEffect(() => {
     if (!tenant) return;
-
-    // Prioridad: 1. meta_title | 2. Default Master | 3. Default Agency
-    const pageTitle = tenant.meta_title
-      ? tenant.meta_title
-      : (tenant.isMaster ? 'Zendo - SaaS Inmobiliario' : `${tenant.name} - Real Estate`);
-
+    const pageTitle = tenant.meta_title || (tenant.isMaster ? 'Zendo - SaaS Inmobiliario' : `${tenant.name} - Real Estate`);
     document.title = pageTitle;
-
     const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc && tenant.description) {
-      metaDesc.setAttribute('content', tenant.description);
-    }
-
-    // Actualizador de Favicon
+    if (metaDesc && tenant.description) metaDesc.setAttribute('content', tenant.description);
+    
     let favicon = document.querySelector('link[rel="icon"]');
     if (!favicon) {
       favicon = document.createElement('link');
       favicon.rel = 'icon';
       document.head.appendChild(favicon);
     }
-    favicon.href = tenant.isMaster ? '/zendo-logo.png' : '/favicon.ico'; // O /logo.png si prefieres
+    favicon.href = tenant.isMaster ? '/zendo-logo.png' : '/favicon.ico';
   }, [tenant]);
 
   useEffect(() => {
-    async function resolveTenant() {
+    async function resolve() {
       const hostname = window.location.hostname;
       const params = new URLSearchParams(window.location.search);
-      const tenantSlugParam = params.get('tenant'); // Para pruebas: ?tenant=parque-sierra
+      const isLocal = hostname === 'localhost' || hostname === '127.0.0.1' || hostname.endsWith('.localhost');
 
-      const isLocal = hostname === 'localhost' || hostname === '127.0.0.1';
-      const isMasterProd = MASTER_DOMAINS.includes(hostname);
-
-      // Determinamos si debemos cargar la identidad de Zendo (Landing)
-      // Es Master si estamos en el dominio oficial o si estamos en local sin parámetros de inquilino.
-      const shouldShowMaster = isMasterProd || (isLocal && !tenantSlugParam);
-
-      try {
-        // --- PASO 1: CARGA INMEDIATA DE IDENTIDAD MAESTRA (Si aplica) ---
-        if (shouldShowMaster) {
-          setTenant(MASTER_IDENTITY);
-          // Aplicamos tema inicial para evitar flash de colores incorrectos
-          useThemeStore.getState().initFromTenant('MINIMAL', '#2563eb', '#64748b');
-          setLoading(false);
-          // Nota: No retornamos aquí, seguimos para intentar "hidratar" desde la DB
-        }
-
-        // --- PASO 2: CONSULTA A SUPABASE ---
-        let query = supabase.from('tenants').select('*');
-
-        if (isLocal && tenantSlugParam) {
-          // En local con parámetro -> Buscamos por SLUG
-          query = query.eq('slug', tenantSlugParam);
-        } else if (shouldShowMaster) {
-          // Si es Master -> Buscamos la fila 'zendo' para refrescar datos (colores, descripciones...)
-          query = query.eq('slug', 'zendo');
-        } else {
-          // En producción para clientes -> Buscamos por DOMINIO PERSONALIZADO
-          query = query.eq('custom_domain', hostname);
-        }
-
-        const { data, error: dbError } = await query.single();
-
-        // --- MANEJO DE ERRORES DE BÚSQUEDA ---
-        if (dbError || !data) {
-          // Si NO es master y la DB falla, mostramos error (inquilino no existe)
-          if (!shouldShowMaster) {
-            console.error('[TenantProvider] Error:', dbError?.message);
-            setError('Esta inmobiliaria no está registrada o el dominio es incorrecto.');
-            setLoading(false);
-            return;
-          }
-          // Si ES master y la DB falla, no pasa nada: ya tenemos la MASTER_IDENTITY cargada.
-          return;
-        }
-
-        // --- PASO 3: APLICAR DATOS FINALES (HIDRATACIÓN) ---
-        const finalTenant = {
-          ...data,
-          isMaster: !!data.is_master || shouldShowMaster
-        };
-
-        setTenant(finalTenant);
-
-        // Actualizamos el almacén de temas con los datos de la DB
-        const { initFromTenant } = useThemeStore.getState();
-        initFromTenant(
-          data.theme ?? 'MINIMAL',
-          data.primary_color ?? (shouldShowMaster ? '#2563eb' : '#23c698'),
-          data.secondary_color ?? '#64748b',
-        );
-
-        setLoading(false);
-      } catch (e) {
-        console.error('[TenantProvider] Critical Error:', e);
-        if (!shouldShowMaster) setError('Error crítico al cargar la configuración.');
-        setLoading(false);
+      // Pre-carga agresiva para Master si estamos en el dominio principal o local sin parámetros (UX)
+      if (hostname === 'zendoapp.com' || hostname === 'www.zendoapp.com' || (isLocal && !params.get('tenant'))) {
+        setTenant(MASTER_IDENTITY);
+        useThemeStore.getState().initFromTenant('MINIMAL', '#2563eb', '#64748b');
       }
+
+      const result = await resolveTenantConfig(hostname, params);
+
+      if (result.error) {
+        setError(result.error);
+        setLoading(false);
+        return;
+      }
+
+      if (result.data) {
+        const finalTenant = {
+          ...result.data,
+          isMaster: result.isMaster,
+          isDemoMode: result.isDemoMode
+        };
+        setTenant(finalTenant);
+        
+        useThemeStore.getState().initFromTenant(
+          result.data.theme ?? 'MINIMAL',
+          result.data.primary_color ?? (result.isMaster ? '#2563eb' : '#23c698'),
+          result.data.secondary_color ?? '#64748b'
+        );
+      } else if (result.isMaster) {
+        // Fallback si no hay data pero es Master
+        setTenant(MASTER_IDENTITY);
+      }
+
+      setLoading(false);
     }
 
-    resolveTenant();
+    resolve();
   }, []);
 
   // Solo bloqueamos el render si estamos cargando y NO tenemos ni siquiera la identidad maestra
@@ -148,17 +99,7 @@ export function TenantProvider({ children }) {
   }
 
   if (error) {
-    return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: 20 }}>
-        <div>
-          <h1 style={{ fontSize: 28, fontWeight: 'bold', color: '#1e293b' }}>404</h1>
-          <p style={{ color: '#64748b', marginTop: 8, fontSize: 16 }}>{error}</p>
-          <a href="https://zendoapp.es" style={{ marginTop: 24, display: 'inline-block', color: '#2563eb', fontWeight: '600' }}>
-            Ir a la página principal de Zendo
-          </a>
-        </div>
-      </div>
-    )
+    return <TenantNotFound />
   }
 
   return (

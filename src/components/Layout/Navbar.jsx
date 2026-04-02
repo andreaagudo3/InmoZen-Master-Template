@@ -49,7 +49,18 @@ export function Navbar() {
   const firstPhoneHref = firstPhone ? `tel:${firstPhone.replace(/\s+/g, '')}` : '#'
 
   return (
-    <header className={headerClass} role="banner">
+    <>
+      {/* ── Demo Mode Banner ── */}
+      {tenant?.isDemoMode && (
+        <div className="bg-blue-600 text-white py-2.5 px-4 text-center text-sm font-bold sticky top-0 z-[60] shadow-md animate-pulse">
+          🚀 Estás en el Entorno Demo — 
+          <a href="https://zendoapp.com" className="ml-2 underline hover:text-blue-100 transition-colors">
+            Volver a la web principal de Zendo
+          </a>
+        </div>
+      )}
+
+      <header className={headerClass} style={{ top: tenant?.isDemoMode ? '40px' : '0' }} role="banner">
       {/* ── Corporate TopBar ── */}
       {isCorporate && (
         <div className="bg-secondary-900 text-secondary-100 text-xs py-2 px-4 sm:px-6 lg:px-8 flex justify-between items-center transition-colors">
@@ -174,5 +185,6 @@ export function Navbar() {
         </div>
       )}
     </header>
+    </>
   )
 }
