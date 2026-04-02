@@ -19,7 +19,7 @@ const MASTER_IDENTITY = {
   primary_color: '#2563eb', // Tu azul corporativo
   secondary_color: '#64748b',
   description: 'La plataforma definitiva para la gestión inmobiliaria moderna.',
-  browser_title: 'Zendo - SaaS Inmobiliario y CRM para inmobiliarias',
+  meta_title: 'Zendo - SaaS Inmobiliario y CRM para inmobiliarias',
   features: { isDemo: false }
 };
 
@@ -32,11 +32,11 @@ export function TenantProvider({ children }) {
   useEffect(() => {
     if (!tenant) return;
 
-    // Prioridad: 1. browser_title | 2. Default Master | 3. Default Agency
-    const pageTitle = tenant.browser_title 
-      ? tenant.browser_title 
+    // Prioridad: 1. meta_title | 2. Default Master | 3. Default Agency
+    const pageTitle = tenant.meta_title
+      ? tenant.meta_title
       : (tenant.isMaster ? 'Zendo - SaaS Inmobiliario' : `${tenant.name} - Real Estate`);
-    
+
     document.title = pageTitle;
 
     const metaDesc = document.querySelector('meta[name="description"]');

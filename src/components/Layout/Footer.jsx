@@ -33,12 +33,15 @@ export function Footer() {
 
           {/* Columna 1 — Marca */}
           <div className="space-y-4">
-            <Link to="/" className="inline-flex items-center hover:opacity-90 transition-opacity" aria-label={`${fullName} – Inicio`}>
+            <Link to="/" className="inline-flex items-center gap-2 hover:opacity-90 transition-opacity" aria-label={`${fullName} – Inicio`}>
               <img
-                src={logoSrc}
+                src={tenant?.isMaster ? '/zendo-logo.png' : logoSrc}
                 alt={fullName}
-                className="h-12 w-auto object-contain brightness-0 invert"
+                className={`h-10 w-auto object-contain ${tenant?.isMaster ? '' : 'brightness-0 invert'}`}
               />
+              {tenant?.isMaster && (
+                <span className="font-bold text-lg tracking-tight text-white">Zendo</span>
+              )}
             </Link>
             <p className="text-sm text-secondary-400 leading-relaxed">
               {t('footer.description', { zone: tenant?.zone, province: tenant?.province })}

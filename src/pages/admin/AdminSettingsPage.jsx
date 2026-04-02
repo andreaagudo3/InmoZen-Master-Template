@@ -12,12 +12,12 @@ export default function AdminSettingsPage() {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(null)
-  
+
   // Estado del formulario
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    browser_title: ''
+    meta_title: ''
   })
 
   // Cargar datos iniciales del tenant
@@ -26,7 +26,7 @@ export default function AdminSettingsPage() {
       setFormData({
         name: currentTenant.name || '',
         description: currentTenant.description || '',
-        browser_title: currentTenant.browser_title || ''
+        meta_title: currentTenant.meta_title || ''
       })
     }
   }, [currentTenant])
@@ -85,15 +85,15 @@ export default function AdminSettingsPage() {
 
           {/* Browser Title (SEO) */}
           <div className="space-y-2">
-            <label htmlFor="browser_title" className="block text-sm font-semibold text-secondary-700">
+            <label htmlFor="meta_title" className="block text-sm font-semibold text-secondary-700">
               Título del Navegador (SEO)
             </label>
             <input
-              id="browser_title"
+              id="meta_title"
               type="text"
               placeholder="Ej: Inmobiliaria Sol - Casas de lujo en la costa"
-              value={formData.browser_title}
-              onChange={(e) => setFormData(prev => ({ ...prev, browser_title: e.target.value }))}
+              value={formData.meta_title}
+              onChange={(e) => setFormData(prev => ({ ...prev, meta_title: e.target.value }))}
               className="w-full px-4 py-3 rounded-xl border border-secondary-200 focus:ring-2 focus:ring-primary-600 focus:border-transparent outline-none transition-all text-secondary-800"
             />
             <p className="text-xs text-secondary-400 italic">
@@ -121,7 +121,7 @@ export default function AdminSettingsPage() {
               {error}
             </div>
           )}
-          
+
           {success && (
             <div className="p-4 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-xl text-sm font-medium flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

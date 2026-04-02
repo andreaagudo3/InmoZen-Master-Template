@@ -69,7 +69,7 @@ export function Navbar() {
         {/* Logo */}
         <Link
           to="/"
-          className="flex items-center hover:opacity-80 transition-opacity"
+          className="flex items-center gap-2 hover:opacity-80 transition-opacity"
           aria-label={t('navbar.logoAriaLabel', { name: fullName })}
         >
           <img 
@@ -77,6 +77,11 @@ export function Navbar() {
             alt={fullName} 
             className={logoClass} 
           />
+          {tenant?.isMaster && (
+            <span className={`font-bold tracking-tight text-slate-900 ${isCompact ? 'text-lg' : 'text-xl'}`}>
+              Zendo
+            </span>
+          )}
         </Link>
 
         {/* Desktop links */}
