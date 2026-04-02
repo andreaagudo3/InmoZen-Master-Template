@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { signOut }   from '../../services/adminService'
+import { signOut } from '../../services/adminService'
 import { useTenant } from '../../context/TenantContext'
 
 const NAV_ITEMS = [
@@ -15,7 +15,7 @@ const NAV_ITEMS = [
 export default function AdminLayout({ children }) {
   const navigate = useNavigate()
   const location = useLocation()
-  const tenant   = useTenant()
+  const tenant = useTenant()
 
   async function handleLogout() {
     await signOut()
@@ -27,12 +27,17 @@ export default function AdminLayout({ children }) {
       {/* Header */}
       <header className="bg-secondary-950 border-b border-secondary-800 px-4 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-y-4">
         <div className="flex items-center gap-4">
-          <img 
-            src={tenant?.isMaster ? '/zendo-logo.png' : '/logo.png'} 
-            alt={tenant?.name ?? ''} 
-            className="h-8 brightness-0 invert" 
-          />
-          <span className="text-secondary-400 text-sm font-medium hidden sm:block">Panel Admin</span>
+          <div className="flex items-center gap-3">
+            <img
+              src={tenant?.logo_url || '/zendo-logo.png'}
+              alt={tenant?.name ?? ''}
+              className="h-8 w-auto object-contain"
+            />
+            {(!tenant?.logo_url || tenant?.isMaster) && (
+              <span className="text-white font-bold text-xl tracking-tight hidden sm:block">Zendo</span>
+            )}
+          </div>
+          <span className="text-secondary-400 text-sm font-medium hidden md:block">Panel Admin</span>
         </div>
 
         {/* Nav */}
@@ -41,11 +46,10 @@ export default function AdminLayout({ children }) {
             <Link
               key={to}
               to={to}
-              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                location.pathname === to
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === to
                   ? 'bg-primary-700 text-white'
                   : 'text-secondary-400 hover:text-white hover:bg-secondary-800'
-              }`}
+                }`}
             >
               <span className="mr-1">{icon}</span>
               {label}
