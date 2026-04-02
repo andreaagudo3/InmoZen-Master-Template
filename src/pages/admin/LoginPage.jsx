@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { signIn }    from '../../services/adminService'
+import { signIn } from '../../services/adminService'
 import { useTenant } from '../../context/TenantContext'
 
 /**
@@ -8,7 +8,7 @@ import { useTenant } from '../../context/TenantContext'
  */
 export default function LoginPage() {
   const navigate = useNavigate()
-  const tenant   = useTenant()
+  const tenant = useTenant()
   const [form, setForm] = useState({ email: '', password: '' })
   const [status, setStatus] = useState('idle') // idle | loading | error
   const [errorMsg, setErrorMsg] = useState('')
@@ -31,9 +31,12 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-secondary-950 flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <img src="/logo.png" alt={tenant?.name ?? ''} className="h-14 mx-auto brightness-0 invert" />
+        {/* Logo Zendo branding */}
+        <div className="text-center mb-8 flex flex-col items-center">
+          <div className="flex items-center gap-1">
+            <img src="/zendo-logo.png" alt="Zendo" className="h-14" />
+            <span className="text-white text-3xl font-bold tracking-tight">Zendo</span>
+          </div>
           <p className="text-secondary-400 text-sm mt-3">Panel de Administración</p>
         </div>
 
