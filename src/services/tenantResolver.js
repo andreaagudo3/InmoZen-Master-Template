@@ -46,18 +46,18 @@ export async function resolveTenantConfig(hostname, params) {
         // Fallback for master if database record is missing
         return { data: null, isMaster: true, isDemoMode: false, error: null };
       }
-      return { 
-        data: null, 
-        isMaster: false, 
-        isDemoMode: false, 
-        error: 'Inmobiliaria no encontrada. El dominio o subdominio no existe en nuestro sistema.' 
+      return {
+        data: null,
+        isMaster: false,
+        isDemoMode: false,
+        error: 'Inmobiliaria no encontrada. El dominio o subdominio no existe en nuestro sistema.'
       };
     }
 
     return {
       data,
       isMaster: data.slug === 'zendo',
-      isDemoMode: !!data.is_demo,
+      isDemoMode: !!data.features?.isDemo,
       error: null
     };
   } catch (err) {
