@@ -29,7 +29,7 @@ export default function App() {
 
   return (
     <>
-      {tenant?.features?.isDemo && <DemoPanel />}
+      {tenant?.isDemoMode && <DemoPanel />}
       <Routes>
         {/* ── Rutas principales con Layout dinámico ── */}
         <Route

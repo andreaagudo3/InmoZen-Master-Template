@@ -82,7 +82,7 @@ export const ADMIN_PAGE_SIZE = 20
  */
 export async function getAdminPropertiesPaginated(page = 1, search = '', featuredFilter = 'all') {
   const from = (page - 1) * ADMIN_PAGE_SIZE
-  const to   = from + ADMIN_PAGE_SIZE - 1
+  const to = from + ADMIN_PAGE_SIZE - 1
 
   let query = supabase
     .from('properties')
@@ -90,7 +90,7 @@ export async function getAdminPropertiesPaginated(page = 1, search = '', feature
     .order('updated_at', { ascending: false })
 
   // Filtro destacadas
-  if (featuredFilter === 'featured')     query = query.eq('featured', true)
+  if (featuredFilter === 'featured') query = query.eq('featured', true)
   if (featuredFilter === 'not_featured') query = query.eq('featured', false)
 
   // Búsqueda por título, referencia o localidad
@@ -141,13 +141,34 @@ export async function getAllProperties() {
 }
 
 /**
- * Obtiene la lista de provincias para los selectores en cascada.
- * @returns {Promise<object[]>}
+ * Obtiene una única propiedad por ID para edición.
+ * @param {string} id 
+ * @returns {Promise<object|null>}
  */
-export async function getProvinces() {
+export async function getPropertyById(id) {
+  const { data, error } = await supabase
+    .from('properties')
+    .select(ADMIN_FIELDS)
+    .eq('id', id)
+    .single()
+
+  if (error) {
+    console.error(`[adminService] getPropertyById("${id}"):`, error.message)
+    return null
+  }
+  return data
+}
+
+/**
+ * Obtiene la lista de provincias filtradas por inquilino.
+ */
+export async function getProvinces(tenantId) {
+  if (!tenantId) return [] // Seguridad: si no hay ID, no hay datos
+
   const { data, error } = await supabase
     .from('provinces')
     .select('id, name')
+    .eq('tenant_id', tenantId) // <--- FILTRO POR ID
     .order('name', { ascending: true })
 
   if (error) {
@@ -212,19 +233,16 @@ export async function createLocation(name, province_id) {
 }
 
 /**
- * Obtiene todas las localidades con su provincia asocida.
+ * Obtiene las localidades filtradas por inquilino.
  */
-export async function getLocationsAdmin() {
+export async function getLocationsAdmin(tenantId) {
   const { data, error } = await supabase
     .from('locations')
-    .select('id, name, slug, province_id, provinces(name)')
-    .order('name', { ascending: true })
+    .select('id, name') // Quitamos el join con provinces(name)
+    .eq('tenant_id', tenantId);
 
-  if (error) {
-    console.error('[adminService] getLocationsAdmin:', error.message)
-    return []
-  }
-  return data ?? []
+  console.log("📍 Localidades (sin joins):", data);
+  return data || [];
 }
 
 /**

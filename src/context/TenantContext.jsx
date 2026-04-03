@@ -1,25 +1,17 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { supabase } from '../services/supabaseClient'
 import { useThemeStore } from '../store/themeStore'
+import TenantNotFound from '../pages/error/TenantNotFound'
+import { resolveTenantConfig } from '../services/tenantResolver'
+import { supabase } from '../services/supabaseClient'
 
 const TenantContext = createContext(null)
-
-// 1. CONFIGURACIÓN MAESTRA (Hardcoded para evitar pantallas en blanco)
-const MASTER_DOMAINS = [
-  'zendoapp.es',
-  'www.zendoapp.es',
-  'zendo-saa-s.vercel.app' // Tu URL de Vercel
-];
 
 const MASTER_IDENTITY = {
   id: 'master-zendo',
   slug: 'zendo',
-  name: 'Zendo',
+  name: 'Zendo Master',
   isMaster: true,
-  primary_color: '#2563eb', // Tu azul corporativo
-  secondary_color: '#64748b',
-  description: 'La plataforma definitiva para la gestión inmobiliaria moderna.',
-  meta_title: 'Zendo - SaaS Inmobiliario y CRM para inmobiliarias',
+  primary_color: '#2563eb',
   features: { isDemo: false }
 };
 
@@ -28,138 +20,82 @@ export function TenantProvider({ children }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  // Actualizador de metadatos reactivo
   useEffect(() => {
-    if (!tenant) return;
+    async function resolve() {
+      console.log("🚀 Iniciando resolución de Tenant...");
 
-    // Prioridad: 1. meta_title | 2. Default Master | 3. Default Agency
-    const pageTitle = tenant.meta_title
-      ? tenant.meta_title
-      : (tenant.isMaster ? 'Zendo - SaaS Inmobiliario' : `${tenant.name} - Real Estate`);
-
-    document.title = pageTitle;
-
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc && tenant.description) {
-      metaDesc.setAttribute('content', tenant.description);
-    }
-
-    // Actualizador de Favicon
-    let favicon = document.querySelector('link[rel="icon"]');
-    if (!favicon) {
-      favicon = document.createElement('link');
-      favicon.rel = 'icon';
-      document.head.appendChild(favicon);
-    }
-    favicon.href = tenant.isMaster ? '/zendo-logo.png' : '/favicon.ico'; // O /logo.png si prefieres
-  }, [tenant]);
-
-  useEffect(() => {
-    async function resolveTenant() {
       const hostname = window.location.hostname;
       const params = new URLSearchParams(window.location.search);
-      const tenantSlugParam = params.get('tenant'); // Para pruebas: ?tenant=parque-sierra
-
       const isLocal = hostname === 'localhost' || hostname === '127.0.0.1';
-      const isMasterProd = MASTER_DOMAINS.includes(hostname);
 
-      // Determinamos si debemos cargar la identidad de Zendo (Landing)
-      // Es Master si estamos en el dominio oficial o si estamos en local sin parámetros de inquilino.
-      const shouldShowMaster = isMasterProd || (isLocal && !tenantSlugParam);
+      // 1. Resolución básica por URL
+      const result = await resolveTenantConfig(hostname, params);
+      let finalData = result.data;
+      let finalIsMaster = result.isMaster;
 
-      try {
-        // --- PASO 1: CARGA INMEDIATA DE IDENTIDAD MAESTRA (Si aplica) ---
-        if (shouldShowMaster) {
-          setTenant(MASTER_IDENTITY);
-          // Aplicamos tema inicial para evitar flash de colores incorrectos
-          useThemeStore.getState().initFromTenant('MINIMAL', '#2563eb', '#64748b');
-          setLoading(false);
-          // Nota: No retornamos aquí, seguimos para intentar "hidratar" desde la DB
-        }
+      console.log("1. Resultado inicial URL:", { finalData, finalIsMaster });
 
-        // --- PASO 2: CONSULTA A SUPABASE ---
-        let query = supabase.from('tenants').select('*');
+      // 2. Comprobar Sesión
+      const { data: { session } } = await supabase.auth.getSession();
 
-        if (isLocal && tenantSlugParam) {
-          // En local con parámetro -> Buscamos por SLUG
-          query = query.eq('slug', tenantSlugParam);
-        } else if (shouldShowMaster) {
-          // Si es Master -> Buscamos la fila 'zendo' para refrescar datos (colores, descripciones...)
-          query = query.eq('slug', 'zendo');
-        } else {
-          // En producción para clientes -> Buscamos por DOMINIO PERSONALIZADO
-          query = query.eq('custom_domain', hostname);
-        }
+      if (session?.user) {
+        console.log("2. Usuario detectado:", session.user.id);
 
-        const { data, error: dbError } = await query.single();
+        // BUSCAR EN MEMBERS
+        const { data: memberData, error: mErr } = await supabase
+          .from('members')
+          .select('tenant_id')
+          .eq('user_id', session.user.id)
+          .maybeSingle();
 
-        // --- MANEJO DE ERRORES DE BÚSQUEDA ---
-        if (dbError || !data) {
-          // Si NO es master y la DB falla, mostramos error (inquilino no existe)
-          if (!shouldShowMaster) {
-            console.error('[TenantProvider] Error:', dbError?.message);
-            setError('Esta inmobiliaria no está registrada o el dominio es incorrecto.');
-            setLoading(false);
-            return;
+        if (mErr) console.error("❌ Error en tabla members:", mErr);
+
+        if (memberData?.tenant_id) {
+          console.log("3. Tenant ID encontrado en members:", memberData.tenant_id);
+
+          // BUSCAR EL OBJETO TENANT COMPLETO
+          const { data: authTenant, error: tErr } = await supabase
+            .from('tenants')
+            .select('*')
+            .eq('id', memberData.tenant_id)
+            .single();
+
+          if (authTenant) {
+            console.log("4. Datos del Tenant recuperados:", authTenant.name);
+            finalData = authTenant;
+            finalIsMaster = authTenant.slug === 'zendo';
+          } else {
+            console.warn("⚠️ No se pudieron cargar los datos de tenants para el ID:", memberData.tenant_id, tErr);
           }
-          // Si ES master y la DB falla, no pasa nada: ya tenemos la MASTER_IDENTITY cargada.
-          return;
+        } else {
+          console.warn("⚠️ El usuario no tiene entrada en la tabla 'members'");
         }
-
-        // --- PASO 3: APLICAR DATOS FINALES (HIDRATACIÓN) ---
-        const finalTenant = {
-          ...data,
-          isMaster: !!data.is_master || shouldShowMaster
-        };
-
-        setTenant(finalTenant);
-
-        // Actualizamos el almacén de temas con los datos de la DB
-        const { initFromTenant } = useThemeStore.getState();
-        initFromTenant(
-          data.theme ?? 'MINIMAL',
-          data.primary_color ?? (shouldShowMaster ? '#2563eb' : '#23c698'),
-          data.secondary_color ?? '#64748b',
-        );
-
-        setLoading(false);
-      } catch (e) {
-        console.error('[TenantProvider] Critical Error:', e);
-        if (!shouldShowMaster) setError('Error crítico al cargar la configuración.');
-        setLoading(false);
       }
+
+      // 3. Aplicar datos o Fallback
+      if (finalData) {
+        console.log("✅ Aplicando Tenant FINAL:", finalData.name);
+        const tenantObject = { ...finalData, isMaster: finalIsMaster };
+        setTenant(tenantObject);
+
+        useThemeStore.getState().initFromTenant(
+          finalData.theme || 'MINIMAL',
+          finalData.primary_color || '#23c698',
+          finalData.secondary_color || '#64748b'
+        );
+      } else {
+        console.log("ℹ️ No se detectó tenant, aplicando MASTER_IDENTITY");
+        setTenant(MASTER_IDENTITY);
+      }
+
+      setLoading(false);
     }
 
-    resolveTenant();
+    resolve();
   }, []);
 
-  // Solo bloqueamos el render si estamos cargando y NO tenemos ni siquiera la identidad maestra
-  if (loading && !tenant) {
-    return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}>
-        <div className="animate-spin" style={{
-          width: 32, height: 32, borderRadius: '50%',
-          border: '3px solid #e2e8f0', borderTopColor: '#2563eb',
-          animation: 'tz-spin 0.8s linear infinite',
-        }} />
-        <style>{`@keyframes tz-spin { to { transform: rotate(360deg); } }`}</style>
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: 20 }}>
-        <div>
-          <h1 style={{ fontSize: 28, fontWeight: 'bold', color: '#1e293b' }}>404</h1>
-          <p style={{ color: '#64748b', marginTop: 8, fontSize: 16 }}>{error}</p>
-          <a href="https://zendoapp.es" style={{ marginTop: 24, display: 'inline-block', color: '#2563eb', fontWeight: '600' }}>
-            Ir a la página principal de Zendo
-          </a>
-        </div>
-      </div>
-    )
-  }
+  if (loading && !tenant) return <div>Cargando Zendo...</div>;
+  if (error && !tenant) return <TenantNotFound />;
 
   return (
     <TenantContext.Provider value={tenant}>
@@ -168,7 +104,4 @@ export function TenantProvider({ children }) {
   )
 }
 
-export function useTenant() {
-  const context = useContext(TenantContext);
-  return context;
-}
+export function useTenant() { return useContext(TenantContext); }
