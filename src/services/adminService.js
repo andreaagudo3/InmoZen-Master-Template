@@ -160,13 +160,15 @@ export async function getPropertyById(id) {
 }
 
 /**
- * Obtiene la lista de provincias para los selectores en cascada.
- * @returns {Promise<object[]>}
+ * Obtiene la lista de provincias filtradas por inquilino.
  */
-export async function getProvinces() {
+export async function getProvinces(tenantId) {
+  if (!tenantId) return [] // Seguridad: si no hay ID, no hay datos
+
   const { data, error } = await supabase
     .from('provinces')
     .select('id, name')
+    .eq('tenant_id', tenantId) // <--- FILTRO POR ID
     .order('name', { ascending: true })
 
   if (error) {
@@ -231,19 +233,16 @@ export async function createLocation(name, province_id) {
 }
 
 /**
- * Obtiene todas las localidades con su provincia asocida.
+ * Obtiene las localidades filtradas por inquilino.
  */
-export async function getLocationsAdmin() {
+export async function getLocationsAdmin(tenantId) {
   const { data, error } = await supabase
     .from('locations')
-    .select('id, name, slug, province_id, provinces(name)')
-    .order('name', { ascending: true })
+    .select('id, name') // Quitamos el join con provinces(name)
+    .eq('tenant_id', tenantId);
 
-  if (error) {
-    console.error('[adminService] getLocationsAdmin:', error.message)
-    return []
-  }
-  return data ?? []
+  console.log("📍 Localidades (sin joins):", data);
+  return data || [];
 }
 
 /**

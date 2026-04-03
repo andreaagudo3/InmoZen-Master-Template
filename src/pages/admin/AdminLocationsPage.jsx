@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react'
 import AdminLayout from './AdminLayout'
 import {
+  getProvinces,
+  getLocationsAdmin,
+  createProvince,
+  createLocation,
+  updateProvince,
+  updateLocation,
   deleteProvince,
   deleteLocation,
 } from '../../services/adminService'
@@ -61,11 +67,11 @@ export default function AdminLocationsPage() {
     setErrorMsg('')
     try {
       if (activeTab === 'provinces') {
-        const { data, error } = await createProvince(newName.trim(), tenant?.id)
+        const { data, error } = await createProvince(newName.trim())
         if (error) throw error
         setProvinces((prev) => [...prev, data].sort((a, b) => a.name.localeCompare(b.name)))
       } else {
-        const { data, error } = await createLocation(newName.trim(), newProvId, tenant?.id)
+        const { data, error } = await createLocation(newName.trim(), newProvId)
         if (error) throw error
         // Para location, devolvemos el join a mano en la UI para no hacer refetch
         const provName = provinces.find(p => p.id === newProvId)?.name || ''
