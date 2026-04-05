@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { supabase } from '../../services/supabaseClient';
+
 
 /**
  * SaaSLandingPage — The B2B marketing landing for Zendo.
@@ -8,43 +8,14 @@ import { supabase } from '../../services/supabaseClient';
  */
 export default function SaaSLandingPage() {
     const { t } = useTranslation();
-    const [demoUrl, setDemoUrl] = React.useState('https://demo.zendo.com');
+    // Demo URL: computed once, no DB needed.
+    // Local  → http://localhost:5173/?tenant=demo
+    // Prod   → https://demo.zendoapp.es  (subdomain, no query params)
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const demoUrl = isLocal
+        ? `${window.location.origin}/?tenant=demo`
+        : 'https://demo.zendoapp.es';
 
-    React.useEffect(() => {
-        async function fetchDemoTenant() {
-            try {
-                // 1. Buscamos EXCLUSIVAMENTE el slug 'demo' (tu showroom oficial)
-                const { data, error } = await supabase
-                    .from('tenants')
-                    .select('custom_domain, slug')
-                    .eq('slug', 'demo')
-                    .maybeSingle();
-
-                if (data) {
-                    const isLocal = window.location.hostname === 'localhost' || window.location.hostname.includes('127.0.0.1');
-
-                    // 2. Lógica de Rutas Dinámica
-                    if (isLocal) {
-                        // http://localhost:3000?tenant=demo
-                        // Esto permite que el TenantContext detecte al inquilino 'demo' localmente.
-                        setDemoUrl(`${window.location.origin}?tenant=${data.slug}`);
-                    }
-                    else if (data.custom_domain) {
-                        // Si en el futuro le pones un dominio propio (ej: demo-zendo.es)
-                        setDemoUrl(`https://${data.custom_domain}`);
-                    }
-                    else {
-                        // En PRODUCCIÓN real: la URL limpia que tú quieres
-                        setDemoUrl(`https://demo.zendo.com`);
-                    }
-                }
-            } catch (err) {
-                console.error('Error fetching demo tenant:', err);
-                // Si hay error de red, el fallback del state ya apunta a demo.zendo.com
-            }
-        }
-        fetchDemoTenant();
-    }, []);
 
     return (
         <div className="bg-slate-50 text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900">
