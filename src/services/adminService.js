@@ -78,15 +78,19 @@ export const ADMIN_PAGE_SIZE = 20
  * @param {number} page — página actual (1-based)
  * @param {string} search — texto de búsqueda (título, referencia o localidad)
  * @param {'all'|'featured'|'not_featured'} featuredFilter
+ * @param {string} tenantId — ID del inquilino activo (obligatorio para aislamiento)
  * @returns {Promise<{ data: object[], count: number }>}
  */
-export async function getAdminPropertiesPaginated(page = 1, search = '', featuredFilter = 'all') {
+export async function getAdminPropertiesPaginated(page = 1, search = '', featuredFilter = 'all', tenantId) {
+  if (!tenantId) return { data: [], count: 0 }
+
   const from = (page - 1) * ADMIN_PAGE_SIZE
   const to = from + ADMIN_PAGE_SIZE - 1
 
   let query = supabase
     .from('properties')
     .select(ADMIN_FIELDS, { count: 'exact' })
+    .eq('tenant_id', tenantId)
     .order('updated_at', { ascending: false })
 
   // Filtro destacadas
@@ -97,10 +101,11 @@ export async function getAdminPropertiesPaginated(page = 1, search = '', feature
   if (search.trim()) {
     const q = search.trim()
 
-    // Sub-query: location IDs cuyo nombre coincide
+    // Sub-query: location IDs del tenant cuyo nombre coincide
     const { data: locs } = await supabase
       .from('locations')
       .select('id')
+      .eq('tenant_id', tenantId)
       .ilike('name', `%${q}%`)
 
     const locIds = (locs ?? []).map((l) => l.id)
@@ -234,15 +239,23 @@ export async function createLocation(name, province_id) {
 
 /**
  * Obtiene las localidades filtradas por inquilino.
+ * @param {string} tenantId
+ * @returns {Promise<object[]>}
  */
 export async function getLocationsAdmin(tenantId) {
+  if (!tenantId) return []
+
   const { data, error } = await supabase
     .from('locations')
-    .select('id, name') // Quitamos el join con provinces(name)
-    .eq('tenant_id', tenantId);
+    .select('id, name, slug, province_id, provinces(name)')
+    .eq('tenant_id', tenantId)
+    .order('name', { ascending: true })
 
-  console.log("📍 Localidades (sin joins):", data);
-  return data || [];
+  if (error) {
+    console.error('[adminService] getLocationsAdmin:', error.message)
+    return []
+  }
+  return data ?? []
 }
 
 /**
