@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useTenant } from '../context/TenantContext'
 import { sendContactEmail } from '../services/contactService'
 import { useThemeStore } from '../store/themeStore'
+import { ContactChannels } from '../components/shared/ContactChannels'
 
 const INITIAL_FORM = {
   name: '',
@@ -263,6 +264,8 @@ export default function ContactPage() {
               >
                 {submitState === 'submitting' ? t('form.sending') : t('form.sendBtn')}
               </button>
+
+              <ContactChannels />
             </form>
           )}
         </section>

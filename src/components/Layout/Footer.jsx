@@ -43,9 +43,24 @@ export function Footer() {
                 <span className="font-bold text-lg tracking-tight text-white">Zendo</span>
               )}
             </Link>
-            <p className="text-sm text-secondary-400 leading-relaxed">
-              {t('footer.description', { zone: tenant?.zone, province: tenant?.province })}
-            </p>
+            {tenant?.address && (
+              <p className="text-sm text-secondary-400 leading-relaxed">{tenant.address}</p>
+            )}
+            {phones.length > 0 && (
+              <p className="text-sm">
+                {phones.map((p, i) => (
+                  <span key={p}>
+                    <a href={`tel:${p.replace(/\s+/g, '')}`} className="text-secondary-400 hover:text-primary-400 transition-colors">{p}</a>
+                    {i < phones.length - 1 && <span className="text-secondary-600 mx-1">·</span>}
+                  </span>
+                ))}
+              </p>
+            )}
+            {tenant?.email && (
+              <p className="text-sm">
+                <a href={emailHref} className="text-secondary-400 hover:text-primary-400 transition-colors">{tenant.email}</a>
+              </p>
+            )}
             <div className="flex gap-3 pt-2">
               {socials.map((social) => (
                 <a

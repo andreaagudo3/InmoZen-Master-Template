@@ -51,5 +51,19 @@
     "bathrooms_other":  "{{count}} baths",
     "sizeM2":           "{{size}} m²",
     "priceOnRequest":   "Price on request"
+  },
+  "whatsapp": {
+    "contactBtn":      "Contact via WhatsApp",
+    "orCallUs":        "Or call us directly",
+    "orContactUs":    "Or contact us directly",
+    "msgGeneral":     "Hello, I would like to get more information about your real estate services.",
+    "msgProperty":    "Hello, I am interested in this property: {{title}}\n{{url}}\n\nCould you give me more details?",
+    "demoTitle":      "👀 Try WhatsApp on your phone",
+    "demoDesc":       "This is a demo. Enter your own number to see exactly how you would receive the contact message.",
+    "demoPrivacy":    "🔒 Your number is not saved or shared. It is only used for this test.",
+    "demoPlaceholder": "+1 555 000 0000",
+    "demoLabel":      "Your WhatsApp number",
+    "demoBtn":        "Open WhatsApp",
+    "demoCancel":     "Cancel"
   }
 }
