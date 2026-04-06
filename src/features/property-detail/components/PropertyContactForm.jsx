@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { sendContactEmail } from '../../../services/contactService'
 import { useTenant } from '../../../context/TenantContext'
+import { ContactChannels } from '../../../components/shared/ContactChannels'
 
 const CONTACT_INITIAL = { name: '', email: '', phone: '', message: '' }
 
@@ -151,21 +152,7 @@ export function PropertyContactForm({ propertyTitle }) {
           </form>
         )}
 
-        <div className="pt-4 border-t border-secondary-100 text-center">
-          <p className="text-xs text-secondary-400 mb-2">{t('contact.orCallDirectly', 'O llámanos directamente')}</p>
-          {phones.map((p, i) => (
-            <span key={p.href}>
-              <a
-                href={p.href}
-                className="text-primary-700 font-semibold text-lg hover:text-primary-900 transition-colors"
-                aria-label={t('contact.callAria', 'Llamar al {{n}}', { n: p.number })}
-              >
-                {p.number}
-              </a>
-              {i < phones.length - 1 && <span className="text-secondary-300 mx-2">·</span>}
-            </span>
-          ))}
-        </div>
+        <ContactChannels propertyTitle={propertyTitle} />
       </div>
     </aside>
   )

@@ -51,5 +51,12 @@
     "bathrooms_other":  "{{count}} baños",
     "sizeM2":           "{{size}} m²",
     "priceOnRequest":   "Precio a consultar"
+  },
+  "whatsapp": {
+    "contactBtn":      "Contactar por WhatsApp",
+    "orCallUs":        "O llámanos directamente",
+    "orContactUs":    "O contáctanos directamente",
+    "msgGeneral":     "Hola, me gustaría obtener más información sobre vuestros servicios inmobiliarios.",
+    "msgProperty":    "Hola, estoy interesado/a en esta propiedad: {{title}}\n{{url}}\n\n¿Podéis darme más información?"
   }
 }

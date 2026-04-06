@@ -164,8 +164,11 @@ export function Navbar() {
               </NavLink>
             ))}
 
-            {/* Botón de Propiedades en móvil con un margen superior para separar */}
-            <div className="pt-2">
+            {/* Idioma + Botón de Propiedades en móvil */}
+            <div className="pt-2 space-y-2">
+              <div className="flex justify-center py-1">
+                <LanguageSwitcher />
+              </div>
               <Link
                 to="/properties"
                 onClick={() => setMenuOpen(false)}
@@ -174,6 +177,7 @@ export function Navbar() {
                 {t('navbar.properties')}
               </Link>
             </div>
+
           </div>
         )}
       </header>
