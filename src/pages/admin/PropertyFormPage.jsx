@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
   createProperty, updateProperty,
@@ -33,6 +34,7 @@ const EMPTY_FORM = {
  *   - ImageUploader is fully functional (property.id + slug are known)
  */
 export default function PropertyFormPage() {
+  const { t } = useTranslation(['common', 'properties', 'admin'])
   const { id } = useParams()
   const isEdit = Boolean(id)
   const navigate = useNavigate()
@@ -282,7 +284,7 @@ export default function PropertyFormPage() {
           </button>
           <div>
             <h1 className="text-2xl font-bold text-secondary-900">
-              {isEdit ? 'Editar propiedad' : 'Nueva propiedad'}
+              {isEdit ? t('admin:properties.editTitle') : t('admin:properties.newTitle')}
             </h1>
             {referenceCode && (
               <p className="text-xs text-secondary-400 font-mono">Ref: {referenceCode}</p>
@@ -293,7 +295,7 @@ export default function PropertyFormPage() {
         {/* Feedback */}
         {status === 'success' && (
           <div className="mb-4 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-xl px-4 py-3">
-            ✅ {isEdit ? 'Cambios guardados.' : 'Propiedad creada. Redirigiendo para añadir imágenes…'}
+            ✅ {isEdit ? t('admin:properties.feedback.saveSuccess') : t('admin:properties.feedback.createSuccess')}
           </div>
         )}
         {status === 'error' && (
@@ -305,26 +307,26 @@ export default function PropertyFormPage() {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Datos básicos */}
           <section className="bg-white rounded-2xl border border-secondary-200 p-6 space-y-4 shadow-sm">
-            <h2 className="font-semibold text-secondary-700 text-sm uppercase tracking-wide">Datos básicos</h2>
+            <h2 className="font-semibold text-secondary-700 text-sm uppercase tracking-wide">{t('admin:properties.form.basicData')}</h2>
 
-            <Field label="Título *" htmlFor="f-title">
+            <Field label={t('admin:properties.form.title')} htmlFor="f-title">
               <input id="f-title" name="title" required value={form.title} onChange={handleChange}
-                placeholder="Casa en Aracena centro" className={INPUT_CLS} />
+                placeholder={t('admin:properties.form.titlePlaceholder')} className={INPUT_CLS} />
             </Field>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Field label="Precio (€)" htmlFor="f-price">
+              <Field label={t('admin:properties.form.price')} htmlFor="f-price">
                 <input id="f-price" name="price" type="number" min="0" value={form.price} onChange={handleChange}
-                  placeholder="250000" className={INPUT_CLS} />
+                  placeholder={t('admin:properties.form.pricePlaceholder')} className={INPUT_CLS} />
               </Field>
               <div className="space-y-4">
-                <Field label="Ubicación *" htmlFor="f-province">
+                <Field label={t('admin:properties.form.location')} htmlFor="f-province">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
                     {/* Province select + inline creation */}
                     <div className="space-y-2">
                       <select id="f-province" className={INPUT_CLS} value={selectedProvince} onChange={handleProvinceChange}>
-                        <option value="">— Provincia —</option>
+                        <option value="">{t('admin:properties.form.provincePlaceholder')}</option>
                         {provinces.map((prov) => (
                           <option key={prov.id} value={prov.id}>{prov.name}</option>
                         ))}
@@ -333,7 +335,7 @@ export default function PropertyFormPage() {
                         {!isAddingProvince ? (
                           <button type="button" onClick={() => setIsAddingProvince(true)}
                             className="text-primary-600 text-xs font-medium hover:text-primary-800 transition-colors">
-                            + Añadir provincia
+                            {t('admin:properties.form.addProvince')}
                           </button>
                         ) : (
                           <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 bg-secondary-50 p-2 rounded-lg border border-secondary-200 w-full">
@@ -354,7 +356,7 @@ export default function PropertyFormPage() {
                       <select id="f-location" name="location_id" required value={form.location_id} onChange={handleChange}
                         disabled={!selectedProvince}
                         className={`${INPUT_CLS} ${!selectedProvince ? 'opacity-50 cursor-not-allowed bg-secondary-50' : ''}`}>
-                        <option value="">{selectedProvince ? '— Localidad —' : '← Primero elige provincia'}</option>
+                        <option value="">{selectedProvince ? t('admin:properties.form.locationPlaceholder') : t('admin:properties.form.chooseProvinceFirst')}</option>
                         {filteredLocations.map((loc) => (
                           <option key={loc.id} value={loc.id}>{loc.name}</option>
                         ))}
@@ -364,7 +366,7 @@ export default function PropertyFormPage() {
                           {!isAddingLocation ? (
                             <button type="button" onClick={() => setIsAddingLocation(true)}
                               className="text-primary-600 text-xs font-medium hover:text-primary-800 transition-colors">
-                              + Añadir localidad
+                              {t('admin:properties.form.addLocation')}
                             </button>
                           ) : (
                             <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 bg-secondary-50 p-2 rounded-lg border border-secondary-200 w-full">
@@ -386,67 +388,67 @@ export default function PropertyFormPage() {
               </div>
             </div>
 
-            <Field label="Descripción" htmlFor="f-desc">
+            <Field label={t('admin:properties.form.description')} htmlFor="f-desc">
               <textarea id="f-desc" name="description" rows={4} value={form.description} onChange={handleChange}
-                placeholder="Descripción detallada de la propiedad…" className={INPUT_CLS + ' resize-none'} />
+                placeholder={t('admin:properties.form.descriptionPlaceholder')} className={INPUT_CLS + ' resize-none'} />
             </Field>
           </section>
 
           {/* Detalles */}
           <section className="bg-white rounded-2xl border border-secondary-200 p-6 space-y-4 shadow-sm">
-            <h2 className="font-semibold text-secondary-700 text-sm uppercase tracking-wide">Detalles</h2>
+            <h2 className="font-semibold text-secondary-700 text-sm uppercase tracking-wide">{t('admin:properties.form.details')}</h2>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <Field label="Habitaciones" htmlFor="f-bed">
+              <Field label={t('admin:properties.form.bedrooms')} htmlFor="f-bed">
                 <input id="f-bed" name="bedrooms" type="number" min="0" value={form.bedrooms} onChange={handleChange}
                   placeholder="3" className={INPUT_CLS} />
               </Field>
-              <Field label="Baños" htmlFor="f-bath">
+              <Field label={t('admin:properties.form.bathrooms')} htmlFor="f-bath">
                 <input id="f-bath" name="bathrooms" type="number" min="0" value={form.bathrooms} onChange={handleChange}
                   placeholder="2" className={INPUT_CLS} />
               </Field>
-              <Field label="Superficie (m²)" htmlFor="f-m2">
+              <Field label={t('admin:properties.form.surface')} htmlFor="f-m2">
                 <input id="f-m2" name="size_m2" type="number" min="0" value={form.size_m2} onChange={handleChange}
                   placeholder="150" className={INPUT_CLS} />
               </Field>
-              <Field label="Tipo inmueble" htmlFor="f-ptype">
+              <Field label={t('admin:properties.form.propertyType')} htmlFor="f-ptype">
                 <select id="f-ptype" name="property_type" value={form.property_type} onChange={handleChange} className={INPUT_CLS}>
-                  <option value="">— Sin especificar —</option>
-                  <option value="house">Casa</option>
-                  <option value="apartment">Piso / Apartamento</option>
-                  <option value="land">Terreno</option>
-                  <option value="rural">Finca rústica</option>
-                  <option value="commercial">Local comercial</option>
-                  <option value="garage">Garaje</option>
-                  <option value="office">Oficina</option>
+                  <option value="">{t('admin:properties.form.types.unspecified')}</option>
+                  <option value="house">{t('admin:properties.form.types.house')}</option>
+                  <option value="apartment">{t('admin:properties.form.types.apartment')}</option>
+                  <option value="land">{t('admin:properties.form.types.land')}</option>
+                  <option value="rural">{t('admin:properties.form.types.rural')}</option>
+                  <option value="commercial">{t('admin:properties.form.types.commercial')}</option>
+                  <option value="garage">{t('admin:properties.form.types.garage')}</option>
+                  <option value="office">{t('admin:properties.form.types.office')}</option>
                 </select>
               </Field>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <Field label="Operación" htmlFor="f-ltype">
+              <Field label={t('admin:properties.form.operation')} htmlFor="f-ltype">
                 <select id="f-ltype" name="listing_type" value={form.listing_type} onChange={handleChange} className={INPUT_CLS}>
-                  <option value="sale">Venta</option>
-                  <option value="rent">Alquiler</option>
+                  <option value="sale">{t('common:listing.sale')}</option>
+                  <option value="rent">{t('common:listing.rent')}</option>
                 </select>
               </Field>
-              <Field label="Estado" htmlFor="f-status">
+              <Field label={t('admin:properties.form.status')} htmlFor="f-status">
                 <select id="f-status" name="status" value={form.status} onChange={handleChange} className={INPUT_CLS}>
-                  <option value="available">Disponible</option>
-                  <option value="reserved">Reservado</option>
-                  <option value="sold">Vendido</option>
+                  <option value="available">{t('common:status.available')}</option>
+                  <option value="reserved">{t('common:status.reserved')}</option>
+                  <option value="sold">{t('common:status.sold')}</option>
                 </select>
               </Field>
               <div className="flex flex-col gap-3 pt-6">
                 <label className="flex items-center gap-2 cursor-pointer text-sm text-secondary-700">
                   <input type="checkbox" name="published" checked={form.published} onChange={handleChange}
                     className="w-4 h-4 rounded accent-primary-700" />
-                  Publicada
+                  {t('admin:properties.form.published')}
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer text-sm text-secondary-700">
                   <input type="checkbox" name="featured" checked={form.featured} onChange={handleChange}
                     className="w-4 h-4 rounded accent-primary-700" />
-                  Destacada
+                  {t('admin:properties.form.featured')}
                 </label>
               </div>
             </div>
@@ -493,9 +495,9 @@ export default function PropertyFormPage() {
               <section className="bg-white rounded-2xl border border-secondary-200 p-6 space-y-4 shadow-sm">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h2 className="font-semibold text-secondary-700 text-sm uppercase tracking-wide">Configuración SEO</h2>
+                    <h2 className="font-semibold text-secondary-700 text-sm uppercase tracking-wide">{t('admin:seo.propertyTitle')}</h2>
                     {seoEnabled && (
-                      <p className="text-xs text-secondary-400 mt-0.5">Optimiza cómo aparece esta propiedad en Google.</p>
+                      <p className="text-xs text-secondary-400 mt-0.5">{t('admin:seo.propertyDesc')}</p>
                     )}
                   </div>
                   <div className="flex items-center gap-2">
@@ -507,7 +509,7 @@ export default function PropertyFormPage() {
                     {!seoEnabled && (
                       <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" /></svg>
-                        No incluido en tu plan
+                        {t('admin:seo.lockedBadge')}
                       </span>
                     )}
                   </div>
@@ -517,42 +519,39 @@ export default function PropertyFormPage() {
                   <div className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800 leading-relaxed">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" /></svg>
                     <span>
-                      Para personalizar el SEO de cada propiedad, contacta con nosotros en{' '}
-                      <a href="mailto:contrataciones@zendoapp.es" className="font-semibold underline underline-offset-2 hover:text-amber-900">
-                        contrataciones@zendoapp.es
-                      </a>.
+                      {t('admin:seo.lockedMsg', { email: 'contrataciones@zendoapp.es' })}
                     </span>
                   </div>
                 )}
 
                 <fieldset disabled={!seoEnabled} className="grid grid-cols-1 gap-4">
-                  <Field label="Título para Google (meta_title)" htmlFor="f-mtitle">
+                  <Field label={t('admin:seo.googleTitle')} htmlFor="f-mtitle">
                     <input
                       id="f-mtitle"
                       name="meta_title"
                       type="text"
                       value={form.meta_title}
                       onChange={handleChange}
-                      placeholder={form.meta_title ? '' : 'Ej: Chalet de lujo con vistas en Aracena | Zendo'}
+                      placeholder={t('admin:seo.placeholderTitle')}
                       className={fieldCls}
                     />
                     <p className="text-xs text-secondary-400 mt-1 italic">
-                      Si este campo está vacío, Google mostrará el título principal de la propiedad.
+                      {t('admin:seo.googleTitleDesc')}
                     </p>
                   </Field>
 
-                  <Field label="Descripción para Google (meta_description)" htmlFor="f-meta">
+                  <Field label={t('admin:seo.googleDesc')} htmlFor="f-meta">
                     <textarea
                       id="f-meta"
                       name="meta_description"
                       rows={3}
                       value={form.meta_description}
                       onChange={handleChange}
-                      placeholder={form.meta_description ? '' : 'El sistema usará un resumen automático si dejas esto vacío.'}
+                      placeholder={t('admin:seo.placeholderDesc')}
                       className={fieldCls + ' resize-none'}
                     />
                     <p className="text-xs text-secondary-400 mt-1 italic leading-relaxed">
-                      Este es el resumen que aparece bajo el título en los resultados de Google. Intenta no superar los 155 caracteres.
+                      {t('admin:seo.googleDescDesc')}
                     </p>
                   </Field>
                 </fieldset>
@@ -567,14 +566,14 @@ export default function PropertyFormPage() {
               onClick={() => navigate(-1)}
               className="px-5 py-2.5 rounded-xl text-sm font-medium text-secondary-600 bg-secondary-100 hover:bg-secondary-200 transition-colors"
             >
-              Cancelar
+              {t('btn.cancel')}
             </button>
             <button
               type="submit"
               disabled={status === 'saving'}
               className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-primary-700 hover:bg-primary-800 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
             >
-              {status === 'saving' ? 'Guardando…' : isEdit ? 'Guardar cambios' : 'Crear propiedad'}
+              {status === 'saving' ? t('btn.sending') : isEdit ? t('btn.saveChanges') : t('btn.createProperty')}
             </button>
           </div>
         </form>

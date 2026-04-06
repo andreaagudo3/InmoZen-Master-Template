@@ -1,0 +1,150 @@
+{
+  "properties": {
+    "title": "Gestión de Propiedades",
+    "newTitle": "Nueva Propiedad",
+    "editTitle": "Editar Propiedad",
+    "form": {
+      "basicData": "Datos básicos",
+      "title": "Título *",
+      "titlePlaceholder": "Casa en Aracena centro",
+      "price": "Precio (€)",
+      "pricePlaceholder": "250000",
+      "location": "Ubicación *",
+      "provincePlaceholder": "— Provincia —",
+      "addProvince": "+ Añadir provincia",
+      "locationLabel": "Localidad",
+      "locationPlaceholder": "— Localidad —",
+      "addLocation": "+ Añadir localidad",
+      "chooseProvinceFirst": "← Primero elige provincia",
+      "description": "Descripción",
+      "descriptionPlaceholder": "Descripción detallada de la propiedad…",
+      "details": "Detalles",
+      "bedrooms": "Habitaciones",
+      "bathrooms": "Baños",
+      "surface": "Superficie (m²)",
+      "propertyType": "Tipo inmueble",
+      "operation": "Operación",
+      "status": "Estado",
+      "published": "Publicada",
+      "featured": "Destacada",
+      "types": {
+        "unspecified": "— Sin especificar —",
+        "house": "Casa",
+        "apartment": "Piso / Apartamento",
+        "land": "Terreno",
+        "rural": "Finca rústica",
+        "commercial": "Local comercial",
+        "garage": "Garaje",
+        "office": "Oficina"
+      }
+    },
+    "feedback": {
+      "saveSuccess": "Cambios guardados.",
+      "createSuccess": "Propiedad creada. Redirigiendo para añadir imágenes…",
+      "deleteConfirm": "¿Eliminar \"{{title}}\"? Esta acción no se puede deshacer.",
+      "deleteError": "Error al eliminar: {{message}}",
+      "updateStatusError": "Error al actualizar estado: {{message}}",
+      "updateFeaturedError": "Error al actualizar destacado: {{message}}",
+      "error": "Error al guardar la propiedad.",
+      "loadError": "Error al cargar datos. {{message}}",
+      "createError": "Error al crear: {{message}}",
+      "updateError": "Error al actualizar: {{message}}",
+      "deleteErrorLocation": "No se pudo borrar (es posible que esté en uso por propiedades). Detalles: {{message}}",
+      "deleteConfirmLocation": "¿Estás seguro de que deseas eliminar permanentemente esto?",
+      "selectProvinceError": "Selecciona una provincia para esta localidad.",
+      "loginError": "Credenciales incorrectas. Verifica tu email y contraseña."
+    },
+    "login": {
+      "subtitle": "Panel de Administración",
+      "title": "Iniciar sesión",
+      "email": "Email",
+      "password": "Contraseña",
+      "entering": "Entrando…",
+      "enter": "Entrar"
+    },
+    "layout": {
+      "subtitle": "Panel Admin",
+      "logout": "Salir",
+      "nav": {
+        "properties": "Propiedades",
+        "locations": "Ubicaciones",
+        "settings": "Perfil / SEO"
+      }
+    },
+    "locations": {
+      "title": "Gestor de Ubicaciones",
+      "subtitle": "Administra las provincias y sus localidades asociadas.",
+      "tabs": {
+        "provinces": "Provincias ({{count}})",
+        "locations": "Localidades ({{count}})"
+      },
+      "form": {
+        "newProvince": "Nueva Provincia",
+        "newLocation": "Nueva Localidad",
+        "namePlaceholder": "Escribe el nombre aquí...",
+        "assignProvince": "Asignar a Provincia",
+        "select": "— Seleccionar —",
+        "adding": "Añadiendo...",
+        "add": "+ Añadir"
+      },
+      "search": {
+        "placeholderProvince": "Buscar provincia...",
+        "placeholderLocation": "Buscar localidad o provincia...",
+        "ariaLabel": "Buscar ubicación"
+      },
+      "table": {
+        "name": "Nombre",
+        "province": "Provincia",
+        "noResults": "Tristemente, no hay resultados para tu búsqueda.",
+        "empty": "No hay registros en esta sección."
+      }
+    },
+    "list": {
+      "title": "Propiedades",
+      "totalCount_one": "{{count}} propiedad en total",
+      "totalCount_other": "{{count}} propiedades en total",
+      "searchPlaceholder": "Buscar por título, referencia o localidad…",
+      "empty": "Sin propiedades aún.",
+      "noResults": "Sin resultados para tu búsqueda.",
+      "createFirst": "Crea la primera →"
+    },
+    "filters": {
+      "all": "Todas",
+      "featured": "★ Destacadas",
+      "notFeatured": "☆ No destacadas"
+    },
+    "table": {
+      "ref": "Ref.",
+      "title": "Título",
+      "location": "Ubicación",
+      "price": "Precio",
+      "status": "Estado",
+      "published": "Publicada",
+      "actions": "Acciones"
+    }
+  },
+  "settings": {
+    "title": "Configuración del Perfil",
+    "subtitle": "Gestiona la identidad y el SEO de tu inmobiliaria.",
+    "agencyName": "Nombre de la Inmobiliaria",
+    "success": "¡Cambios guardados correctamente! Refrescando..."
+  },
+  "seo": {
+    "advancedTitle": "SEO Avanzado",
+    "lockedBadge": "No incluido en tu plan",
+    "lockedMsg": "Para personalizar el SEO, contacta con nosotros en {{email}}.",
+    "browserTitle": "Título del Navegador (SEO)",
+    "browserTitleDesc": "Texto de la pestaña del navegador. Clave para el posicionamiento en Google.",
+    "globalDesc": "Descripción Global de la Web (SEO)",
+    "globalDescDesc": "Define cómo aparece tu inmobiliaria en Google. Resume quiénes sois y vuestro valor principal.",
+    "fallbackDesc": "Descripción Corta (Fallback interno)",
+    "propertyTitle": "Configuración SEO",
+    "propertyDesc": "Optimiza cómo aparece esta propiedad en Google.",
+    "googleTitle": "Título para Google (meta_title)",
+    "googleTitleDesc": "Si este campo está vacío, Google mostrará el título principal de la propiedad.",
+    "googleDesc": "Descripción para Google (meta_description)",
+    "googleDescDesc": "Este es el resumen que aparece bajo el título en los resultados de Google. Intenta no superar los 155 caracteres.",
+    "placeholderTitle": "Ej: Chalet de lujo con vistas en Aracena | Zendo",
+    "placeholderDesc": "El sistema usará un resumen automático si dejas esto vacío."
+  }
+}

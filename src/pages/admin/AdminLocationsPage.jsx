@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import AdminLayout from './AdminLayout'
 import {
   getProvinces,
@@ -13,6 +14,7 @@ import {
 import { useTenant } from '../../context/TenantContext'
 
 export default function AdminLocationsPage() {
+  const { t } = useTranslation(['common', 'admin'])
   const tenant = useTenant()
   const [activeTab, setActiveTab] = useState('provinces') // 'provinces' | 'locations'
   const [provinces, setProvinces] = useState([])
@@ -48,7 +50,7 @@ export default function AdminLocationsPage() {
       setProvinces(provs)
       setLocations(locs)
     } catch (err) {
-      setErrorMsg('Error al cargar datos. ' + err.message)
+      setErrorMsg(t('admin:properties.feedback.loadError', { message: err.message }))
     } finally {
       setLoading(false)
     }
@@ -59,7 +61,7 @@ export default function AdminLocationsPage() {
     e.preventDefault()
     if (!newName.trim()) return
     if (activeTab === 'locations' && !newProvId) {
-      setErrorMsg('Selecciona una provincia para esta localidad.')
+      setErrorMsg(t('admin:properties.feedback.selectProvinceError'))
       return
     }
 
@@ -81,7 +83,7 @@ export default function AdminLocationsPage() {
       setNewName('')
       setNewProvId('')
     } catch (error) {
-      setErrorMsg('Error al crear: ' + error.message)
+      setErrorMsg(t('admin:properties.feedback.createError', { message: error.message }))
     } finally {
       setIsSaving(false)
     }
@@ -121,7 +123,7 @@ export default function AdminLocationsPage() {
       }
       cancelEdit()
     } catch (error) {
-      setErrorMsg('Error al actualizar: ' + error.message)
+      setErrorMsg(t('admin:properties.feedback.updateError', { message: error.message }))
     } finally {
       setIsSaving(false)
     }
@@ -129,7 +131,7 @@ export default function AdminLocationsPage() {
 
   // --- HANDLERS BORRADO ---
   async function handleDelete(id) {
-    if (!window.confirm(`¿Estás seguro de que deseas eliminar permanentemente esto?`)) return
+    if (!window.confirm(t('admin:properties.feedback.deleteConfirmLocation'))) return
 
     setErrorMsg('')
     try {
@@ -144,7 +146,7 @@ export default function AdminLocationsPage() {
         setLocations(prev => prev.filter(l => l.id !== id))
       }
     } catch (error) {
-      setErrorMsg('No se pudo borrar (es posible que esté en uso por propiedades). Detalles: ' + error.message)
+      setErrorMsg(t('admin:properties.feedback.deleteErrorLocation', { message: error.message }))
     }
   }
 
@@ -163,8 +165,8 @@ export default function AdminLocationsPage() {
     <AdminLayout>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-secondary-900 tracking-tight">Gestor de Ubicaciones</h1>
-          <p className="text-secondary-500 mt-1">Administra las provincias y sus localidades asociadas.</p>
+          <h1 className="text-2xl font-bold text-secondary-900 tracking-tight">{t('admin:locations.title')}</h1>
+          <p className="text-secondary-500 mt-1">{t('admin:locations.subtitle')}</p>
         </div>
       </div>
 
@@ -183,7 +185,7 @@ export default function AdminLocationsPage() {
             }`}
           onClick={() => { setActiveTab('provinces'); cancelEdit(); setNewName(''); setErrorMsg(''); setSearchQuery('') }}
         >
-          Provincias ({provinces.length})
+          {t('admin:locations.tabs.provinces', { count: provinces.length })}
         </button>
         <button
           className={`px-4 py-2 text-sm font-semibold border-b-2 transition-colors ${activeTab === 'locations'
@@ -192,7 +194,7 @@ export default function AdminLocationsPage() {
             }`}
           onClick={() => { setActiveTab('locations'); cancelEdit(); setNewName(''); setErrorMsg(''); setSearchQuery('') }}
         >
-          Localidades ({locations.length})
+          {t('admin:locations.tabs.locations', { count: locations.length })}
         </button>
       </div>
 
@@ -200,21 +202,21 @@ export default function AdminLocationsPage() {
         <form onSubmit={handleCreate} className="flex flex-col sm:flex-row items-end gap-4">
           <div className="flex-1 w-full space-y-1">
             <label className="text-sm font-medium text-secondary-700">
-              {activeTab === 'provinces' ? 'Nueva Provincia' : 'Nueva Localidad'}
+              {activeTab === 'provinces' ? t('admin:locations.form.newProvince') : t('admin:locations.form.newLocation')}
             </label>
             <input
               type="text"
               required
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
-              placeholder="Escribe el nombre aquí..."
+              placeholder={t('admin:locations.form.namePlaceholder')}
               className="w-full px-3 py-2 border border-secondary-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
               disabled={isSaving || loading}
             />
           </div>
           {activeTab === 'locations' && (
             <div className="flex-1 w-full space-y-1">
-              <label className="text-sm font-medium text-secondary-700">Asignar a Provincia</label>
+              <label className="text-sm font-medium text-secondary-700">{t('admin:locations.form.assignProvince')}</label>
               <select
                 required
                 value={newProvId}
@@ -222,7 +224,7 @@ export default function AdminLocationsPage() {
                 className="w-full px-3 py-2 border border-secondary-300 bg-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                 disabled={isSaving || loading}
               >
-                <option value="">— Seleccionar —</option>
+                <option value="">{t('admin:locations.form.select')}</option>
                 {provinces.map((prov) => (
                   <option key={prov.id} value={prov.id}>{prov.name}</option>
                 ))}
@@ -234,14 +236,14 @@ export default function AdminLocationsPage() {
             disabled={isSaving || loading || !newName.trim() || (activeTab === 'locations' && !newProvId)}
             className="w-full sm:w-auto px-5 py-2 bg-primary-600 text-white rounded-lg text-sm font-semibold hover:bg-primary-700 disabled:opacity-50"
           >
-            {isSaving ? 'Añadiendo...' : '+ Añadir'}
+            {isSaving ? t('admin:locations.form.adding') : t('admin:locations.form.add')}
           </button>
         </form>
       </div>
 
       {/* RECUADRO DE BÚSQUEDA */}
       <div className="mb-4 flex flex-col sm:flex-row items-center gap-3">
-        <label htmlFor="search-locs" className="sr-only">Buscar ubicación</label>
+        <label htmlFor="search-locs" className="sr-only">{t('admin:locations.search.ariaLabel')}</label>
         <div className="relative w-full max-w-sm">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <svg className="h-4 w-4 text-secondary-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -253,7 +255,7 @@ export default function AdminLocationsPage() {
             type="search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={`Buscar ${activeTab === 'provinces' ? 'provincia' : 'localidad o provincia'}...`}
+            placeholder={activeTab === 'provinces' ? t('admin:locations.search.placeholderProvince') : t('admin:locations.search.placeholderLocation')}
             className="w-full pl-9 pr-4 py-2 border border-secondary-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white shadow-sm transition-shadow"
           />
         </div>
@@ -263,17 +265,17 @@ export default function AdminLocationsPage() {
       <div className="bg-white rounded-2xl shadow-sm border border-secondary-200 overflow-x-auto">
         {loading ? (
           <div className="flex items-center justify-center py-12 text-secondary-400">
-            Cargando...
+            {t('common:contact.sending')}
           </div>
         ) : (
           <table className="w-full text-sm min-w-[500px]">
             <thead className="bg-secondary-50 border-b border-secondary-200">
               <tr>
-                <th className="text-left px-4 py-3 font-semibold text-secondary-600">Nombre</th>
+                <th className="text-left px-4 py-3 font-semibold text-secondary-600">{t('admin:locations.table.name')}</th>
                 {activeTab === 'locations' && (
-                  <th className="text-left px-4 py-3 font-semibold text-secondary-600">Provincia</th>
+                  <th className="text-left px-4 py-3 font-semibold text-secondary-600">{t('admin:locations.table.province')}</th>
                 )}
-                <th className="text-right px-4 py-3 font-semibold text-secondary-600">Acciones</th>
+                <th className="text-right px-4 py-3 font-semibold text-secondary-600">{t('admin:properties.table.actions')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-secondary-100">
@@ -318,7 +320,7 @@ export default function AdminLocationsPage() {
                           disabled={!editName.trim() || isSaving}
                           className="px-3 py-1.5 rounded-lg text-xs font-medium bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors disabled:opacity-50"
                         >
-                          {isSaving ? '…' : 'Guardar'}
+                          {isSaving ? '…' : t('common:btn.save')}
                         </button>
                         <button
                           type="button"
@@ -326,7 +328,7 @@ export default function AdminLocationsPage() {
                           disabled={isSaving}
                           className="px-3 py-1.5 rounded-lg text-xs font-medium bg-secondary-100 text-secondary-600 hover:bg-secondary-200 transition-colors disabled:opacity-50"
                         >
-                          Cancelar
+                          {t('common:btn.cancel')}
                         </button>
                       </div>
                     ) : (
@@ -336,14 +338,14 @@ export default function AdminLocationsPage() {
                           onClick={() => startEdit(item)}
                           className="px-3 py-1.5 rounded-lg text-xs font-medium bg-secondary-100 text-secondary-700 hover:bg-secondary-200 transition-colors"
                         >
-                          Editar
+                          {t('common:btn.edit')}
                         </button>
                         <button
                           type="button"
                           onClick={() => handleDelete(item.id)}
                           className="px-3 py-1.5 rounded-lg text-xs font-medium bg-red-50 text-red-600 hover:bg-red-100 transition-colors disabled:opacity-50"
                         >
-                          Eliminar
+                          {t('common:btn.delete')}
                         </button>
                       </div>
                     )}
@@ -353,7 +355,7 @@ export default function AdminLocationsPage() {
               {(activeData.length === 0) && (
                 <tr>
                   <td colSpan={activeTab === 'locations' ? 3 : 2} className="px-4 py-8 text-center text-secondary-400">
-                    {searchQuery ? 'Tristemente, no hay resultados para tu búsqueda.' : 'No hay registros en esta sección.'}
+                    {searchQuery ? t('admin:locations.table.noResults') : t('admin:locations.table.empty')}
                   </td>
                 </tr>
               )}

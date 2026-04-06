@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import {
   getAdminPropertiesPaginated,
@@ -15,6 +16,7 @@ import { useTenant } from '../../context/TenantContext'
  * Desktop: tabla. Móvil: cards.
  */
 export default function AdminPropertiesPage() {
+  const { t } = useTranslation(['common', 'admin'])
   const tenant = useTenant()
   const [properties, setProperties] = useState([])
   const [totalCount, setTotalCount] = useState(0)
@@ -62,11 +64,11 @@ export default function AdminPropertiesPage() {
   }, [page, search, featuredFilter, tenant?.id])
 
   async function handleDelete(property) {
-    if (!confirm(`¿Eliminar "${property.title}"? Esta acción no se puede deshacer.`)) return
+    if (!confirm(t('admin:properties.feedback.deleteConfirm', { title: property.title }))) return
     setDeletingId(property.id)
     const { error } = await deleteProperty(property.id, tenant?.id)
     if (error) {
-      setError(`Error al eliminar: ${error.message}`)
+      setError(t('admin:properties.feedback.deleteError', { message: error.message }))
       setDeletingId(null)
     } else {
       // Recargar la página actual (o retroceder si quedó vacía)
@@ -82,7 +84,7 @@ export default function AdminPropertiesPage() {
     setUpdatingId(propertyId)
     const { error } = await updateProperty(propertyId, { status: newStatus }, tenant?.id)
     if (error) {
-      setError(`Error al actualizar estado: ${error.message}`)
+      setError(t('admin:properties.feedback.updateStatusError', { message: error.message }))
     } else {
       setProperties((prev) =>
         prev.map((p) => p.id === propertyId ? { ...p, status: newStatus } : p)
@@ -96,7 +98,7 @@ export default function AdminPropertiesPage() {
     setUpdatingId(property.id)
     const { error } = await updateProperty(property.id, { featured: newVal }, tenant?.id)
     if (error) {
-      setError(`Error al actualizar destacado: ${error.message}`)
+      setError(t('admin:properties.feedback.updateFeaturedError', { message: error.message }))
     } else {
       setProperties((prev) =>
         prev.map((p) => p.id === property.id ? { ...p, featured: newVal } : p)
@@ -113,10 +115,20 @@ export default function AdminPropertiesPage() {
     }
   }, [page])
 
+  const Spinner = () => (
+    <div className="flex items-center justify-center py-20 text-secondary-400">
+      <svg className="animate-spin h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z" />
+      </svg>
+      {t('common:contact.sending')}
+    </div>
+  )
+
   const FILTER_OPTS = [
-    { value: 'all', label: 'Todas' },
-    { value: 'featured', label: '★ Destacadas' },
-    { value: 'not_featured', label: '☆ No destacadas' },
+    { value: 'all', label: t('admin:properties.filters.all') },
+    { value: 'featured', label: t('admin:properties.filters.featured') },
+    { value: 'not_featured', label: t('admin:properties.filters.notFeatured') },
   ]
 
   const formatPrice = (price) =>
@@ -129,31 +141,21 @@ export default function AdminPropertiesPage() {
       status === 'reserved' ? 'bg-amber-50 text-amber-700 border-amber-200' :
         'bg-secondary-100 text-secondary-500 border-secondary-200'
 
-  const Spinner = () => (
-    <div className="flex items-center justify-center py-20 text-secondary-400">
-      <svg className="animate-spin h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z" />
-      </svg>
-      Cargando…
-    </div>
-  )
-
   return (
     <AdminLayout>
       {/* Header */}
       <div className="flex items-center justify-between mb-4 gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-secondary-900">Propiedades</h1>
+          <h1 className="text-2xl font-bold text-secondary-900">{t('admin:properties.list.title')}</h1>
           <p className="text-sm text-secondary-500">
-            {totalCount} propiedades en total
+            {t('admin:properties.list.totalCount', { count: totalCount })}
           </p>
         </div>
         <Link
           to="/admin/new"
           className="shrink-0 px-4 py-2.5 rounded-xl bg-primary-700 text-white text-sm font-semibold hover:bg-primary-800 transition-colors"
         >
-          + Nueva propiedad
+          {t('common:btn.newProperty')}
         </Link>
       </div>
 
@@ -166,9 +168,9 @@ export default function AdminPropertiesPage() {
           type="text"
           value={searchInput}
           onChange={(e) => handleSearchInput(e.target.value)}
-          placeholder="Buscar por título, referencia o localidad…"
+          placeholder={t('admin:properties.list.searchPlaceholder')}
           className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-secondary-200 bg-white text-sm text-secondary-800 placeholder-secondary-400 focus:outline-none focus:ring-2 focus:ring-primary-600"
-          aria-label="Buscar propiedades"
+          aria-label={t('admin:properties.list.searchPlaceholder')}
         />
         {searchInput && (
           <button
@@ -212,7 +214,7 @@ export default function AdminPropertiesPage() {
         {loading ? <Spinner /> : properties.length === 0 ? (
           <div className="text-center py-20 text-secondary-400 bg-white rounded-2xl border border-secondary-200">
             <p className="text-4xl mb-3">🏠</p>
-            <p className="font-medium">{search ? 'Sin resultados para tu búsqueda.' : 'Sin propiedades aún.'}</p>
+            <p className="font-medium">{search ? t('admin:properties.list.noResults') : t('admin:properties.list.empty')}</p>
           </div>
         ) : (
           properties.map((p) => (
@@ -230,7 +232,7 @@ export default function AdminPropertiesPage() {
                     type="button"
                     onClick={() => handleToggleFeatured(p)}
                     disabled={updatingId === p.id}
-                    aria-label={p.featured ? 'Quitar destacada' : 'Marcar como destacada'}
+                    aria-label={p.featured ? t('admin:properties.filters.notFeatured') : t('admin:properties.filters.featured')}
                     className={`text-xl leading-none transition-transform hover:scale-110 disabled:opacity-40 ${p.featured ? 'text-amber-400' : 'text-secondary-300'
                       }`}
                   >
@@ -268,9 +270,9 @@ export default function AdminPropertiesPage() {
                 aria-label="Cambiar estado"
                 className={`w-full text-sm font-medium rounded-xl px-3 py-2 border cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-600 disabled:opacity-50 transition-colors ${statusCls(p.status)}`}
               >
-                <option value="available">Disponible</option>
-                <option value="reserved">Reservado</option>
-                <option value="sold">Vendido</option>
+                <option value="available">{t('common:status.available')}</option>
+                <option value="reserved">{t('common:status.reserved')}</option>
+                <option value="sold">{t('common:status.sold')}</option>
               </select>
 
               <div className="flex gap-2">
@@ -278,7 +280,7 @@ export default function AdminPropertiesPage() {
                   to={`/admin/edit/${p.id}`}
                   className="flex-1 text-center py-2.5 rounded-xl text-sm font-semibold bg-secondary-100 text-secondary-700 hover:bg-secondary-200 transition-colors"
                 >
-                  Editar
+                  {t('common:btn.edit')}
                 </Link>
                 <button
                   type="button"
@@ -286,7 +288,7 @@ export default function AdminPropertiesPage() {
                   disabled={deletingId === p.id}
                   className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-red-50 text-red-600 hover:bg-red-100 transition-colors disabled:opacity-50"
                 >
-                  {deletingId === p.id ? '…' : 'Eliminar'}
+                  {deletingId === p.id ? '…' : t('common:btn.delete')}
                 </button>
               </div>
             </div>
@@ -299,10 +301,10 @@ export default function AdminPropertiesPage() {
         {loading ? <Spinner /> : properties.length === 0 ? (
           <div className="text-center py-20 text-secondary-400">
             <p className="text-4xl mb-3">🏠</p>
-            <p className="font-medium">{search ? 'Sin resultados para tu búsqueda.' : 'Sin propiedades aún.'}</p>
+            <p className="font-medium">{search ? t('admin:properties.list.noResults') : t('admin:properties.list.empty')}</p>
             {!search && (
               <Link to="/admin/new" className="text-primary-700 text-sm hover:underline mt-1 inline-block">
-                Crea la primera →
+                {t('admin:properties.list.createFirst')}
               </Link>
             )}
           </div>
@@ -312,12 +314,12 @@ export default function AdminPropertiesPage() {
               <tr>
                 <th className="w-8 px-4 py-3" title="Destacada" />
                 <th className="w-14 px-2 py-3" />
-                <th className="text-left px-4 py-3 font-semibold text-secondary-600">Ref.</th>
-                <th className="text-left px-4 py-3 font-semibold text-secondary-600">Título</th>
-                <th className="text-left px-4 py-3 font-semibold text-secondary-600">Ubicación</th>
-                <th className="text-left px-4 py-3 font-semibold text-secondary-600">Precio</th>
-                <th className="text-left px-4 py-3 font-semibold text-secondary-600">Estado</th>
-                <th className="text-left px-4 py-3 font-semibold text-secondary-600">Publicada</th>
+                <th className="text-left px-4 py-3 font-semibold text-secondary-600">{t('admin:properties.table.ref')}</th>
+                <th className="text-left px-4 py-3 font-semibold text-secondary-600">{t('admin:properties.table.title')}</th>
+                <th className="text-left px-4 py-3 font-semibold text-secondary-600">{t('admin:properties.table.location')}</th>
+                <th className="text-left px-4 py-3 font-semibold text-secondary-600">{t('admin:properties.table.price')}</th>
+                <th className="text-left px-4 py-3 font-semibold text-secondary-600">{t('admin:properties.table.status')}</th>
+                <th className="text-left px-4 py-3 font-semibold text-secondary-600">{t('admin:properties.table.published')}</th>
                 <th className="px-4 py-3" />
               </tr>
             </thead>
@@ -329,7 +331,7 @@ export default function AdminPropertiesPage() {
                       type="button"
                       onClick={() => handleToggleFeatured(p)}
                       disabled={updatingId === p.id}
-                      aria-label={p.featured ? 'Quitar destacada' : 'Marcar como destacada'}
+                      aria-label={p.featured ? t('admin:properties.filters.notFeatured') : t('admin:properties.filters.featured')}
                       className={`text-xl leading-none transition-transform hover:scale-125 disabled:opacity-40 ${p.featured ? 'text-amber-400' : 'text-secondary-300 hover:text-amber-300'
                         }`}
                     >
@@ -355,9 +357,9 @@ export default function AdminPropertiesPage() {
                       aria-label="Cambiar estado"
                       className={`text-xs font-medium rounded-lg px-2 py-1 border cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-600 disabled:opacity-50 transition-colors ${statusCls(p.status)}`}
                     >
-                      <option value="available">Disponible</option>
-                      <option value="reserved">Reservado</option>
-                      <option value="sold">Vendido</option>
+                      <option value="available">{t('common:status.available')}</option>
+                      <option value="reserved">{t('common:status.reserved')}</option>
+                      <option value="sold">{t('common:status.sold')}</option>
                     </select>
                     {updatingId === p.id && <span className="ml-1 text-xs text-secondary-400">...</span>}
                   </td>
@@ -370,7 +372,7 @@ export default function AdminPropertiesPage() {
                         to={`/admin/edit/${p.id}`}
                         className="px-3 py-1.5 rounded-lg text-xs font-medium bg-secondary-100 text-secondary-700 hover:bg-secondary-200 transition-colors"
                       >
-                        Editar
+                        {t('common:btn.edit')}
                       </Link>
                       <button
                         type="button"
@@ -378,7 +380,7 @@ export default function AdminPropertiesPage() {
                         disabled={deletingId === p.id}
                         className="px-3 py-1.5 rounded-lg text-xs font-medium bg-red-50 text-red-600 hover:bg-red-100 transition-colors disabled:opacity-50"
                       >
-                        {deletingId === p.id ? '…' : 'Eliminar'}
+                        {deletingId === p.id ? '…' : t('common:btn.delete')}
                       </button>
                     </div>
                   </td>
@@ -398,7 +400,7 @@ export default function AdminPropertiesPage() {
             disabled={page === 1}
             className="px-3 py-1.5 rounded-lg text-sm font-medium bg-white border border-secondary-200 text-secondary-600 hover:bg-secondary-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
-            ← Anterior
+            {t('common:filters.prev')}
           </button>
 
           {Array.from({ length: totalPages }, (_, i) => i + 1)
@@ -433,7 +435,7 @@ export default function AdminPropertiesPage() {
             disabled={page === totalPages}
             className="px-3 py-1.5 rounded-lg text-sm font-medium bg-white border border-secondary-200 text-secondary-600 hover:bg-secondary-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
-            Siguiente →
+            {t('common:filters.next')}
           </button>
         </div>
       )}
