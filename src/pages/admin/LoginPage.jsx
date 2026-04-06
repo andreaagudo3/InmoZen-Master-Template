@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { signIn } from '../../services/adminService'
 import { useTenant } from '../../context/TenantContext'
@@ -7,6 +8,7 @@ import { useTenant } from '../../context/TenantContext'
  * LoginPage — Acceso al panel de administración via Supabase Auth.
  */
 export default function LoginPage() {
+  const { t } = useTranslation(['common', 'admin'])
   const navigate = useNavigate()
   const tenant = useTenant()
   const [form, setForm] = useState({ email: '', password: '' })
@@ -21,7 +23,7 @@ export default function LoginPage() {
     const { error } = await signIn(form.email, form.password)
 
     if (error) {
-      setErrorMsg('Credenciales incorrectas. Verifica tu email y contraseña.')
+      setErrorMsg(t('admin:properties.feedback.loginError'))
       setStatus('error')
     } else {
       navigate('/admin', { replace: true })
@@ -39,7 +41,7 @@ export default function LoginPage() {
               {tenant?.name || "Zendo"}
             </span>
           </div>
-          <p className="text-secondary-400 text-sm mt-3">Panel de Administración</p>
+          <p className="text-secondary-400 text-sm mt-3">{t('admin:login.subtitle')}</p>
         </div>
 
         <form
@@ -47,7 +49,7 @@ export default function LoginPage() {
           className="bg-secondary-900 border border-secondary-800 rounded-2xl p-8 space-y-5 shadow-xl"
           noValidate
         >
-          <h1 className="text-white text-xl font-bold text-center">Iniciar sesión</h1>
+          <h1 className="text-white text-xl font-bold text-center">{t('admin:login.title')}</h1>
 
           {/* Error */}
           {status === 'error' && (
@@ -59,7 +61,7 @@ export default function LoginPage() {
           {/* Email */}
           <div>
             <label htmlFor="login-email" className="block text-sm font-medium text-secondary-300 mb-1">
-              Email
+              {t('admin:login.email')}
             </label>
             <input
               id="login-email"
@@ -76,7 +78,7 @@ export default function LoginPage() {
           {/* Password */}
           <div>
             <label htmlFor="login-password" className="block text-sm font-medium text-secondary-300 mb-1">
-              Contraseña
+              {t('admin:login.password')}
             </label>
             <input
               id="login-password"
@@ -101,9 +103,9 @@ export default function LoginPage() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z" />
                 </svg>
-                Entrando…
+                {t('admin:login.entering')}
               </span>
-            ) : 'Entrar'}
+            ) : t('admin:login.enter')}
           </button>
         </form>
       </div>

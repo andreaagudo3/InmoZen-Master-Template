@@ -12,6 +12,8 @@
     "edit":         "Editar",
     "delete":       "Eliminar",
     "save":         "Guardar",
+    "saveChanges":  "Guardar cambios",
+    "createProperty": "Crear propiedad",
     "cancel":       "Cancelar"
   },
   "status": {
