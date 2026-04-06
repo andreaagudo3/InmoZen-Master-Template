@@ -57,6 +57,13 @@
     "orCallUs":        "O llámanos directamente",
     "orContactUs":    "O contáctanos directamente",
     "msgGeneral":     "Hola, me gustaría obtener más información sobre vuestros servicios inmobiliarios.",
-    "msgProperty":    "Hola, estoy interesado/a en esta propiedad: {{title}}\n{{url}}\n\n¿Podéis darme más información?"
+    "msgProperty":    "Hola, estoy interesado/a en esta propiedad: {{title}}\n{{url}}\n\n¿Podéis darme más información?",
+    "demoTitle":      "👀 Prueba WhatsApp en tu móvil",
+    "demoDesc":       "Esta es una demo. Intóduce tu própio número para ver exactamente cómo recibirías el mensaje de contacto.",
+    "demoPrivacy":    "🔒 Tu número no se guarda ni comparte. Solo se usa para esta prueba.",
+    "demoPlaceholder": "+34 600 000 000",
+    "demoLabel":      "Tu número de WhatsApp",
+    "demoBtn":        "Abrir WhatsApp",
+    "demoCancel":     "Cancelar"
   }
 }

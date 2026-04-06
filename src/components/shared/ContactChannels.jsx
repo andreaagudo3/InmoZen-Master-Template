@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useTenant } from '../../context/TenantContext'
+import { DemoWhatsAppModal } from './DemoWhatsAppModal'
 
 const WhatsAppIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -10,17 +12,19 @@ const WhatsAppIcon = () => (
 /**
  * ContactChannels — Canales de contacto alternativos.
  * Orden: WhatsApp (si habilitado) → "Llámanos directamente" con teléfono.
+ * En modo demo intercepta los clicks de WhatsApp y muestra el modal.
  *
  * @param {{ propertyTitle?: string }} props
- *   propertyTitle — Si se pasa, usa el mensaje contextual de propiedad.
- *                   Si no, usa el mensaje genérico de contacto.
  */
 export function ContactChannels({ propertyTitle }) {
   const { t } = useTranslation('common')
   const tenant = useTenant()
+  const [showDemoModal, setShowDemoModal] = useState(false)
+
   const phones = tenant?.phones ?? []
   const hasWhatsApp = tenant?.features?.whatsappButton && phones.length > 0
   const hasPhone = phones.length > 0
+  const isDemo = tenant?.isDemoMode
 
   if (!hasWhatsApp && !hasPhone) return null
 
@@ -33,41 +37,59 @@ export function ContactChannels({ propertyTitle }) {
 
   const waLink = `https://wa.me/${rawPhone}?text=${encodeURIComponent(message)}`
 
+  function handleWhatsAppClick(e) {
+    if (isDemo) {
+      e.preventDefault()
+      setShowDemoModal(true)
+    }
+    // In production: let the <a> navigate normally
+  }
+
   return (
-    <div className="pt-4 border-t border-secondary-100 space-y-3">
-
-      {/* WhatsApp */}
-      {hasWhatsApp && (
-        <a
-          href={waLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[#25D366] text-white font-semibold text-sm hover:bg-[#128C7E] transition-colors"
-          aria-label={t('whatsapp.contactBtn')}
-        >
-          <WhatsAppIcon />
-          {t('whatsapp.contactBtn')}
-        </a>
+    <>
+      {showDemoModal && (
+        <DemoWhatsAppModal
+          message={message}
+          onClose={() => setShowDemoModal(false)}
+        />
       )}
 
-      {/* Teléfono */}
-      {hasPhone && (
-        <div className="text-center">
-          <p className="text-xs text-secondary-400 mb-1.5">{t('whatsapp.orCallUs')}</p>
-          <div className="flex flex-wrap justify-center gap-x-3 gap-y-1">
-            {phones.map((p) => (
-              <a
-                key={p}
-                href={`tel:${p.replace(/\s+/g, '')}`}
-                className="text-primary-700 font-semibold hover:text-primary-900 transition-colors"
-                aria-label={`${t('whatsapp.orCallUs')} ${p}`}
-              >
-                {p}
-              </a>
-            ))}
+      <div className="pt-4 border-t border-secondary-100 space-y-3">
+
+        {/* WhatsApp */}
+        {hasWhatsApp && (
+          <a
+            href={waLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={handleWhatsAppClick}
+            className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[#25D366] text-white font-semibold text-sm hover:bg-[#128C7E] transition-colors"
+            aria-label={t('whatsapp.contactBtn')}
+          >
+            <WhatsAppIcon />
+            {t('whatsapp.contactBtn')}
+          </a>
+        )}
+
+        {/* Teléfono */}
+        {hasPhone && (
+          <div className="text-center">
+            <p className="text-xs text-secondary-400 mb-1.5">{t('whatsapp.orCallUs')}</p>
+            <div className="flex flex-wrap justify-center gap-x-3 gap-y-1">
+              {phones.map((p) => (
+                <a
+                  key={p}
+                  href={`tel:${p.replace(/\s+/g, '')}`}
+                  className="text-primary-700 font-semibold hover:text-primary-900 transition-colors"
+                  aria-label={`${t('whatsapp.orCallUs')} ${p}`}
+                >
+                  {p}
+                </a>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   )
 }
