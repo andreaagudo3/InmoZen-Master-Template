@@ -140,6 +140,8 @@ export default function PropertyFormPage() {
 
     const generatedSlug = slugify(form.title)
 
+    const seoEnabled = tenant?.features?.customSeo === true
+
     const payload = {
       title: form.title.trim(),
       description: form.description.trim() || null,
@@ -153,8 +155,11 @@ export default function PropertyFormPage() {
       status: form.status,
       published: form.published,
       featured: form.featured,
-      meta_description: form.meta_description.trim() || null,
-      meta_title: form.meta_title.trim() || null,
+      // SEO fields — only sent when the feature is active
+      ...(seoEnabled && {
+        meta_description: form.meta_description.trim() || null,
+        meta_title: form.meta_title.trim() || null,
+      }),
       tenant_id: tenant?.id || null,
     }
 
@@ -477,46 +482,83 @@ export default function PropertyFormPage() {
           </section>
 
           {/* Configuración SEO */}
-          <section className="bg-white rounded-2xl border border-secondary-200 p-6 space-y-4 shadow-sm">
-            <div className="flex justify-between items-center">
-              <h2 className="font-semibold text-secondary-700 text-sm uppercase tracking-wide">Configuración SEO</h2>
-              <span className={`text-xs font-medium ${form.meta_description.length > 155 ? 'text-red-500' : 'text-secondary-400'}`}>
-                {form.meta_description.length} / 155
-              </span>
-            </div>
+          {(() => {
+            const seoEnabled = tenant?.features?.customSeo === true
+            const fieldCls = `w-full px-4 py-2.5 rounded-xl border border-secondary-200 text-sm text-secondary-900 placeholder-secondary-400 outline-none transition ${
+              seoEnabled
+                ? 'bg-white focus:ring-2 focus:ring-primary-600 focus:border-transparent'
+                : 'bg-secondary-50 opacity-50 cursor-not-allowed'
+            }`
+            return (
+              <section className="bg-white rounded-2xl border border-secondary-200 p-6 space-y-4 shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="font-semibold text-secondary-700 text-sm uppercase tracking-wide">Configuración SEO</h2>
+                    {seoEnabled && (
+                      <p className="text-xs text-secondary-400 mt-0.5">Optimiza cómo aparece esta propiedad en Google.</p>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {seoEnabled && (
+                      <span className={`text-xs font-medium ${form.meta_description.length > 155 ? 'text-red-500' : 'text-secondary-400'}`}>
+                        {form.meta_description.length} / 155
+                      </span>
+                    )}
+                    {!seoEnabled && (
+                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" /></svg>
+                        No incluido en tu plan
+                      </span>
+                    )}
+                  </div>
+                </div>
 
-            <div className="grid grid-cols-1 gap-4">
-              <Field label="Título para Google (meta_title)" htmlFor="f-mtitle">
-                <input
-                  id="f-mtitle"
-                  name="meta_title"
-                  type="text"
-                  value={form.meta_title}
-                  onChange={handleChange}
-                  placeholder={form.meta_title ? '' : 'Ej: Chalet de lujo con vistas en Aracena | Zendo'}
-                  className={INPUT_CLS}
-                />
-                <p className="text-xs text-secondary-400 mt-1 italic">
-                  Si este campo está vacío, Google mostrará el título principal de la propiedad.
-                </p>
-              </Field>
+                {!seoEnabled && (
+                  <div className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800 leading-relaxed">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" /></svg>
+                    <span>
+                      Para personalizar el SEO de cada propiedad, contacta con nosotros en{' '}
+                      <a href="mailto:contrataciones@zendoapp.es" className="font-semibold underline underline-offset-2 hover:text-amber-900">
+                        contrataciones@zendoapp.es
+                      </a>.
+                    </span>
+                  </div>
+                )}
 
-              <Field label="Descripción para Google (meta_description)" htmlFor="f-meta">
-                <textarea
-                  id="f-meta"
-                  name="meta_description"
-                  rows={3}
-                  value={form.meta_description}
-                  onChange={handleChange}
-                  placeholder={form.meta_description ? '' : 'El sistema usará un resumen automático si dejas esto vacío.'}
-                  className={INPUT_CLS + ' resize-none'}
-                />
-                <p className="text-xs text-secondary-400 mt-1 italic leading-relaxed">
-                  Este es el resumen que aparece bajo el título en los resultados de Google. Intenta no superar los 155 caracteres.
-                </p>
-              </Field>
-            </div>
-          </section>
+                <fieldset disabled={!seoEnabled} className="grid grid-cols-1 gap-4">
+                  <Field label="Título para Google (meta_title)" htmlFor="f-mtitle">
+                    <input
+                      id="f-mtitle"
+                      name="meta_title"
+                      type="text"
+                      value={form.meta_title}
+                      onChange={handleChange}
+                      placeholder={form.meta_title ? '' : 'Ej: Chalet de lujo con vistas en Aracena | Zendo'}
+                      className={fieldCls}
+                    />
+                    <p className="text-xs text-secondary-400 mt-1 italic">
+                      Si este campo está vacío, Google mostrará el título principal de la propiedad.
+                    </p>
+                  </Field>
+
+                  <Field label="Descripción para Google (meta_description)" htmlFor="f-meta">
+                    <textarea
+                      id="f-meta"
+                      name="meta_description"
+                      rows={3}
+                      value={form.meta_description}
+                      onChange={handleChange}
+                      placeholder={form.meta_description ? '' : 'El sistema usará un resumen automático si dejas esto vacío.'}
+                      className={fieldCls + ' resize-none'}
+                    />
+                    <p className="text-xs text-secondary-400 mt-1 italic leading-relaxed">
+                      Este es el resumen que aparece bajo el título en los resultados de Google. Intenta no superar los 155 caracteres.
+                    </p>
+                  </Field>
+                </fieldset>
+              </section>
+            )
+          })()}
 
           {/* Actions */}
           <div className="flex items-center gap-3 justify-end pb-8">
