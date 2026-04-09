@@ -2,8 +2,8 @@
  * imageService.js — Property image management for the multi-tenant system.
  *
  * Storage path convention:
- *   {tenant.slug}/{property.slug}/{filename}
- *   e.g. parque-sierra/casa-rural-aracena/1700000000000-photo.jpg
+ *   {tenant.id}/{property.id}/{filename}
+ *   e.g. 123e4567-e89b-12d3.../123e4567-e89b-12d3.../1700000000000-photo.jpg
  *
  * DB table: property_images
  *   id, property_id, tenant_id, url, path, is_cover, order_index, created_at
@@ -28,7 +28,7 @@ export const IMAGE_PLACEHOLDER = '/images/property-placeholder.jpg'
 export async function uploadPropertyImage(file, property, tenant) {
   const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_')
   const fileName = `${Date.now()}-${safeName}`
-  const path     = `${tenant.slug}/${property.slug}/${fileName}`
+  const path     = `${tenant.id}/${property.id}/${fileName}`
 
   const { error: storageError } = await supabase.storage
     .from(IMAGE_BUCKET)

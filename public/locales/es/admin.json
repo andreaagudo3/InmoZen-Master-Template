@@ -158,9 +158,9 @@
     "fallbackDesc": "Descripción Corta (Fallback interno)",
     "propertyTitle": "Configuración SEO",
     "propertyDesc": "Optimiza cómo aparece esta propiedad en Google.",
-    "googleTitle": "Título para Google (meta_title)",
+    "googleTitle": "Título para Google",
     "googleTitleDesc": "Si este campo está vacío, Google mostrará el título principal de la propiedad.",
-    "googleDesc": "Descripción para Google (meta_description)",
+    "googleDesc": "Descripción para Google",
     "googleDescDesc": "Este es el resumen que aparece bajo el título en los resultados de Google. Intenta no superar los 155 caracteres.",
     "placeholderTitle": "Ej: Chalet de lujo con vistas en Aracena | Zendo",
     "placeholderDesc": "El sistema usará un resumen automático si dejas esto vacío."

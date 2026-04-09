@@ -140,9 +140,9 @@
     "fallbackDesc": "Short Description (Internal fallback)",
     "propertyTitle": "SEO Configuration",
     "propertyDesc": "Optimize how this property appears in Google.",
-    "googleTitle": "Google Title (meta_title)",
+    "googleTitle": "Google Title",
     "googleTitleDesc": "If this field is empty, Google will show the main title of the property.",
-    "googleDesc": "Google Description (meta_description)",
+    "googleDesc": "Google Description",
     "googleDescDesc": "This is the summary that appears under the title in Google results. Try not to exceed 155 characters.",
     "placeholderTitle": "E.g.: Luxury villa with views in Aracena | Zendo",
     "placeholderDesc": "The system will use an automatic summary if you leave this empty."
