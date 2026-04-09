@@ -5,6 +5,7 @@ import { getFeatures } from '../../services/adminService'
 export default function PropertyFeatureManager({ tenant, selectedFeatureIds, onChange }) {
   const { t } = useTranslation(['admin', 'common', 'features'])
   const [groupedFeatures, setGroupedFeatures] = useState({})
+  const [allFeatures, setAllFeatures] = useState([])
   const [categories, setCategories] = useState([])
   const [activeTab, setActiveTab] = useState('')
   const [loading, setLoading] = useState(true)
@@ -16,6 +17,7 @@ export default function PropertyFeatureManager({ tenant, selectedFeatureIds, onC
     async function loadFeatures() {
       setLoading(true)
       const data = await getFeatures()
+      setAllFeatures(data || [])
       const grouped = data.reduce((acc, feat) => {
         const cat = feat.category || 'general'
         if (!acc[cat]) acc[cat] = []
@@ -66,9 +68,17 @@ export default function PropertyFeatureManager({ tenant, selectedFeatureIds, onC
   return (
     <section className="bg-white rounded-2xl border border-secondary-200 p-6 shadow-sm space-y-4 relative overflow-hidden">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="font-semibold text-secondary-700 text-sm uppercase tracking-wide">
-          {t('admin:properties.features.title', 'Características Avanzadas')}
-        </h2>
+        <div>
+          <h2 className="font-semibold text-secondary-700 text-sm uppercase tracking-wide">
+            {t('admin:properties.features.title', 'Características Avanzadas')}
+          </h2>
+          {hasAccess && (
+            <div className="flex items-center gap-2 mt-2 px-3 py-1.5 bg-amber-50/50 border border-amber-200/50 text-amber-700 text-xs font-medium rounded-lg w-fit">
+              <span className="text-base leading-none">⚠️</span>
+              {t('admin:properties.features.saveReminder', 'Recuerda guardar los cambios al final del formulario para no perder tu selección.')}
+            </div>
+          )}
+        </div>
         {!hasAccess && (
           <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
@@ -89,6 +99,37 @@ export default function PropertyFeatureManager({ tenant, selectedFeatureIds, onC
       )}
 
       <div className={!hasAccess ? 'opacity-60 transition-all cursor-not-allowed' : ''}>
+        
+        {/* Selected Features Tags */}
+        {selectedFeatureIds.length > 0 && (
+          <div className="mb-6 pb-6 border-b border-secondary-100 border-dashed">
+            <p className="text-xs font-semibold text-secondary-500 uppercase tracking-wide mb-3">Características Seleccionadas</p>
+            <div className="flex flex-wrap gap-2">
+              {selectedFeatureIds.map(fid => {
+                const feat = allFeatures.find(f => f.id === fid)
+                if (!feat) return null
+                return (
+                  <button
+                    key={fid}
+                    type="button"
+                    disabled={!hasAccess}
+                    onClick={() => handleToggle(fid)}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-primary-50 text-primary-700 border border-primary-200 hover:bg-red-50 hover:text-red-700 hover:border-red-200 transition-colors ${!hasAccess ? 'pointer-events-none' : ''}`}
+                    title="Clic para deseleccionar"
+                  >
+                    {t(feat.feature_key, { ns: 'features', defaultValue: formatFallback(feat.feature_key) })}
+                    {hasAccess && (
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    )}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
         {/* Tabs for categories */}
         <div className="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-none border-b border-secondary-100">
           {categories.map((cat) => (

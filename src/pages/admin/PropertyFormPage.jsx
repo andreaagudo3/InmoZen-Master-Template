@@ -263,6 +263,15 @@ export default function PropertyFormPage() {
   // Tracks the cover URL locally so we can refresh the preview without a full reload.
   // Seeded from the DB when the property is loaded (see useEffect above).
   const [coverImageUrl, setCoverImageUrl] = useState(null)
+  const [coverUpdatedStatus, setCoverUpdatedStatus] = useState(false)
+
+  function handleCoverChange(url) {
+    setCoverImageUrl(url)
+    setCoverUpdatedStatus(true)
+    setTimeout(() => {
+      setCoverUpdatedStatus(false)
+    }, 3500)
+  }
 
   // ─── Render ───────────────────────────────────────────────────────────────
 
@@ -281,7 +290,7 @@ export default function PropertyFormPage() {
 
   return (
     <AdminLayout>
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
           <button
@@ -469,6 +478,13 @@ export default function PropertyFormPage() {
           {/* Imágenes */}
           <section className="bg-white rounded-2xl border border-secondary-200 p-6 shadow-sm space-y-3">
             <h2 className="font-semibold text-secondary-700 text-sm uppercase tracking-wide">Imágenes</h2>
+            
+            {coverUpdatedStatus && (
+              <div className="mb-4 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-xl px-4 py-3 animate-fade-in-down" style={{ animationDuration: '0.3s' }}>
+                ✅ Portada de la propiedad actualizada correctamente.
+              </div>
+            )}
+
             {!isEdit && (
               <p className="text-xs text-secondary-400">
                 Las imágenes se pueden subir después de guardar la propiedad.
@@ -491,7 +507,7 @@ export default function PropertyFormPage() {
             <ImageUploader
               property={imageProperty}
               tenant={tenant}
-              onCoverChange={(url) => setCoverImageUrl(url)}
+              onCoverChange={handleCoverChange}
             />
           </section>
 

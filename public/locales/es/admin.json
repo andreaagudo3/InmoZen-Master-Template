@@ -50,6 +50,7 @@
     "editTitle": "Editar Propiedad",
     "features": {
       "title": "Características y Comodidades",
+      "saveReminder": "Recuerda guardar los cambios al final del formulario para no perder tu selección.",
       "categories": {
         "climate": "Climatización",
         "exterior": "Exterior",
