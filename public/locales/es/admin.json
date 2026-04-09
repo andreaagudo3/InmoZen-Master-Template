@@ -48,6 +48,22 @@
     "title": "Gestión de Propiedades",
     "newTitle": "Nueva Propiedad",
     "editTitle": "Editar Propiedad",
+    "features": {
+      "title": "Características y Comodidades",
+      "categories": {
+        "climate": "Climatización",
+        "exterior": "Exterior",
+        "interior": "Interior",
+        "general": "General",
+        "security": "Seguridad",
+        "amenities": "Equipamiento",
+        "building": "Edificio",
+        "luxury": "Lujo"
+      },
+      "lockedTitle": "No incluido en tu plan",
+      "lockedMsg": "Para contratar características avanzadas y destacar en los filtros de búsqueda, contacta con contrataciones@zendoapp.es",
+      "upgradeBtn": "Mejorar mi plan"
+    },
     "form": {
       "basicData": "Datos básicos",
       "title": "Título *",

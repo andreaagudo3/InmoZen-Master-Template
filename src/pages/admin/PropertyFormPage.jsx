@@ -4,12 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom'
 import {
   createProperty, updateProperty,
   getAdminPropertiesPaginated, getProvinces, createLocation, createProvince,
-  getPropertyById
+  getPropertyById, getPropertyFeatures, syncPropertyFeatures
 } from '../../services/adminService'
 import { supabase } from '../../services/supabaseClient'
 import { useTenant } from '../../context/TenantContext'
 import { slugify, generateReferenceCode } from '../../utils/slugify'
 import ImageUploader from '../../components/admin/ImageUploader'
+import PropertyFeatureManager from '../../components/admin/PropertyFeatureManager'
 import AdminLayout from './AdminLayout'
 
 const EMPTY_FORM = {
@@ -46,6 +47,7 @@ export default function PropertyFormPage() {
   const [status, setStatus] = useState('idle') // idle | saving | success | error
   const [errorMsg, setErrorMsg] = useState('')
   const [loadingProp, setLoadingProp] = useState(isEdit)
+  const [selectedFeatureIds, setSelectedFeatureIds] = useState([])
 
   // Locations data
   const [provinces, setProvinces] = useState([])
@@ -115,7 +117,13 @@ export default function PropertyFormPage() {
         const loc = locations.find((l) => l.id === prop.location_id)
         if (loc) setSelectedProvince(loc.province_id)
       }
-      setLoadingProp(false)
+
+      // Load existing features
+      getPropertyFeatures(id).then((featureIds) => {
+        setSelectedFeatureIds(featureIds || [])
+      }).finally(() => {
+        setLoadingProp(false)
+      })
     })
   }, [id, isEdit, navigate, locations, tenant?.id])
 
@@ -181,6 +189,10 @@ export default function PropertyFormPage() {
       setStatus('error')
       return
     }
+
+    // Sync features
+    const savedPropertyId = isEdit ? id : result.data.id
+    await syncPropertyFeatures(savedPropertyId, selectedFeatureIds)
 
     setStatus('success')
 
@@ -482,6 +494,13 @@ export default function PropertyFormPage() {
               onCoverChange={(url) => setCoverImageUrl(url)}
             />
           </section>
+
+          {/* Características */}
+          <PropertyFeatureManager
+            tenant={tenant}
+            selectedFeatureIds={selectedFeatureIds}
+            onChange={setSelectedFeatureIds}
+          />
 
           {/* Configuración SEO */}
           {(() => {
