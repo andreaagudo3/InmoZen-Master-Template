@@ -1,4 +1,49 @@
 {
+  "login": {
+    "subtitle": "Panel de Administración",
+    "title": "Iniciar sesión",
+    "email": "Email",
+    "password": "Contraseña",
+    "entering": "Entrando…",
+    "enter": "Entrar"
+  },
+  "layout": {
+    "subtitle": "Panel Admin",
+    "logout": "Salir",
+    "nav": {
+      "properties": "Propiedades",
+      "locations": "Ubicaciones",
+      "settings": "Perfil / SEO"
+    }
+  },
+  "locations": {
+    "title": "Gestor de Ubicaciones",
+    "subtitle": "Administra las provincias y sus localidades asociadas.",
+    "tabs": {
+      "provinces": "Provincias ({{count}})",
+      "locations": "Localidades ({{count}})"
+    },
+    "form": {
+      "newProvince": "Nueva Provincia",
+      "newLocation": "Nueva Localidad",
+      "namePlaceholder": "Escribe el nombre aquí...",
+      "assignProvince": "Asignar a Provincia",
+      "select": "— Seleccionar —",
+      "adding": "Añadiendo...",
+      "add": "+ Añadir"
+    },
+    "search": {
+      "placeholderProvince": "Buscar provincia...",
+      "placeholderLocation": "Buscar localidad o provincia...",
+      "ariaLabel": "Buscar ubicación"
+    },
+    "table": {
+      "name": "Nombre",
+      "province": "Provincia",
+      "noResults": "Tristemente, no hay resultados para tu búsqueda.",
+      "empty": "No hay registros en esta sección."
+    }
+  },
   "properties": {
     "title": "Gestión de Propiedades",
     "newTitle": "Nueva Propiedad",
@@ -54,51 +99,6 @@
       "selectProvinceError": "Selecciona una provincia para esta localidad.",
       "loginError": "Credenciales incorrectas. Verifica tu email y contraseña."
     },
-    "login": {
-      "subtitle": "Panel de Administración",
-      "title": "Iniciar sesión",
-      "email": "Email",
-      "password": "Contraseña",
-      "entering": "Entrando…",
-      "enter": "Entrar"
-    },
-    "layout": {
-      "subtitle": "Panel Admin",
-      "logout": "Salir",
-      "nav": {
-        "properties": "Propiedades",
-        "locations": "Ubicaciones",
-        "settings": "Perfil / SEO"
-      }
-    },
-    "locations": {
-      "title": "Gestor de Ubicaciones",
-      "subtitle": "Administra las provincias y sus localidades asociadas.",
-      "tabs": {
-        "provinces": "Provincias ({{count}})",
-        "locations": "Localidades ({{count}})"
-      },
-      "form": {
-        "newProvince": "Nueva Provincia",
-        "newLocation": "Nueva Localidad",
-        "namePlaceholder": "Escribe el nombre aquí...",
-        "assignProvince": "Asignar a Provincia",
-        "select": "— Seleccionar —",
-        "adding": "Añadiendo...",
-        "add": "+ Añadir"
-      },
-      "search": {
-        "placeholderProvince": "Buscar provincia...",
-        "placeholderLocation": "Buscar localidad o provincia...",
-        "ariaLabel": "Buscar ubicación"
-      },
-      "table": {
-        "name": "Nombre",
-        "province": "Provincia",
-        "noResults": "Tristemente, no hay resultados para tu búsqueda.",
-        "empty": "No hay registros en esta sección."
-      }
-    },
     "list": {
       "title": "Propiedades",
       "totalCount_one": "{{count}} propiedad en total",
@@ -106,7 +106,9 @@
       "searchPlaceholder": "Buscar por título, referencia o localidad…",
       "empty": "Sin propiedades aún.",
       "noResults": "Sin resultados para tu búsqueda.",
-      "createFirst": "Crea la primera →"
+      "createFirst": "Crea la primera →",
+      "limitReachedBtn": "(Límite alcanzado)",
+      "limitReachedTooltip": "Has alcanzado el límite de propiedades de tu plan"
     },
     "filters": {
       "all": "Todas",

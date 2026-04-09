@@ -154,10 +154,10 @@ export default function AdminPropertiesPage() {
         {tenant?.effective_features?.propertyLimit && totalCount >= tenant.effective_features.propertyLimit ? (
           <button
             disabled
-            title="Has alcanzado el límite de propiedades de tu plan"
+            title={t('admin:properties.list.limitReachedTooltip')}
             className="shrink-0 px-4 py-2.5 rounded-xl bg-secondary-300 text-white text-sm font-semibold cursor-not-allowed transition-colors"
           >
-            {t('common:btn.newProperty')} (Límite alcanzado)
+            {t('common:btn.newProperty')} {t('admin:properties.list.limitReachedBtn')}
           </button>
         ) : (
           <Link
