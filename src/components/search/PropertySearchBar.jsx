@@ -83,7 +83,7 @@ export function PropertySearchBar({
         </div>
 
         {/* Botón Más filtros */}
-        {tenant?.features?.advancedFilters && (
+        {tenant?.effective_features?.advancedFilters && (
           <button
             type="button"
             onClick={onOpenModal}
@@ -120,7 +120,7 @@ export function PropertySearchBar({
         </div>
 
         {/* Botón Filtros mobile */}
-        {tenant?.features?.advancedFilters && (
+        {tenant?.effective_features?.advancedFilters && (
           <button
             type="button"
             onClick={onOpenModal}

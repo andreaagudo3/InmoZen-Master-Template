@@ -71,7 +71,6 @@ export function DemoWhatsAppModal({ message, onClose }) {
               error ? 'border-red-400 focus:ring-red-400' : 'border-secondary-200 focus:ring-[#25D366]'
             }`}
             onKeyDown={(e) => e.key === 'Enter' && handleOpen()}
-            autoFocus
           />
           {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
         </div>

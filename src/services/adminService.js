@@ -65,6 +65,8 @@ const ADMIN_FIELDS = [
   'meta_description',
   'meta_title',
   'image_cover_url',
+  'internal_notes', 'owner_contact',
+  'occupancy_status', 'condition', 'energy_rating', 'is_luxury', 'is_bank_owned', 'tags',
   'locations!properties_location_id_fkey(id, name, slug, provinces(name))'
 ].join(', ')
 
@@ -406,3 +408,77 @@ export async function listImages(referenceCode) {
       return { name: f.name, publicUrl: data.publicUrl }
     })
 }
+
+// ─── Features ───────────────────────────────────────────────────────────────
+
+/**
+ * Obtiene todas las características disponibles (maestro).
+ */
+export async function getFeatures() {
+  const { data, error } = await supabase
+    .from('features')
+    .select('id, feature_key, category')
+    .order('category')
+    .order('feature_key')
+
+  if (error) {
+    console.error('[adminService] getFeatures:', error.message)
+    return []
+  }
+  return data ?? []
+}
+
+/**
+ * Obtiene las características asignadas a una propiedad.
+ */
+export async function getPropertyFeatures(propertyId) {
+  if (!propertyId) return []
+
+  const { data, error } = await supabase
+    .from('property_features')
+    .select('feature_id')
+    .eq('property_id', propertyId)
+
+  if (error) {
+    console.error('[adminService] getPropertyFeatures:', error.message)
+    return []
+  }
+  return data ? data.map((pf) => pf.feature_id) : []
+}
+
+/**
+ * Sincroniza las características de una propiedad.
+ * Elimina las relaciones existentes e inserta las nuevas.
+ */
+export async function syncPropertyFeatures(propertyId, featureIds) {
+  // 1. Delete existing for this property
+  const { error: delError } = await supabase
+    .from('property_features')
+    .delete()
+    .eq('property_id', propertyId)
+
+  if (delError) {
+    console.error('[adminService] syncPropertyFeatures (delete):', delError.message)
+    return { error: delError }
+  }
+
+  // 2. Insert new features if any
+  if (featureIds && featureIds.length > 0) {
+    const payload = featureIds.map((fId) => ({
+      property_id: propertyId,
+      feature_id: fId
+    }))
+
+    const { error: insError } = await supabase
+      .from('property_features')
+      .insert(payload)
+
+    if (insError) {
+      console.error('[adminService] syncPropertyFeatures (insert):', insError.message)
+      return { error: insError }
+    }
+  }
+
+  return { error: null }
+}
+

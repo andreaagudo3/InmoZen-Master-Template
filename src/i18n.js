@@ -25,7 +25,7 @@ i18n
   .init({
     fallbackLng: 'es',
     supportedLngs: ['es', 'en'],      // Añadido inglés
-    ns: ['common', 'home', 'properties', 'property', 'contact', 'nav'],
+    ns: ['common', 'home', 'properties', 'property', 'contact', 'nav', 'admin', 'features'],
     defaultNS: 'common',
 
     backend: {

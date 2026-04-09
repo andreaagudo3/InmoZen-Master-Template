@@ -31,7 +31,7 @@ export function PropertyHeader({ title, listing_type, price, status, locationStr
       <h1 className="text-3xl md:text-4xl font-bold text-secondary-950 mb-2">{title}</h1>
 
       {locationString && (
-        tenant?.features?.googleMaps ? (
+        tenant?.effective_features?.googleMaps ? (
           <a
             href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationString)}`}
             target="_blank"

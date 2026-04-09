@@ -1,8 +1,70 @@
 {
+  "login": {
+    "subtitle": "Panel de Administración",
+    "title": "Iniciar sesión",
+    "email": "Email",
+    "password": "Contraseña",
+    "entering": "Entrando…",
+    "enter": "Entrar"
+  },
+  "layout": {
+    "subtitle": "Panel Admin",
+    "logout": "Salir",
+    "nav": {
+      "properties": "Propiedades",
+      "locations": "Ubicaciones",
+      "settings": "Perfil / SEO"
+    }
+  },
+  "locations": {
+    "title": "Gestor de Ubicaciones",
+    "subtitle": "Administra las provincias y sus localidades asociadas.",
+    "tabs": {
+      "provinces": "Provincias ({{count}})",
+      "locations": "Localidades ({{count}})"
+    },
+    "form": {
+      "newProvince": "Nueva Provincia",
+      "newLocation": "Nueva Localidad",
+      "namePlaceholder": "Escribe el nombre aquí...",
+      "assignProvince": "Asignar a Provincia",
+      "select": "— Seleccionar —",
+      "adding": "Añadiendo...",
+      "add": "+ Añadir"
+    },
+    "search": {
+      "placeholderProvince": "Buscar provincia...",
+      "placeholderLocation": "Buscar localidad o provincia...",
+      "ariaLabel": "Buscar ubicación"
+    },
+    "table": {
+      "name": "Nombre",
+      "province": "Provincia",
+      "noResults": "Tristemente, no hay resultados para tu búsqueda.",
+      "empty": "No hay registros en esta sección."
+    }
+  },
   "properties": {
     "title": "Gestión de Propiedades",
     "newTitle": "Nueva Propiedad",
     "editTitle": "Editar Propiedad",
+    "features": {
+      "title": "Características y Comodidades",
+      "saveReminder": "Recuerda guardar los cambios al final del formulario para no perder tu selección.",
+      "categories": {
+        "climate": "Climatización",
+        "exterior": "Exterior",
+        "interior": "Interior",
+        "general": "General",
+        "security": "Seguridad",
+        "amenities": "Equipamiento",
+        "building": "Edificio",
+        "luxury": "Lujo"
+      },
+      "lockedTitle": "No incluido en tu plan",
+      "lockedMsg": "Para contratar características avanzadas y destacar en los filtros de búsqueda, contacta con contrataciones@zendoapp.es",
+      "upgradeBtn": "Mejorar mi plan"
+    },
     "form": {
       "basicData": "Datos básicos",
       "title": "Título *",
@@ -54,51 +116,6 @@
       "selectProvinceError": "Selecciona una provincia para esta localidad.",
       "loginError": "Credenciales incorrectas. Verifica tu email y contraseña."
     },
-    "login": {
-      "subtitle": "Panel de Administración",
-      "title": "Iniciar sesión",
-      "email": "Email",
-      "password": "Contraseña",
-      "entering": "Entrando…",
-      "enter": "Entrar"
-    },
-    "layout": {
-      "subtitle": "Panel Admin",
-      "logout": "Salir",
-      "nav": {
-        "properties": "Propiedades",
-        "locations": "Ubicaciones",
-        "settings": "Perfil / SEO"
-      }
-    },
-    "locations": {
-      "title": "Gestor de Ubicaciones",
-      "subtitle": "Administra las provincias y sus localidades asociadas.",
-      "tabs": {
-        "provinces": "Provincias ({{count}})",
-        "locations": "Localidades ({{count}})"
-      },
-      "form": {
-        "newProvince": "Nueva Provincia",
-        "newLocation": "Nueva Localidad",
-        "namePlaceholder": "Escribe el nombre aquí...",
-        "assignProvince": "Asignar a Provincia",
-        "select": "— Seleccionar —",
-        "adding": "Añadiendo...",
-        "add": "+ Añadir"
-      },
-      "search": {
-        "placeholderProvince": "Buscar provincia...",
-        "placeholderLocation": "Buscar localidad o provincia...",
-        "ariaLabel": "Buscar ubicación"
-      },
-      "table": {
-        "name": "Nombre",
-        "province": "Provincia",
-        "noResults": "Tristemente, no hay resultados para tu búsqueda.",
-        "empty": "No hay registros en esta sección."
-      }
-    },
     "list": {
       "title": "Propiedades",
       "totalCount_one": "{{count}} propiedad en total",
@@ -106,7 +123,9 @@
       "searchPlaceholder": "Buscar por título, referencia o localidad…",
       "empty": "Sin propiedades aún.",
       "noResults": "Sin resultados para tu búsqueda.",
-      "createFirst": "Crea la primera →"
+      "createFirst": "Crea la primera →",
+      "limitReachedBtn": "(Límite alcanzado)",
+      "limitReachedTooltip": "Has alcanzado el límite de propiedades de tu plan"
     },
     "filters": {
       "all": "Todas",
@@ -140,9 +159,9 @@
     "fallbackDesc": "Descripción Corta (Fallback interno)",
     "propertyTitle": "Configuración SEO",
     "propertyDesc": "Optimiza cómo aparece esta propiedad en Google.",
-    "googleTitle": "Título para Google (meta_title)",
+    "googleTitle": "Título para Google",
     "googleTitleDesc": "Si este campo está vacío, Google mostrará el título principal de la propiedad.",
-    "googleDesc": "Descripción para Google (meta_description)",
+    "googleDesc": "Descripción para Google",
     "googleDescDesc": "Este es el resumen que aparece bajo el título en los resultados de Google. Intenta no superar los 155 caracteres.",
     "placeholderTitle": "Ej: Chalet de lujo con vistas en Aracena | Zendo",
     "placeholderDesc": "El sistema usará un resumen automático si dejas esto vacío."

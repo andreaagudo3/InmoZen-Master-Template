@@ -91,7 +91,7 @@ export default function AdminSettingsPage() {
 
           {/* ── SEO Avanzado ── */}
           {(() => {
-            const seoEnabled = currentTenant?.features?.customSeo === true
+            const seoEnabled = currentTenant?.effective_features?.customSeo === true
             const fieldCls = `w-full px-4 py-3 rounded-xl border border-secondary-200 outline-none transition-all text-secondary-800 ${
               seoEnabled
                 ? 'focus:ring-2 focus:ring-primary-600 focus:border-transparent'

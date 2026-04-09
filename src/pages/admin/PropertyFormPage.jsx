@@ -4,12 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom'
 import {
   createProperty, updateProperty,
   getAdminPropertiesPaginated, getProvinces, createLocation, createProvince,
-  getPropertyById
+  getPropertyById, getPropertyFeatures, syncPropertyFeatures
 } from '../../services/adminService'
 import { supabase } from '../../services/supabaseClient'
 import { useTenant } from '../../context/TenantContext'
 import { slugify, generateReferenceCode } from '../../utils/slugify'
 import ImageUploader from '../../components/admin/ImageUploader'
+import PropertyFeatureManager from '../../components/admin/PropertyFeatureManager'
 import AdminLayout from './AdminLayout'
 
 const EMPTY_FORM = {
@@ -46,6 +47,7 @@ export default function PropertyFormPage() {
   const [status, setStatus] = useState('idle') // idle | saving | success | error
   const [errorMsg, setErrorMsg] = useState('')
   const [loadingProp, setLoadingProp] = useState(isEdit)
+  const [selectedFeatureIds, setSelectedFeatureIds] = useState([])
 
   // Locations data
   const [provinces, setProvinces] = useState([])
@@ -115,7 +117,13 @@ export default function PropertyFormPage() {
         const loc = locations.find((l) => l.id === prop.location_id)
         if (loc) setSelectedProvince(loc.province_id)
       }
-      setLoadingProp(false)
+
+      // Load existing features
+      getPropertyFeatures(id).then((featureIds) => {
+        setSelectedFeatureIds(featureIds || [])
+      }).finally(() => {
+        setLoadingProp(false)
+      })
     })
   }, [id, isEdit, navigate, locations, tenant?.id])
 
@@ -142,7 +150,7 @@ export default function PropertyFormPage() {
 
     const generatedSlug = slugify(form.title)
 
-    const seoEnabled = tenant?.features?.customSeo === true
+    const seoEnabled = tenant?.effective_features?.customSeo === true
 
     const payload = {
       title: form.title.trim(),
@@ -181,6 +189,10 @@ export default function PropertyFormPage() {
       setStatus('error')
       return
     }
+
+    // Sync features
+    const savedPropertyId = isEdit ? id : result.data.id
+    await syncPropertyFeatures(savedPropertyId, selectedFeatureIds)
 
     setStatus('success')
 
@@ -251,6 +263,15 @@ export default function PropertyFormPage() {
   // Tracks the cover URL locally so we can refresh the preview without a full reload.
   // Seeded from the DB when the property is loaded (see useEffect above).
   const [coverImageUrl, setCoverImageUrl] = useState(null)
+  const [coverUpdatedStatus, setCoverUpdatedStatus] = useState(false)
+
+  function handleCoverChange(url) {
+    setCoverImageUrl(url)
+    setCoverUpdatedStatus(true)
+    setTimeout(() => {
+      setCoverUpdatedStatus(false)
+    }, 3500)
+  }
 
   // ─── Render ───────────────────────────────────────────────────────────────
 
@@ -269,7 +290,7 @@ export default function PropertyFormPage() {
 
   return (
     <AdminLayout>
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
           <button
@@ -457,6 +478,13 @@ export default function PropertyFormPage() {
           {/* Imágenes */}
           <section className="bg-white rounded-2xl border border-secondary-200 p-6 shadow-sm space-y-3">
             <h2 className="font-semibold text-secondary-700 text-sm uppercase tracking-wide">Imágenes</h2>
+            
+            {coverUpdatedStatus && (
+              <div className="mb-4 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-xl px-4 py-3 animate-fade-in-down" style={{ animationDuration: '0.3s' }}>
+                ✅ Portada de la propiedad actualizada correctamente.
+              </div>
+            )}
+
             {!isEdit && (
               <p className="text-xs text-secondary-400">
                 Las imágenes se pueden subir después de guardar la propiedad.
@@ -479,13 +507,20 @@ export default function PropertyFormPage() {
             <ImageUploader
               property={imageProperty}
               tenant={tenant}
-              onCoverChange={(url) => setCoverImageUrl(url)}
+              onCoverChange={handleCoverChange}
             />
           </section>
 
+          {/* Características */}
+          <PropertyFeatureManager
+            tenant={tenant}
+            selectedFeatureIds={selectedFeatureIds}
+            onChange={setSelectedFeatureIds}
+          />
+
           {/* Configuración SEO */}
           {(() => {
-            const seoEnabled = tenant?.features?.customSeo === true
+            const seoEnabled = tenant?.effective_features?.customSeo === true
             const fieldCls = `w-full px-4 py-2.5 rounded-xl border border-secondary-200 text-sm text-secondary-900 placeholder-secondary-400 outline-none transition ${
               seoEnabled
                 ? 'bg-white focus:ring-2 focus:ring-primary-600 focus:border-transparent'
