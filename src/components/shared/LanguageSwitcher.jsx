@@ -6,7 +6,7 @@ export function LanguageSwitcher() {
   const tenant = useTenant()
   const currentLang = i18n.language || 'es'
 
-  if (!tenant?.features?.i18n) return null
+  if (!tenant?.effective_features?.i18n) return null
 
   return (
     <div className="flex items-center gap-1.5 text-sm font-medium mr-2">

@@ -20,25 +20,7 @@ const PLACEHOLDER_IMAGE = '/images/property-placeholder.jpg'
 
 const STORAGE_BUCKET = 'properties'
 
-const PROPERTY_FIELDS = [
-  'id',
-  'reference_code',
-  'title',
-  'description',
-  'price',
-  'bedrooms',
-  'bathrooms',
-  'size_m2',
-  'location_id',
-  'slug',
-  'property_type',
-  'listing_type',
-  'status',
-  'featured',
-  'meta_title',
-  'meta_description',
-  'locations!properties_location_id_fkey(id, name, slug, provinces(name))'
-].join(', ')
+const PROPERTY_FIELDS = '*, locations(id, name, slug, provinces(name))'
 
 // ─── Storage helpers ─────────────────────────────────────────────────────────
 
@@ -152,10 +134,9 @@ async function withImages(properties) {
 export async function getProperties(tenantId) {
   if (!tenantId) return []
   const { data, error } = await supabase
-    .from('properties')
+    .from('properties_public')
     .select(PROPERTY_FIELDS)
     .eq('tenant_id', tenantId)
-    .eq('published', true)
     .order('created_at', { ascending: false })
 
   if (error) {
@@ -169,10 +150,9 @@ export async function getProperties(tenantId) {
 export async function getFeaturedProperties(tenantId) {
   if (!tenantId) return []
   const { data, error } = await supabase
-    .from('properties')
+    .from('properties_public')
     .select(PROPERTY_FIELDS)
     .eq('tenant_id', tenantId)
-    .eq('published', true)
     .eq('featured', true)
     .order('created_at', { ascending: false })
 
@@ -187,11 +167,10 @@ export async function getFeaturedProperties(tenantId) {
 export async function getPropertyBySlug(slug, tenantId) {
   if (!tenantId) return null
   const { data, error } = await supabase
-    .from('properties')
+    .from('properties_public')
     .select(PROPERTY_FIELDS)
     .eq('tenant_id', tenantId)
     .eq('slug', slug)
-    .eq('published', true)
     .single()
 
   if (error) {
@@ -235,10 +214,9 @@ export async function getPropertiesPaginated(filters = {}, page = 1, tenantId) {
   const to = from + PAGE_SIZE - 1
 
   let query = supabase
-    .from('properties')
+    .from('properties_public')
     .select(PROPERTY_FIELDS, { count: 'exact' })
     .eq('tenant_id', tenantId)
-    .eq('published', true)
 
   // Filtro de ubicación jerárquico: 'loc:uuid' | 'prov:uuid' | 'all'
   if (locationFilter && locationFilter !== 'all') {
@@ -345,10 +323,9 @@ export async function searchProperties(filters = {}, tenantId) {
   const { location_id, listing_type, bedrooms, minPrice, maxPrice } = filters
 
   let query = supabase
-    .from('properties')
+    .from('properties_public')
     .select(PROPERTY_FIELDS)
     .eq('tenant_id', tenantId)
-    .eq('published', true)
 
   if (location_id && location_id !== 'all') {
     query = query.eq('location_id', location_id)

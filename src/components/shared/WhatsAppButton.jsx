@@ -14,8 +14,7 @@ export function WhatsAppButton() {
   const tenant = useTenant()
   const { pathname } = useLocation()
   const [showDemoModal, setShowDemoModal] = useState(false)
-
-  if (!tenant?.features?.whatsappButton) return null
+  if (!tenant?.effective_features?.whatsappButton) return null
 
   // Hide on pages that already have an inline WhatsApp button via ContactChannels
   const hasInlineContact =

@@ -54,7 +54,7 @@ export async function resolveTenantConfig(hostname, params) {
 async function fetchBySlug(slug) {
   try {
     const { data, error } = await supabase
-      .from('tenants')
+      .from('tenant_context')
       .select('*')
       .eq('slug', slug)
       .single()
@@ -72,7 +72,7 @@ async function fetchBySlug(slug) {
 async function fetchByCustomDomain(domain) {
   try {
     const { data, error } = await supabase
-      .from('tenants')
+      .from('tenant_context')
       .select('*')
       .eq('custom_domain', domain)
       .single()

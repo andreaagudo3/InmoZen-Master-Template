@@ -151,12 +151,22 @@ export default function AdminPropertiesPage() {
             {t('admin:properties.list.totalCount', { count: totalCount })}
           </p>
         </div>
-        <Link
-          to="/admin/new"
-          className="shrink-0 px-4 py-2.5 rounded-xl bg-primary-700 text-white text-sm font-semibold hover:bg-primary-800 transition-colors"
-        >
-          {t('common:btn.newProperty')}
-        </Link>
+        {tenant?.effective_features?.propertyLimit && totalCount >= tenant.effective_features.propertyLimit ? (
+          <button
+            disabled
+            title="Has alcanzado el límite de propiedades de tu plan"
+            className="shrink-0 px-4 py-2.5 rounded-xl bg-secondary-300 text-white text-sm font-semibold cursor-not-allowed transition-colors"
+          >
+            {t('common:btn.newProperty')} (Límite alcanzado)
+          </button>
+        ) : (
+          <Link
+            to="/admin/new"
+            className="shrink-0 px-4 py-2.5 rounded-xl bg-primary-700 text-white text-sm font-semibold hover:bg-primary-800 transition-colors"
+          >
+            {t('common:btn.newProperty')}
+          </Link>
+        )}
       </div>
 
       {/* Buscador */}

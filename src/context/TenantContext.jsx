@@ -17,7 +17,7 @@ const MASTER_IDENTITY = {
   isMaster: true,
   primary_color: '#2563eb',
   secondary_color: '#64748b',
-  features: { isDemo: false },
+  effective_features: { isDemo: false },
 }
 
 export function TenantProvider({ children }) {
@@ -55,7 +55,7 @@ export function TenantProvider({ children }) {
 
       if (memberData?.tenant_id) {
         const { data: tenantData } = await supabase
-          .from('tenants')
+          .from('tenant_context')
           .select('*')
           .eq('id', memberData.tenant_id)
           .single()
@@ -141,7 +141,7 @@ export function TenantProvider({ children }) {
     const finalTenant = {
       ...data,
       isMaster,
-      isDemoMode: !!data.features?.isDemo,
+      isDemoMode: !!data.effective_features?.isDemo,
     }
     setTenant(finalTenant)
     useThemeStore.getState().initFromTenant(
