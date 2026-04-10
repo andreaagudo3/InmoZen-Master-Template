@@ -20,6 +20,17 @@
       "lockedMsg": "To add advanced features and stand out in search filters, please contact contrataciones@zendoapp.es",
       "upgradeBtn": "Upgrade my plan"
     },
+    "internal": {
+      "title": "Private Internal Management",
+      "invisibleBadge": "Invisible to public",
+      "privacyStrong": "100% Private.",
+      "privacyText": "Any data or contact you enter in this section is strictly confidential. It will never be shown on the internet or on the property's public listing.",
+      "lockedMsg": "To document owner data and add private management notes to properties, please check our expansions at contrataciones@zendoapp.es",
+      "ownerContact": "Owner Contact",
+      "ownerPlaceholder": "E.g.: John Doe - 555-0198",
+      "internalNotes": "Internal Notes",
+      "notesPlaceholder": "Commissions, owner notices, key codes, contract status..."
+    },
     "form": {
       "basicData": "Basic data",
       "title": "Title *",

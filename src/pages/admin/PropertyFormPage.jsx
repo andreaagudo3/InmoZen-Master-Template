@@ -21,6 +21,8 @@ const EMPTY_FORM = {
   published: true, featured: false,
   meta_description: '',
   meta_title: '',
+  internal_notes: '',
+  owner_contact: '',
 }
 
 /**
@@ -110,6 +112,8 @@ export default function PropertyFormPage() {
         featured: prop.featured ?? false,
         meta_description: prop.meta_description ?? '',
         meta_title: prop.meta_title ?? '',
+        internal_notes: prop.internal_notes ?? '',
+        owner_contact: prop.owner_contact ?? '',
       })
 
       // Resolve selected province from the current location
@@ -151,6 +155,7 @@ export default function PropertyFormPage() {
     const generatedSlug = slugify(form.title)
 
     const seoEnabled = tenant?.effective_features?.customSeo === true
+    const internalEnabled = tenant?.effective_features?.internalManagement === true
 
     const payload = {
       title: form.title.trim(),
@@ -165,10 +170,15 @@ export default function PropertyFormPage() {
       status: form.status,
       published: form.published,
       featured: form.featured,
-      // SEO fields — only sent when the feature is active
+      // SEO fields
       ...(seoEnabled && {
         meta_description: form.meta_description.trim() || null,
         meta_title: form.meta_title.trim() || null,
+      }),
+      // Internal fields
+      ...(internalEnabled && {
+        internal_notes: form.internal_notes.trim() || null,
+        owner_contact: form.owner_contact.trim() || null,
       }),
       tenant_id: tenant?.id || null,
     }
@@ -517,6 +527,86 @@ export default function PropertyFormPage() {
             selectedFeatureIds={selectedFeatureIds}
             onChange={setSelectedFeatureIds}
           />
+
+          {/* Gestión Interna */}
+          {(() => {
+            const internalEnabled = tenant?.effective_features?.internalManagement === true
+            const fieldCls = `w-full px-4 py-2.5 rounded-xl border border-secondary-200 text-sm text-secondary-900 placeholder-secondary-400 outline-none transition ${
+              internalEnabled
+                ? 'bg-white focus:ring-2 focus:ring-primary-600 focus:border-transparent'
+                : 'bg-secondary-50 opacity-50 cursor-not-allowed'
+            }`
+            return (
+              <section className="bg-white rounded-2xl border border-secondary-200 p-6 space-y-4 shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <h2 className="font-semibold text-secondary-700 text-sm uppercase tracking-wide">{t('admin:properties.internal.title', 'Gestión Interna Privada')}</h2>
+                    <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider font-bold text-secondary-500 bg-secondary-100 border border-secondary-200 px-2 py-0.5 rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clipRule="evenodd" />
+                        <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z" />
+                      </svg>
+                      {t('admin:properties.internal.invisibleBadge', 'Invisible al público')}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {!internalEnabled && (
+                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" /></svg>
+                        {t('admin:seo.lockedBadge', 'No incluido en tu plan')}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {!internalEnabled && (
+                  <div className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800 leading-relaxed">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" /></svg>
+                    <span>
+                      {t('admin:properties.internal.lockedMsg', 'Para documentar datos de propietarios y añadir gestiones privadas a las propiedades, consulta nuestras expansiones en contrataciones@zendoapp.es')}
+                    </span>
+                  </div>
+                )}
+
+                {internalEnabled && (
+                  <div className="flex items-start gap-2.5 p-3.5 bg-secondary-50 border border-secondary-200 rounded-xl text-xs text-secondary-600 leading-relaxed">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 shrink-0 text-secondary-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                    </svg>
+                    <span>
+                      <strong>{t('admin:properties.internal.privacyStrong', '100% Privado.')}</strong> {t('admin:properties.internal.privacyText', 'Cualquier dato o contacto que introduzcas en esta sección es estrictamente confidencial. Nunca se mostrará en internet ni en la ficha pública de la propiedad.')}
+                    </span>
+                  </div>
+                )}
+
+                <fieldset disabled={!internalEnabled} className="grid grid-cols-1 gap-4">
+                  <Field label={t('admin:properties.internal.ownerContact', 'Contacto del Propietario')} htmlFor="f-owner">
+                    <input
+                      id="f-owner"
+                      name="owner_contact"
+                      type="text"
+                      value={form.owner_contact}
+                      onChange={handleChange}
+                      placeholder={t('admin:properties.internal.ownerPlaceholder', 'Ej: Juan Pérez - 655443322')}
+                      className={fieldCls}
+                    />
+                  </Field>
+
+                  <Field label={t('admin:properties.internal.internalNotes', 'Notas Internas (Invisibles al público)')} htmlFor="f-notes">
+                    <textarea
+                      id="f-notes"
+                      name="internal_notes"
+                      rows={3}
+                      value={form.internal_notes}
+                      onChange={handleChange}
+                      placeholder={t('admin:properties.internal.notesPlaceholder', 'Comisiones, avisos del propietario, códigos de llaves, estado de contrato...')}
+                      className={fieldCls + ' resize-none'}
+                    />
+                  </Field>
+                </fieldset>
+              </section>
+            )
+          })()}
 
           {/* Configuración SEO */}
           {(() => {
