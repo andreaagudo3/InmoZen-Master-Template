@@ -24,12 +24,12 @@ export default function PropertyFeatureManager({ tenant, selectedFeatureIds, onC
         acc[cat].push(feat)
         return acc
       }, {})
-      
+
       setGroupedFeatures(grouped)
       const cats = Object.keys(grouped).sort()
       setCategories(cats)
       if (cats.length > 0) setActiveTab(cats[0])
-      
+
       setLoading(false)
     }
 
@@ -99,7 +99,7 @@ export default function PropertyFeatureManager({ tenant, selectedFeatureIds, onC
       )}
 
       <div className={!hasAccess ? 'opacity-60 transition-all cursor-not-allowed' : ''}>
-        
+
         {/* Selected Features Tags */}
         {selectedFeatureIds.length > 0 && (
           <div className="mb-6 pb-6 border-b border-secondary-100 border-dashed">
@@ -137,11 +137,10 @@ export default function PropertyFeatureManager({ tenant, selectedFeatureIds, onC
               key={cat}
               type="button"
               onClick={() => setActiveTab(cat)}
-              className={`px-4 py-2 rounded-t-lg text-sm font-medium transition-colors whitespace-nowrap ${
-                activeTab === cat
+              className={`px-4 py-2 rounded-t-lg text-sm font-medium transition-colors whitespace-nowrap ${activeTab === cat
                   ? 'text-primary-700 border-b-2 border-primary-700 bg-primary-50/50'
                   : 'text-secondary-500 hover:text-secondary-800 hover:bg-secondary-50 border-b-2 border-transparent'
-              }`}
+                }`}
             >
               {t(`admin:properties.features.categories.${cat}`, cat)}
             </button>
@@ -156,11 +155,10 @@ export default function PropertyFeatureManager({ tenant, selectedFeatureIds, onC
               return (
                 <label
                   key={feat.id}
-                  className={`flex items-start gap-3 p-3 border rounded-xl transition-all ${
-                    isSelected 
-                      ? 'bg-primary-50 border-primary-300 ring-1 ring-primary-300' 
+                  className={`flex items-start gap-3 p-3 border rounded-xl transition-all ${isSelected
+                      ? 'bg-primary-50 border-primary-300 ring-1 ring-primary-300'
                       : 'bg-white border-secondary-200'
-                  } ${!hasAccess ? 'opacity-80' : 'cursor-pointer hover:border-primary-200 hover:bg-secondary-50'}`}
+                    } ${!hasAccess ? 'opacity-80' : 'cursor-pointer hover:border-primary-200 hover:bg-secondary-50'}`}
                 >
                   <div className="pt-0.5">
                     <input
@@ -172,9 +170,9 @@ export default function PropertyFeatureManager({ tenant, selectedFeatureIds, onC
                     />
                   </div>
                   <div>
-                     <span className={`text-sm font-medium block ${isSelected ? 'text-primary-900' : 'text-secondary-700'}`}>
-                       {t(feat.feature_key, { ns: 'features', defaultValue: formatFallback(feat.feature_key) })}
-                     </span>
+                    <span className={`text-sm font-medium block ${isSelected ? 'text-primary-900' : 'text-secondary-700'}`}>
+                      {t(feat.feature_key, { ns: 'features', defaultValue: formatFallback(feat.feature_key) })}
+                    </span>
                   </div>
                 </label>
               )

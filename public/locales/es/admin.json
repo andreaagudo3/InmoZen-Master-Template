@@ -65,6 +65,17 @@
       "lockedMsg": "Para contratar características avanzadas y destacar en los filtros de búsqueda, contacta con contrataciones@zendoapp.es",
       "upgradeBtn": "Mejorar mi plan"
     },
+    "internal": {
+      "title": "Gestión Interna Privada",
+      "invisibleBadge": "Invisible al público",
+      "privacyStrong": "100% Privado.",
+      "privacyText": "Cualquier dato o contacto que introduzcas en esta sección es estrictamente confidencial. Nunca se mostrará en internet ni en la ficha pública de la propiedad.",
+      "lockedMsg": "Para documentar datos de propietarios y añadir gestiones privadas a las propiedades, consulta nuestras expansiones en contrataciones@zendoapp.es",
+      "ownerContact": "Contacto del Propietario",
+      "ownerPlaceholder": "Ej: Juan Pérez - 655443322",
+      "internalNotes": "Notas Internas",
+      "notesPlaceholder": "Comisiones, avisos del propietario, códigos de llaves, estado de contrato..."
+    },
     "form": {
       "basicData": "Datos básicos",
       "title": "Título *",
