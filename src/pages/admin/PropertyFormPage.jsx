@@ -154,7 +154,7 @@ export default function PropertyFormPage() {
 
     const generatedSlug = slugify(form.title)
 
-    const seoEnabled = tenant?.effective_features?.customSeo === true
+    const seoEnabled = tenant?.effective_features?.manualSeo === true
     const internalEnabled = tenant?.effective_features?.internalManagement === true
 
     const payload = {
@@ -610,7 +610,7 @@ export default function PropertyFormPage() {
 
           {/* Configuración SEO */}
           {(() => {
-            const seoEnabled = tenant?.effective_features?.customSeo === true
+            const seoEnabled = tenant?.effective_features?.manualSeo === true
             const fieldCls = `w-full px-4 py-2.5 rounded-xl border border-secondary-200 text-sm text-secondary-900 placeholder-secondary-400 outline-none transition ${
               seoEnabled
                 ? 'bg-white focus:ring-2 focus:ring-primary-600 focus:border-transparent'

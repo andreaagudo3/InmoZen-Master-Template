@@ -67,7 +67,7 @@ export default function AdminSettingsPage() {
 
   return (
     <AdminLayout>
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <header className="mb-8">
           <h1 className="text-3xl font-bold text-secondary-900">{t('admin:settings.title', 'Configuración del Perfil')}</h1>
           <p className="text-secondary-500 mt-1">{t('admin:settings.subtitle', 'Gestiona la identidad y el SEO de tu inmobiliaria.')}</p>
@@ -91,32 +91,12 @@ export default function AdminSettingsPage() {
 
           {/* ── SEO Avanzado ── */}
           {(() => {
-            const seoEnabled = currentTenant?.effective_features?.customSeo === true
-            const fieldCls = `w-full px-4 py-3 rounded-xl border border-secondary-200 outline-none transition-all text-secondary-800 ${
-              seoEnabled
-                ? 'focus:ring-2 focus:ring-primary-600 focus:border-transparent'
-                : 'opacity-50 bg-secondary-50 cursor-not-allowed'
-            }`
+            const fieldCls = `w-full px-4 py-3 rounded-xl border border-secondary-200 outline-none transition-all text-secondary-800 focus:ring-2 focus:ring-primary-600 focus:border-transparent`
             return (
-              <fieldset disabled={!seoEnabled} className="space-y-6">
+              <fieldset className="space-y-6">
                 <div className="flex items-center justify-between">
                   <h3 className="text-sm font-bold text-secondary-700 uppercase tracking-wide">{t('admin:seo.advancedTitle')}</h3>
-                  {!seoEnabled && (
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" /></svg>
-                      {t('admin:seo.lockedBadge')}
-                    </span>
-                  )}
                 </div>
-
-                {!seoEnabled && (
-                  <div className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800 leading-relaxed">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" /></svg>
-                    <span>
-                      {t('admin:seo.lockedMsg', { email: CONTACT_EMAIL })}
-                    </span>
-                  </div>
-                )}
 
                 <div className="space-y-2">
                   <label htmlFor="browser_title" className="block text-sm font-semibold text-secondary-700">
